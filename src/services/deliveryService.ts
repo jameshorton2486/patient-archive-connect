@@ -11,172 +11,108 @@ export class DeliveryService {
     return DeliveryService.instance;
   }
 
-  // USPS API Integration (Mock)
-  async sendUSPSCertified(
-    documentContent: string, 
-    providerAddress: string, 
-    trackingId: string
-  ): Promise<{ success: boolean; trackingNumber?: string; error?: string }> {
-    // In real implementation, integrate with USPS API
-    try {
-      console.log('Sending USPS Certified Mail:', { trackingId, providerAddress });
-      
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock success response
-      return {
-        success: true,
-        trackingNumber: `9400${Date.now().toString().slice(-12)}`
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: 'USPS service temporarily unavailable'
-      };
-    }
-  }
-
-  // Secure Fax Service Integration (Mock)
-  async sendSecureFax(
-    documentContent: string, 
-    faxNumber: string, 
-    trackingId: string
-  ): Promise<{ success: boolean; confirmationId?: string; error?: string }> {
-    // In real implementation, integrate with HIPAA-compliant fax service
-    try {
-      console.log('Sending Secure Fax:', { trackingId, faxNumber });
-      
-      // Validate fax number format
-      const faxRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
-      if (!faxRegex.test(faxNumber)) {
-        return {
-          success: false,
-          error: 'Invalid fax number format'
-        };
+  async getAvailableMethods(): Promise<DeliveryMethod[]> {
+    // Mock data - in real implementation, this would fetch from API
+    return [
+      {
+        id: 'usps_certified',
+        name: 'USPS Certified Mail',
+        type: 'usps',
+        cost: 8.50,
+        estimatedDeliveryTime: '3-5 business days',
+        reliabilityScore: 0.95,
+        hipaaCompliant: true,
+        enabled: true
+      },
+      {
+        id: 'secure_fax',
+        name: 'Secure Fax',
+        type: 'fax',
+        cost: 2.00,
+        estimatedDeliveryTime: 'Immediate',
+        reliabilityScore: 0.88,
+        hipaaCompliant: true,
+        enabled: true
+      },
+      {
+        id: 'encrypted_email',
+        name: 'Encrypted Email',
+        type: 'email',
+        cost: 1.00,
+        estimatedDeliveryTime: 'Immediate',
+        reliabilityScore: 0.92,
+        hipaaCompliant: true,
+        enabled: true
+      },
+      {
+        id: 'provider_portal',
+        name: 'Provider Portal',
+        type: 'portal',
+        cost: 0.50,
+        estimatedDeliveryTime: 'Immediate',
+        reliabilityScore: 0.98,
+        hipaaCompliant: true,
+        enabled: true
       }
-
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      return {
-        success: true,
-        confirmationId: `FAX${Date.now().toString().slice(-8)}`
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: 'Fax service error'
-      };
-    }
+    ];
   }
 
-  // Encrypted Email Service Integration (Mock)
-  async sendEncryptedEmail(
-    documentContent: string, 
-    emailAddress: string, 
-    trackingId: string
-  ): Promise<{ success: boolean; messageId?: string; error?: string }> {
-    // In real implementation, integrate with encrypted email service
-    try {
-      console.log('Sending Encrypted Email:', { trackingId, emailAddress });
-      
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(emailAddress)) {
-        return {
-          success: false,
-          error: 'Invalid email address format'
-        };
+  async getActiveDeliveries(): Promise<DeliveryAttempt[]> {
+    // Mock data - in real implementation, this would fetch from API
+    return [
+      {
+        id: 'attempt_001',
+        documentId: 'doc_001',
+        methodId: 'usps_certified',
+        providerId: 'provider_001',
+        status: 'pending',
+        sentAt: new Date().toISOString(),
+        trackingNumber: 'US1234567890',
+        cost: 8.50,
+        confirmationReceived: false,
+        retryCount: 0,
+        maxRetries: 3
       }
-
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      return {
-        success: true,
-        messageId: `EMAIL${Date.now().toString().slice(-10)}`
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: 'Email service error'
-      };
-    }
+    ];
   }
 
-  // Provider Portal Upload (Mock)
-  async uploadToProviderPortal(
-    documentContent: string, 
-    providerId: string, 
-    trackingId: string
-  ): Promise<{ success: boolean; uploadId?: string; error?: string }> {
-    // In real implementation, integrate with provider portal APIs
-    try {
-      console.log('Uploading to Provider Portal:', { trackingId, providerId });
-      
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      
-      return {
-        success: true,
-        uploadId: `PORTAL${Date.now().toString().slice(-8)}`
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: 'Provider portal unavailable'
-      };
-    }
+  async getDeliveryStatistics(): Promise<any> {
+    // Mock data - in real implementation, this would calculate from database
+    return {
+      totalDeliveries: 156,
+      successRate: 0.94,
+      totalCost: 1280.50,
+      averageDeliveryTime: 2.3
+    };
   }
 
-  // Delivery Analytics
-  calculateSuccessRate(attempts: DeliveryAttempt[]): number {
-    if (attempts.length === 0) return 0;
-    const successful = attempts.filter(a => a.status === 'delivered').length;
-    return Math.round((successful / attempts.length) * 100);
+  async initiateDelivery(documentId: string, methodId: string, providerId: string): Promise<DeliveryAttempt> {
+    // Mock implementation - in real app, this would integrate with delivery services
+    const attempt: DeliveryAttempt = {
+      id: `attempt_${Date.now()}`,
+      documentId,
+      methodId,
+      providerId,
+      status: 'sending',
+      sentAt: new Date().toISOString(),
+      cost: 8.50,
+      confirmationReceived: false,
+      retryCount: 0,
+      maxRetries: 3
+    };
+
+    console.log('Initiating delivery:', attempt);
+    return attempt;
   }
 
-  calculateTotalCost(attempts: DeliveryAttempt[]): number {
-    return attempts.reduce((total, attempt) => total + attempt.cost, 0);
+  async retryFailedDelivery(attemptId: string): Promise<void> {
+    console.log('Retrying delivery:', attemptId);
+    // Implementation would update the attempt status and retry
   }
 
-  getBestPerformingMethod(attempts: DeliveryAttempt[]): string | null {
-    const methodStats = attempts.reduce((stats, attempt) => {
-      const methodId = attempt.methodId;
-      if (!stats[methodId]) {
-        stats[methodId] = { total: 0, successful: 0 };
-      }
-      stats[methodId].total++;
-      if (attempt.status === 'delivered') {
-        stats[methodId].successful++;
-      }
-      return stats;
-    }, {} as Record<string, { total: number; successful: number }>);
-
-    let bestMethod = null;
-    let bestRate = 0;
-
-    Object.entries(methodStats).forEach(([methodId, stats]) => {
-      const rate = stats.successful / stats.total;
-      if (rate > bestRate) {
-        bestRate = rate;
-        bestMethod = methodId;
-      }
-    });
-
-    return bestMethod;
-  }
-
-  // Retry Logic
-  shouldRetry(attempt: DeliveryAttempt): boolean {
-    return attempt.status === 'failed' && attempt.retryCount < attempt.maxRetries;
-  }
-
-  getRetryDelay(retryCount: number): number {
-    // Exponential backoff: 5 minutes, 15 minutes, 30 minutes
-    const delays = [5 * 60 * 1000, 15 * 60 * 1000, 30 * 60 * 1000];
-    return delays[Math.min(retryCount, delays.length - 1)];
+  async trackDelivery(attemptId: string): Promise<DeliveryAttempt> {
+    // Mock implementation - would check delivery status
+    throw new Error('Not implemented');
   }
 }
 

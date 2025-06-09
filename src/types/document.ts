@@ -33,7 +33,9 @@ export type DocumentType =
   | 'follow-up-reminder'
   | 'formal-follow-up'
   | 'fee-payment'
-  | 'final-demand';
+  | 'final-demand'
+  | 'denial-response-fee'
+  | 'denial-response-auth';
 
 export type DocumentStatus = 
   | 'draft'
@@ -517,5 +519,61 @@ Very truly yours,
 {{firmName}}
 
 FINAL DEMAND - Tracking ID: {{trackingId}}
+`,
+  'denial-response-fee': `
+{{firmLetterhead}}
+
+{{date}}
+
+{{providerName}}
+Medical Records Department
+{{providerAddress}}
+
+Re: Payment for Medical Records Processing Fee
+Patient: {{clientName}}
+Fee Amount: ${{feeAmount}}
+
+Dear Records Department:
+
+We are in receipt of your notice requiring a processing fee of ${{feeAmount}} for medical records for {{clientName}}.
+
+Please find enclosed payment in the specified amount. Upon receipt of this payment, please process our records request and forward the complete medical records to our office within {{processingTimeframe}} business days.
+
+If you require any additional information, please contact our office immediately.
+
+Sincerely,
+
+{{firmName}}
+
+Payment Reference: {{trackingId}}
+`,
+  'denial-response-auth': `
+{{firmLetterhead}}
+
+{{date}}
+
+{{providerName}}
+Medical Records Department
+{{providerAddress}}
+
+Re: Additional Authorization for Medical Records
+Patient: {{clientName}}
+
+Dear Records Administrator:
+
+We are in receipt of your request for additional authorization regarding medical records for {{clientName}}.
+
+Please find enclosed the requested documentation:
+• {{authRequirements}}
+
+This supplemental authorization should satisfy all requirements for releasing the requested medical records. Please process our request and forward the records to our office at your earliest convenience.
+
+If you need any clarification, please contact our office immediately.
+
+Sincerely,
+
+{{firmName}}
+
+Reference: {{trackingId}}
 `
 };

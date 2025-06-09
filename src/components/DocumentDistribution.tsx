@@ -3,17 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { 
   Send, 
+  Download, 
   CheckCircle, 
-  XCircle, 
   Clock, 
-  DollarSign,
+  AlertCircle, 
   Mail,
-  Fax,
-  Upload,
-  Truck
+  Phone,
+  Globe,
+  RefreshCw
 } from 'lucide-react';
 import { DeliveryMethod, DeliveryAttempt, DeliveryTracking } from '@/types/document';
 import { deliveryService } from '@/services/deliveryService';
@@ -25,58 +24,45 @@ interface DocumentDistributionProps {
 export function DocumentDistribution({ onBack }: DocumentDistributionProps) {
   const [deliveryMethods, setDeliveryMethods] = useState<DeliveryMethod[]>([]);
   const [activeAttempts, setActiveAttempts] = useState<DeliveryAttempt[]>([]);
-  const [deliveryStats, setDeliveryStats] = useState({
-    totalDeliveries: 0,
-    successRate: 0,
-    totalCost: 0,
-    averageCost: 0
-  });
+  const [deliveryStats, setDeliveryStats] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    loadDeliveryMethods();
-    loadActiveAttempts();
-    loadDeliveryStats();
+    loadData();
   }, []);
 
-  const loadDeliveryMethods = async () => {
+  const loadData = async () => {
+    setIsLoading(true);
     try {
-      const methods = await deliveryService.getDeliveryMethods();
+      const methods = await deliveryService.getAvailableMethods();
+      const attempts = await deliveryService.getActiveDeliveries();
+      const stats = await deliveryService.getDeliveryStatistics();
+      
       setDeliveryMethods(methods);
-    } catch (error) {
-      console.error('Error loading delivery methods:', error);
-    }
-  };
-
-  const loadActiveAttempts = async () => {
-    try {
-      const attempts = await deliveryService.getActiveAttempts();
       setActiveAttempts(attempts);
-    } catch (error) {
-      console.error('Error loading active attempts:', error);
-    }
-  };
-
-  const loadDeliveryStats = async () => {
-    try {
-      const stats = await deliveryService.getDeliveryStats();
       setDeliveryStats(stats);
     } catch (error) {
-      console.error('Error loading delivery stats:', error);
+      console.error('Error loading delivery data:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const getMethodIcon = (type: string) => {
-    switch (type) {
-      case 'usps':
-        return <Truck className="h-4 w-4" />;
-      case 'fax':
-        return <Fax className="h-4 w-4" />;
-      case 'email':
-        return <Mail className="h-4 w-4" />;
-      case 'portal':
-        return <Upload className="h-4 w-4" />;
-      default:
-        return <Send className="h-4 w-4" />;
+  const handleRetry = async (attemptId: string) => {
+    try {
+      await deliveryService.retryFailedDelivery(attemptId);
+      await loadData();
+    } catch (error) {
+      console.error('Error retrying delivery:', error);
+    }
+  };
+
+  const handleSendDocument = async (methodId: string, documentId: string, providerId: string) => {
+    try {
+      await deliveryService.initiateDelivery(documentId, methodId, providerId);
+      await loadData();
+    } catch (error) {
+      console.error('Error sending document:', error);
     }
   };
 
@@ -85,50 +71,26 @@ export function DocumentDistribution({ onBack }: DocumentDistributionProps) {
       case 'delivered':
         return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'failed':
-      case 'bounced':
-        return <XCircle className="h-4 w-4 text-red-500" />;
+        return <AlertCircle className="h-4 w-4 text-red-500" />;
       case 'sending':
-        return <Clock className="h-4 w-4 text-blue-500 animate-pulse" />;
+        return <Clock className="h-4 w-4 text-blue-500 animate-spin" />;
       default:
         return <Clock className="h-4 w-4 text-yellow-500" />;
     }
   };
 
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case 'delivered':
-        return 'default' as const;
-      case 'failed':
-      case 'bounced':
-        return 'destructive' as const;
-      case 'sending':
-        return 'secondary' as const;
+  const getMethodIcon = (type: string) => {
+    switch (type) {
+      case 'email':
+        return <Mail className="h-4 w-4" />;
+      case 'usps':
+        return <Send className="h-4 w-4" />;
+      case 'fax':
+        return <Phone className="h-4 w-4" />;
+      case 'portal':
+        return <Globe className="h-4 w-4" />;
       default:
-        return 'outline' as const;
-    }
-  };
-
-  const handleRetryDelivery = async (attemptId: string) => {
-    try {
-      await deliveryService.retryDelivery(attemptId);
-      loadActiveAttempts();
-    } catch (error) {
-      console.error('Error retrying delivery:', error);
-    }
-  };
-
-  const handleTestDelivery = async (methodId: string) => {
-    try {
-      const mockDocument = {
-        id: 'test_doc',
-        content: 'Test document content',
-        trackingId: 'TEST-' + Date.now()
-      };
-      
-      await deliveryService.sendDocument(mockDocument, methodId, 'test_provider');
-      loadActiveAttempts();
-    } catch (error) {
-      console.error('Error sending test delivery:', error);
+        return <Send className="h-4 w-4" />;
     }
   };
 
@@ -142,203 +104,108 @@ export function DocumentDistribution({ onBack }: DocumentDistributionProps) {
 
       <div className="flex items-center gap-2 mb-6">
         <Send className="h-6 w-6 text-primary" />
-        <h1 className="text-3xl font-bold text-foreground">Document Distribution Center</h1>
-      </div>
-
-      {/* Delivery Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Send className="h-4 w-4 text-blue-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Total Deliveries</p>
-                <p className="text-2xl font-bold">{deliveryStats.totalDeliveries}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-green-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Success Rate</p>
-                <p className="text-2xl font-bold">{deliveryStats.successRate}%</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-green-600" />
-              <div>
-                <p className="text-sm text-muted-foreground">Total Cost</p>
-                <p className="text-2xl font-bold">${deliveryStats.totalCost}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-blue-600" />
-              <div>
-                <p className="text-sm text-muted-foreground">Avg Cost</p>
-                <p className="text-2xl font-bold">${deliveryStats.averageCost}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <h1 className="text-3xl font-bold text-foreground">Document Distribution</h1>
       </div>
 
       {/* Delivery Methods */}
       <Card>
         <CardHeader>
           <CardTitle>Available Delivery Methods</CardTitle>
-          <CardDescription>Configure and test document delivery channels</CardDescription>
+          <CardDescription>Configure and manage document delivery channels</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {deliveryMethods.map((method) => (
-              <div key={method.id} className="border rounded-lg p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {getMethodIcon(method.type)}
-                    <span className="font-medium">{method.name}</span>
-                  </div>
-                  <Badge variant={method.enabled ? "default" : "secondary"}>
-                    {method.enabled ? "Active" : "Disabled"}
-                  </Badge>
+              <div key={method.id} className="p-4 border rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  {getMethodIcon(method.type)}
+                  <h3 className="font-medium">{method.name}</h3>
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Cost</p>
-                    <p className="font-medium">${method.cost}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Delivery Time</p>
-                    <p className="font-medium">{method.estimatedDeliveryTime}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Reliability</p>
-                    <p className="font-medium">{method.reliabilityScore}%</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">HIPAA</p>
-                    <p className="font-medium">{method.hipaaCompliant ? "✓" : "✗"}</p>
-                  </div>
+                <div className="space-y-1 text-sm text-muted-foreground">
+                  <p>Cost: ${method.cost}</p>
+                  <p>Delivery: {method.estimatedDeliveryTime}</p>
+                  <p>Reliability: {(method.reliabilityScore * 100).toFixed(0)}%</p>
                 </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Reliability Score</span>
-                    <span>{method.reliabilityScore}%</span>
-                  </div>
-                  <Progress value={method.reliabilityScore} className="h-2" />
-                </div>
-
-                <Button 
-                  onClick={() => handleTestDelivery(method.id)}
-                  variant="outline" 
-                  size="sm"
-                  disabled={!method.enabled}
-                  className="w-full"
-                >
-                  Test Delivery
-                </Button>
+                <Badge variant={method.enabled ? "default" : "secondary"} className="mt-2">
+                  {method.enabled ? 'Active' : 'Disabled'}
+                </Badge>
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Active Delivery Attempts */}
+      {/* Active Deliveries */}
       <Card>
         <CardHeader>
-          <CardTitle>Active Delivery Attempts</CardTitle>
-          <CardDescription>Monitor ongoing and recent delivery attempts</CardDescription>
+          <CardTitle>Active Deliveries</CardTitle>
+          <CardDescription>Track ongoing document deliveries</CardDescription>
         </CardHeader>
         <CardContent>
-          {activeAttempts.length === 0 ? (
-            <p className="text-center text-muted-foreground py-8">No active delivery attempts</p>
-          ) : (
-            <div className="space-y-4">
-              {activeAttempts.map((attempt) => (
-                <div key={attempt.id} className="border rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      {getStatusIcon(attempt.status)}
-                      <span className="font-medium">Document #{attempt.documentId.substring(0, 8)}</span>
-                      <Badge variant={getStatusBadgeVariant(attempt.status)}>
-                        {attempt.status}
-                      </Badge>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      ${attempt.cost}
-                    </div>
+          <div className="space-y-4">
+            {activeAttempts.map((attempt) => (
+              <div key={attempt.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex items-center gap-3">
+                  {getStatusIcon(attempt.status)}
+                  <div>
+                    <p className="font-medium">Document #{attempt.documentId}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Method: {deliveryMethods.find(m => m.id === attempt.methodId)?.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Sent: {new Date(attempt.sentAt).toLocaleDateString()}
+                    </p>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div>
-                      <p className="text-muted-foreground">Method</p>
-                      <p className="font-medium">
-                        {deliveryMethods.find(m => m.id === attempt.methodId)?.name || 'Unknown'}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Sent At</p>
-                      <p className="font-medium">
-                        {new Date(attempt.sentAt).toLocaleString()}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Tracking</p>
-                      <p className="font-medium font-mono text-xs">
-                        {attempt.trackingNumber || 'N/A'}
-                      </p>
-                    </div>
-                  </div>
-
-                  {attempt.status === 'failed' && (
-                    <div className="mt-3 p-3 bg-red-50 rounded border border-red-200">
-                      <p className="text-sm text-red-800">
-                        <strong>Failure Reason:</strong> {attempt.failureReason}
-                      </p>
-                      <div className="mt-2 flex items-center gap-2">
-                        <Button 
-                          onClick={() => handleRetryDelivery(attempt.id)}
-                          size="sm"
-                          variant="outline"
-                          disabled={attempt.retryCount >= attempt.maxRetries}
-                        >
-                          Retry ({attempt.retryCount}/{attempt.maxRetries})
-                        </Button>
-                      </div>
-                    </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {attempt.trackingNumber && (
+                    <Badge variant="outline">{attempt.trackingNumber}</Badge>
                   )}
-
-                  {attempt.deliveredAt && (
-                    <div className="mt-3 p-3 bg-green-50 rounded border border-green-200">
-                      <p className="text-sm text-green-800">
-                        <strong>Delivered:</strong> {new Date(attempt.deliveredAt).toLocaleString()}
-                      </p>
-                      {attempt.confirmationReceived && (
-                        <p className="text-sm text-green-800">
-                          ✓ Delivery confirmation received
-                        </p>
-                      )}
-                    </div>
+                  {attempt.status === 'failed' && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleRetry(attempt.id)}
+                    >
+                      <RefreshCw className="h-4 w-4" />
+                    </Button>
                   )}
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Delivery Statistics */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Delivery Statistics</CardTitle>
+          <CardDescription>Performance metrics across all delivery methods</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-primary">{deliveryStats.totalDeliveries || 0}</p>
+              <p className="text-sm text-muted-foreground">Total Deliveries</p>
             </div>
-          )}
+            <div className="text-center">
+              <p className="text-2xl font-bold text-green-600">
+                {deliveryStats.successRate ? (deliveryStats.successRate * 100).toFixed(1) : 0}%
+              </p>
+              <p className="text-sm text-muted-foreground">Success Rate</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-blue-600">${deliveryStats.totalCost || 0}</p>
+              <p className="text-sm text-muted-foreground">Total Cost</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-orange-600">
+                {deliveryStats.averageDeliveryTime || 0} days
+              </p>
+              <p className="text-sm text-muted-foreground">Avg. Delivery Time</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
