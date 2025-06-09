@@ -11,108 +11,147 @@ export class DeliveryService {
     return DeliveryService.instance;
   }
 
-  async getAvailableMethods(): Promise<DeliveryMethod[]> {
-    // Mock data - in real implementation, this would fetch from API
+  getAvailableDeliveryMethods(): DeliveryMethod[] {
     return [
       {
         id: 'usps_certified',
         name: 'USPS Certified Mail',
         type: 'usps',
-        cost: 8.50,
-        estimatedDeliveryTime: '3-5 business days',
+        enabled: true,
+        cost: 5.95,
+        estimatedDeliveryTime: '2-3 business days',
         reliabilityScore: 0.95,
         hipaaCompliant: true,
-        enabled: true
+        configuration: {
+          returnReceipt: true,
+          trackingIncluded: true
+        }
       },
       {
         id: 'secure_fax',
         name: 'Secure Fax',
         type: 'fax',
-        cost: 2.00,
+        enabled: true,
+        cost: 1.50,
         estimatedDeliveryTime: 'Immediate',
-        reliabilityScore: 0.88,
+        reliabilityScore: 0.90,
         hipaaCompliant: true,
-        enabled: true
+        configuration: {
+          encryptionEnabled: true,
+          deliveryConfirmation: true
+        }
       },
       {
-        id: 'encrypted_email',
-        name: 'Encrypted Email',
+        id: 'hipaa_email',
+        name: 'HIPAA-Compliant Email',
         type: 'email',
-        cost: 1.00,
+        enabled: true,
+        cost: 0.25,
         estimatedDeliveryTime: 'Immediate',
-        reliabilityScore: 0.92,
+        reliabilityScore: 0.85,
         hipaaCompliant: true,
-        enabled: true
+        configuration: {
+          encryption: 'end-to-end',
+          readReceipt: true
+        }
       },
       {
-        id: 'provider_portal',
-        name: 'Provider Portal',
+        id: 'portal_upload',
+        name: 'Provider Portal Upload',
         type: 'portal',
-        cost: 0.50,
+        enabled: true,
+        cost: 0.00,
         estimatedDeliveryTime: 'Immediate',
-        reliabilityScore: 0.98,
+        reliabilityScore: 0.99,
         hipaaCompliant: true,
-        enabled: true
+        configuration: {
+          requiresLogin: true,
+          notificationSent: true
+        }
       }
     ];
   }
 
-  async getActiveDeliveries(): Promise<DeliveryAttempt[]> {
-    // Mock data - in real implementation, this would fetch from API
-    return [
-      {
-        id: 'attempt_001',
-        documentId: 'doc_001',
-        methodId: 'usps_certified',
-        providerId: 'provider_001',
-        status: 'pending',
-        sentAt: new Date().toISOString(),
-        trackingNumber: 'US1234567890',
-        cost: 8.50,
-        confirmationReceived: false,
-        retryCount: 0,
-        maxRetries: 3
-      }
-    ];
-  }
+  async sendDocument(documentId: string, methodId: string, providerId: string): Promise<DeliveryAttempt> {
+    const method = this.getAvailableDeliveryMethods().find(m => m.id === methodId);
+    if (!method) {
+      throw new Error('Invalid delivery method');
+    }
 
-  async getDeliveryStatistics(): Promise<any> {
-    // Mock data - in real implementation, this would calculate from database
-    return {
-      totalDeliveries: 156,
-      successRate: 0.94,
-      totalCost: 1280.50,
-      averageDeliveryTime: 2.3
-    };
-  }
-
-  async initiateDelivery(documentId: string, methodId: string, providerId: string): Promise<DeliveryAttempt> {
-    // Mock implementation - in real app, this would integrate with delivery services
     const attempt: DeliveryAttempt = {
-      id: `attempt_${Date.now()}`,
+      id: `attempt_${Date.now()}_${Math.random().toString(36).substring(2)}`,
       documentId,
       methodId,
       providerId,
-      status: 'sending',
       sentAt: new Date().toISOString(),
-      cost: 8.50,
-      confirmationReceived: false,
+      status: 'sending',
       retryCount: 0,
-      maxRetries: 3
+      cost: method.cost
     };
 
-    console.log('Initiating delivery:', attempt);
+    // Simulate API call
+    setTimeout(() => {
+      this.updateDeliveryStatus(attempt.id, 'delivered');
+    }, 2000);
+
     return attempt;
   }
 
-  async retryFailedDelivery(attemptId: string): Promise<void> {
-    console.log('Retrying delivery:', attemptId);
-    // Implementation would update the attempt status and retry
+  async trackDelivery(attemptId: string): Promise<DeliveryTracking[]> {
+    // Simulate tracking data
+    return [
+      {
+        id: `track_${attemptId}_1`,
+        deliveryAttemptId: attemptId,
+        status: 'In Transit',
+        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        location: 'Origin Facility'
+      },
+      {
+        id: `track_${attemptId}_2`,
+        deliveryAttemptId: attemptId,
+        status: 'Out for Delivery',
+        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        location: 'Local Facility'
+      },
+      {
+        id: `track_${attemptId}_3`,
+        deliveryAttemptId: attemptId,
+        status: 'Delivered',
+        timestamp: new Date().toISOString(),
+        location: 'Recipient Address'
+      }
+    ];
   }
 
-  async trackDelivery(attemptId: string): Promise<DeliveryAttempt> {
-    // Mock implementation - would check delivery status
-    throw new Error('Not implemented');
+  private updateDeliveryStatus(attemptId: string, status: DeliveryAttempt['status']): void {
+    // Update delivery attempt status in database
+    console.log(`Delivery attempt ${attemptId} status updated to: ${status}`);
+  }
+
+  async retryFailedDelivery(attemptId: string): Promise<DeliveryAttempt> {
+    // Implementation for retrying failed deliveries
+    const newAttempt: DeliveryAttempt = {
+      id: `retry_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+      documentId: 'doc_id', // Would get from original attempt
+      methodId: 'method_id', // Would get from original attempt
+      providerId: 'provider_id', // Would get from original attempt
+      sentAt: new Date().toISOString(),
+      status: 'sending',
+      retryCount: 1
+    };
+
+    return newAttempt;
+  }
+
+  calculateDeliveryCost(methodId: string, documentCount: number = 1): number {
+    const method = this.getAvailableDeliveryMethods().find(m => m.id === methodId);
+    return method ? method.cost * documentCount : 0;
+  }
+
+  getDeliveryReliability(methodId: string): number {
+    const method = this.getAvailableDeliveryMethods().find(m => m.id === methodId);
+    return method ? method.reliabilityScore : 0;
   }
 }
 

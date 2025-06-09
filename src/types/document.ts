@@ -57,6 +57,9 @@ export interface FirmBranding {
   website?: string;
   logoUrl?: string;
   letterheadImageUrl?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  letterheadTemplate?: string;
 }
 
 // Follow-up and deadline management types
@@ -232,6 +235,7 @@ export interface DeliveryMethod {
   estimatedDeliveryTime: string;
   reliabilityScore: number;
   configuration: Record<string, any>;
+  hipaaCompliant?: boolean;
 }
 
 export interface DeliveryAttempt {
@@ -245,6 +249,7 @@ export interface DeliveryAttempt {
   trackingNumber?: string;
   errorMessage?: string;
   retryCount: number;
+  cost?: number;
 }
 
 export interface DeliveryTracking {
