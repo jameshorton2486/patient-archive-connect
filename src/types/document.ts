@@ -71,6 +71,43 @@ export interface QRCodeData {
   caseId: string;
 }
 
+export interface DeliveryMethod {
+  id: string;
+  name: string;
+  type: 'usps' | 'fax' | 'email' | 'portal';
+  cost: number;
+  estimatedDeliveryTime: string;
+  reliabilityScore: number;
+  hipaaCompliant: boolean;
+  enabled: boolean;
+}
+
+export interface DeliveryAttempt {
+  id: string;
+  documentId: string;
+  methodId: string;
+  providerId: string;
+  status: 'pending' | 'sending' | 'delivered' | 'failed' | 'bounced';
+  trackingNumber?: string;
+  sentAt: string;
+  deliveredAt?: string;
+  failureReason?: string;
+  cost: number;
+  confirmationReceived: boolean;
+  retryCount: number;
+  maxRetries: number;
+}
+
+export interface DeliveryTracking {
+  documentId: string;
+  attempts: DeliveryAttempt[];
+  totalCost: number;
+  successfulDelivery: boolean;
+  bestMethod?: string;
+  responseReceived: boolean;
+  responseDate?: string;
+}
+
 export const DOCUMENT_TEMPLATES: Record<DocumentType, string> = {
   'hipaa-authorization': `
 HIPAA AUTHORIZATION FOR RELEASE OF MEDICAL INFORMATION
