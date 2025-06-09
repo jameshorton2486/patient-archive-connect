@@ -6,16 +6,20 @@ import {
   FileText, 
   Calendar,
   UserPlus,
-  Stethoscope
+  Stethoscope,
+  Scale,
+  UserCheck
 } from "lucide-react";
 
 interface SidebarProps {
   activeView: string;
-  onViewChange: (view: 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient') => void;
+  onViewChange: (view: 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients') => void;
 }
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'clients', label: 'Clients', icon: Scale },
+  { id: 'client-intake', label: 'Client Intake', icon: UserCheck },
   { id: 'patients', label: 'Patients', icon: Users },
   { id: 'records', label: 'Medical Records', icon: FileText },
   { id: 'appointments', label: 'Appointments', icon: Calendar },
@@ -26,8 +30,8 @@ export function Sidebar({ activeView, onViewChange }: SidebarProps) {
   return (
     <div className="w-64 bg-card border-r border-border h-screen p-4">
       <div className="flex items-center gap-2 mb-8">
-        <Stethoscope className="h-8 w-8 text-primary" />
-        <h1 className="text-xl font-bold text-foreground">MedCare System</h1>
+        <Scale className="h-8 w-8 text-primary" />
+        <h1 className="text-xl font-bold text-foreground">LegalMed System</h1>
       </div>
       
       <nav className="space-y-2">
