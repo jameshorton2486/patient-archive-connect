@@ -1,4 +1,3 @@
-
 import { 
   DenialRecord, 
   DenialCategory, 
@@ -90,6 +89,10 @@ export class DenialService {
     return 'other';
   }
 
+  async getAllDenials(): Promise<DenialRecord[]> {
+    return this.getDenials();
+  }
+
   async getDenials(filters?: {
     status?: string;
     category?: DenialCategory;
@@ -149,6 +152,14 @@ export class DenialService {
       }
       return true;
     });
+  }
+
+  async filterDenials(filters: {
+    status?: string;
+    category?: DenialCategory;
+    dateRange?: { start: string; end: string };
+  }): Promise<DenialRecord[]> {
+    return this.getDenials(filters);
   }
 
   async initiateWorkflow(denialId: string, workflowId: string): Promise<void> {

@@ -1,283 +1,326 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 import { 
+  Search, 
   AlertTriangle, 
   Clock, 
   CheckCircle, 
   XCircle, 
-  DollarSign, 
   FileText, 
-  Users, 
+  User,
+  Calendar,
   TrendingUp,
-  Search,
-  Filter,
-  Download
-} from 'lucide-react';
-import { Denial, DenialCategory, DenialStatus, WorkflowStep } from '@/types/denial';
-import { denialService } from '@/services/denialService';
+  Filter
+} from "lucide-react";
+import { DenialRecord, DenialCategory, DenialStatus, DenialStats, DENIAL_CATEGORIES } from "@/types/denial";
+import { denialService } from "@/services/denialService";
 
 interface DenialManagementProps {
-  onBack?: () => void;
+  onBack: () => void;
 }
 
 export function DenialManagement({ onBack }: DenialManagementProps) {
-  const [denials, setDenials] = useState<Denial[]>([]);
-  const [filteredDenials, setFilteredDenials] = useState<Denial[]>([]);
-  const [statistics, setStatistics] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [filters, setFilters] = useState({
-    status: '',
-    category: '' as DenialCategory | '',
-    dateRange: { start: '', end: '' }
-  });
+  const [denials, setDenials] = useState<DenialRecord[]>([]);
+  const [stats, setStats] = useState<DenialStats | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
+    loadDenials();
+    loadStats();
   }, []);
 
-  const loadData = async () => {
-    setIsLoading(true);
+  const loadDenials = async () => {
     try {
-      const denialsData = await denialService.getAllDenials();
-      const stats = await denialService.getDenialStatistics();
-      setDenials(denialsData);
-      setFilteredDenials(denialsData);
-      setStatistics(stats);
+      setLoading(true);
+      const denialData = await denialService.getAllDenials();
+      setDenials(denialData);
     } catch (error) {
-      console.error('Error loading denial data:', error);
+      console.error('Error loading denials:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const handleFilterChange = async () => {
-    const filterParams = {
-      status: filters.status || undefined,
-      category: filters.category === '' ? undefined : filters.category as DenialCategory,
-      dateRange: filters.dateRange.start && filters.dateRange.end ? filters.dateRange : undefined
-    };
+  const loadStats = async () => {
+    try {
+      const statsData = await denialService.getDenialStatistics();
+      setStats(statsData);
+    } catch (error) {
+      console.error('Error loading denial statistics:', error);
+    }
+  };
+
+  const filteredDenials = denials.filter(denial => {
+    const matchesSearch = denial.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         denial.id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "all" || denial.status === statusFilter;
+    const matchesCategory = categoryFilter === "all" || denial.category === categoryFilter;
     
-    const filtered = await denialService.filterDenials(filterParams);
-    setFilteredDenials(filtered);
-  };
+    return matchesSearch && matchesStatus && matchesCategory;
+  });
 
-  
-  const getStatusIcon = (status: DenialStatus) => {
+  const getStatusVariant = (status: DenialStatus) => {
     switch (status) {
+      case 'processing':
+        return 'default';
+      case 'reviewing':
+        return 'secondary';
       case 'resolved':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'in-progress':
-        return <Clock className="h-4 w-4 text-blue-500" />;
-      case 'pending':
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case 'rejected':
-        return <XCircle className="h-4 w-4 text-red-500" />;
+        return 'default';
       default:
-        return <Clock className="h-4 w-4 text-gray-500" />;
+        return 'secondary';
     }
   };
 
-  const getCategoryColor = (category: DenialCategory) => {
+  const getCategoryVariant = (category: DenialCategory) => {
     switch (category) {
-      case 'fee-required':
-        return 'bg-blue-100 text-blue-800';
-      case 'additional-auth':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'records-unavailable':
-        return 'bg-red-100 text-red-800';
-      case 'invalid-request':
-        return 'bg-gray-100 text-gray-800';
+      case 'additional-authorization':
+        return 'secondary';
+      case 'records-not-available':
+        return 'destructive';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'outline';
     }
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {onBack && (
-        <Button onClick={onBack} variant="outline" className="mb-4">
-          ← Back to Dashboard
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-bold text-foreground">Denial Management</h2>
+          <p className="text-muted-foreground">Manage and resolve document request denials</p>
+        </div>
+        <Button onClick={onBack} variant="outline">
+          Back to Dashboard
         </Button>
-      )}
-
-      <div className="flex items-center gap-2 mb-6">
-        <AlertTriangle className="h-6 w-6 text-primary" />
-        <h1 className="text-3xl font-bold text-foreground">Denial Management</h1>
       </div>
 
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-yellow-500" />
-              <div>
-                <p className="text-2xl font-bold">{statistics.totalDenials || 0}</p>
-                <p className="text-sm text-muted-foreground">Total Denials</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <Tabs defaultValue="list" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="list">Denial List</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
         
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-blue-500" />
-              <div>
-                <p className="text-2xl font-bold">{statistics.averageResolutionTime || 0} days</p>
-                <p className="text-sm text-muted-foreground">Avg Resolution</p>
-              </div>
+        <TabsContent value="list" className="space-y-4">
+          <div className="flex justify-between items-center">
+            <div className="relative w-1/3">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search denials by reason or ID..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-green-500" />
-              <div>
-                <p className="text-2xl font-bold">{statistics.resolutionRate ? (statistics.resolutionRate * 100).toFixed(1) : 0}%</p>
-                <p className="text-sm text-muted-foreground">Resolution Rate</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-green-600" />
-              <div>
-                <p className="text-2xl font-bold">${statistics.totalRecovered || 0}</p>
-                <p className="text-sm text-muted-foreground">Records Recovered</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
-      {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Filter Denials</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Statuses" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="in-progress">In Progress</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Select value={filters.category} onValueChange={(value) => setFilters({...filters, category: value as DenialCategory | ''})}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Categories" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
-                <SelectItem value="fee-required">Fee Required</SelectItem>
-                <SelectItem value="additional-auth">Additional Auth</SelectItem>
-                <SelectItem value="records-unavailable">Records Unavailable</SelectItem>
-                <SelectItem value="invalid-request">Invalid Request</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Input
-              type="date"
-              placeholder="Start Date"
-              value={filters.dateRange.start}
-              onChange={(e) => setFilters({...filters, dateRange: {...filters.dateRange, start: e.target.value}})}
-            />
-            
-            <Input
-              type="date"
-              placeholder="End Date"
-              value={filters.dateRange.end}
-              onChange={(e) => setFilters({...filters, dateRange: {...filters.dateRange, end: e.target.value}})}
-            />
-          </div>
-          
-          <div className="flex gap-2 mt-4">
-            <Button onClick={handleFilterChange}>
-              <Filter className="h-4 w-4 mr-2" />
-              Apply Filters
-            </Button>
-            <Button variant="outline" onClick={() => setFilters({status: '', category: '', dateRange: {start: '', end: ''}})}>
-              Clear Filters
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="flex items-center space-x-2">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="received">Received</SelectItem>
+                  <SelectItem value="reviewing">Reviewing</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="resolved">Resolved</SelectItem>
+                  <SelectItem value="escalated">Escalated</SelectItem>
+                  <SelectItem value="closed">Closed</SelectItem>
+                </SelectContent>
+              </Select>
 
-      {/* Denials List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Denial Records</CardTitle>
-          <CardDescription>Manage and track denial resolutions</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {filteredDenials.map((denial) => (
-              <div key={denial.id} className="border rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    {getStatusIcon(denial.status)}
-                    <div>
-                      <p className="font-medium">Document #{denial.originalDocumentId}</p>
-                      <p className="text-sm text-muted-foreground">Provider: {denial.providerName}</p>
+              <Select value={categoryFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[220px]">
+                  <SelectValue placeholder="Filter by Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {Object.entries(DENIAL_CATEGORIES).map(([key, label]) => (
+                    <SelectItem key={key} value={key}>{label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {loading ? (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <Clock className="mx-auto h-6 w-6 animate-spin mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">Loading denials...</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid gap-4">
+              {filteredDenials.map((denial) => (
+                <Card key={denial.id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
+                        <div>
+                          <h3 className="font-semibold text-lg">{denial.reason}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Denial ID: {denial.id}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <Badge variant={getStatusVariant(denial.status as DenialStatus)}>{denial.status}</Badge>
+                            <Badge variant={getCategoryVariant(denial.category)}>{DENIAL_CATEGORIES[denial.category]}</Badge>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">Client & Provider</p>
+                          <p className="text-sm text-muted-foreground">
+                            Client ID: {denial.clientId}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Provider ID: {denial.providerId}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">Dates</p>
+                          <p className="text-sm text-muted-foreground">
+                            Date: {new Date(denial.denialDate).toLocaleDateString()}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Created: {new Date(denial.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 ml-4">
+                        <Button variant="outline" size="sm">
+                          <FileText className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <User className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
+                  </CardContent>
+                </Card>
+              ))}
+              {filteredDenials.length === 0 && (
+                <Card>
+                  <CardContent className="p-12 text-center">
+                    <AlertTriangle className="mx-auto h-6 w-6 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">No denials found matching your criteria.</p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          {stats ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-orange-500" />
+                    Total Denials
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold">{stats.totalDenials}</div>
+                  <p className="text-sm text-muted-foreground">
+                    From all document requests
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    Resolution Rate
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold">{(stats.resolutionRate * 100).toFixed(1)}%</div>
+                  <p className="text-sm text-muted-foreground">
+                    Of all denials
+                  </p>
+                  <Progress value={stats.resolutionRate * 100} className="mt-2" />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-blue-500" />
+                    Avg. Resolution Time
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold">{stats.averageResolutionTime.toFixed(1)} hrs</div>
+                  <p className="text-sm text-muted-foreground">
+                    Average time to resolve a denial
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="col-span-1 md:col-span-2">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-purple-500" />
+                    Monthly Trends
+                  </CardTitle>
+                  <CardDescription>Denial counts and resolution rates over the last three months.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-4">
+                    {stats.monthlyTrends.map((trend) => (
+                      <div key={trend.month} className="space-y-1">
+                        <p className="text-sm font-medium">{trend.month}</p>
+                        <p className="text-xl font-bold">{trend.count}</p>
+                        <p className="text-green-500 text-sm">
+                          Resolution: {(trend.resolutionRate * 100).toFixed(1)}%
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className={getCategoryColor(denial.category)}>
-                      {denial.category.replace('-', ' ').toUpperCase()}
-                    </Badge>
-                    <Badge variant="outline">
-                      {denial.status.replace('-', ' ').toUpperCase()}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Received</p>
-                    <p>{new Date(denial.receivedDate).toLocaleDateString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Due Date</p>
-                    <p>{new Date(denial.dueDate).toLocaleDateString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Priority</p>
-                    <p className="capitalize">{denial.priority}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Assigned To</p>
-                    <p>{denial.assignedStaff || 'Unassigned'}</p>
-                  </div>
-                </div>
-                
-                {denial.reason && (
-                  <div className="mt-3 p-3 bg-muted rounded">
-                    <p className="text-sm"><strong>Reason:</strong> {denial.reason}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+                </CardContent>
+              </Card>
+
+              <Card className="col-span-1 lg:col-span-1">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <Filter className="h-4 w-4 text-gray-500" />
+                    Top Categories
+                  </CardTitle>
+                  <CardDescription>Distribution of denials by category.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="list-none space-y-2">
+                    {Object.entries(stats.denialsByCategory).map(([category, count]) => (
+                      <li key={category} className="flex items-center justify-between">
+                        <span className="text-sm">{DENIAL_CATEGORIES[category as DenialCategory]}</span>
+                        <span className="font-medium">{count}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          ) : (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <Clock className="mx-auto h-6 w-6 animate-spin mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">Loading analytics...</p>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

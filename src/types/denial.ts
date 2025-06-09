@@ -18,6 +18,9 @@ export interface DenialRecord {
   updatedAt: string;
 }
 
+// Add missing alias for compatibility
+export type Denial = DenialRecord;
+
 export type DenialCategory = 
   | 'fee-required'
   | 'additional-authorization'
