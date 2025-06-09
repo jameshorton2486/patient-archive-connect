@@ -1,4 +1,3 @@
-
 export interface DocumentTemplate {
   id: string;
   type: DocumentType;
@@ -473,11 +472,11 @@ Medical Records Department
 
 Re: Payment for Medical Records
 Patient: {{clientName}}
-Invoice Amount: ${{amount}}
+Invoice Amount: ${{feeAmount}}
 
 Dear Billing Department:
 
-Please find enclosed payment in the amount of ${{amount}} for medical records requested for {{clientName}}.
+Please find enclosed payment in the amount of ${{feeAmount}} for medical records requested for {{clientName}}.
 
 Please process our records request upon receipt of this payment and forward the documentation to our office.
 

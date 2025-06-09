@@ -11,10 +11,11 @@ import {
   UserCheck,
   FolderPlus,
   Send,
-  Clock
+  Clock,
+  Brain
 } from "lucide-react";
 
-type ActiveView = 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider' | 'document-generation' | 'deadline-management';
+type ActiveView = 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider' | 'document-generation' | 'deadline-management' | 'ai-processing';
 
 interface SidebarProps {
   activeView: ActiveView;
@@ -27,6 +28,7 @@ export function Sidebar({ activeView, onViewChange }: SidebarProps) {
     { id: 'clients' as const, label: 'Clients', icon: Users },
     { id: 'providers' as const, label: 'Providers', icon: Stethoscope },
     { id: 'document-generation' as const, label: 'Documents', icon: FolderPlus },
+    { id: 'ai-processing' as const, label: 'AI Processing', icon: Brain },
     { id: 'deadline-management' as const, label: 'Deadlines', icon: Clock },
     { id: 'records' as const, label: 'Medical Records', icon: FileText },
     { id: 'appointments' as const, label: 'Appointments', icon: Calendar },

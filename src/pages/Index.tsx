@@ -12,8 +12,9 @@ import { ProviderList } from "@/components/ProviderList";
 import { ProviderForm } from "@/components/ProviderForm";
 import { DocumentGeneration } from "@/components/DocumentGeneration";
 import { DeadlineManagement } from "@/components/DeadlineManagement";
+import { AIDocumentProcessing } from "@/components/AIDocumentProcessing";
 
-type ActiveView = 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider' | 'document-generation' | 'deadline-management';
+type ActiveView = 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider' | 'document-generation' | 'deadline-management' | 'ai-processing';
 
 const Index = () => {
   const [activeView, setActiveView] = useState<ActiveView>('dashboard');
@@ -42,6 +43,8 @@ const Index = () => {
         return <DocumentGeneration onBack={() => setActiveView('dashboard')} />;
       case 'deadline-management':
         return <DeadlineManagement onBack={() => setActiveView('dashboard')} />;
+      case 'ai-processing':
+        return <AIDocumentProcessing onBack={() => setActiveView('dashboard')} />;
       default:
         return <Dashboard />;
     }

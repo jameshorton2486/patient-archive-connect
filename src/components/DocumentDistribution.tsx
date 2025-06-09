@@ -2,107 +2,67 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { 
-  Mail, 
   Send, 
-  Phone, 
-  Globe, 
   CheckCircle, 
+  XCircle, 
   Clock, 
-  AlertCircle, 
   DollarSign,
-  BarChart3,
+  Mail,
+  Fax,
+  Upload,
   Truck
 } from 'lucide-react';
-import { GeneratedDocument, DeliveryMethod, DeliveryAttempt, DeliveryTracking } from '@/types/document';
-import { toast } from '@/hooks/use-toast';
+import { DeliveryMethod, DeliveryAttempt, DeliveryTracking } from '@/types/document';
+import { deliveryService } from '@/services/deliveryService';
 
 interface DocumentDistributionProps {
-  document: GeneratedDocument;
   onBack?: () => void;
 }
 
-const deliveryMethods: DeliveryMethod[] = [
-  {
-    id: 'usps-certified',
-    name: 'USPS Certified Mail',
-    type: 'usps',
-    cost: 8.50,
-    estimatedDeliveryTime: '3-5 business days',
-    reliabilityScore: 98,
-    hipaaCompliant: true,
-    enabled: true
-  },
-  {
-    id: 'secure-fax',
-    name: 'HIPAA-Compliant Fax',
-    type: 'fax',
-    cost: 2.00,
-    estimatedDeliveryTime: 'Immediate',
-    reliabilityScore: 92,
-    hipaaCompliant: true,
-    enabled: true
-  },
-  {
-    id: 'encrypted-email',
-    name: 'Encrypted Email',
-    type: 'email',
-    cost: 0.50,
-    estimatedDeliveryTime: 'Immediate',
-    reliabilityScore: 85,
-    hipaaCompliant: true,
-    enabled: true
-  },
-  {
-    id: 'provider-portal',
-    name: 'Provider Web Portal',
-    type: 'portal',
-    cost: 1.00,
-    estimatedDeliveryTime: 'Immediate',
-    reliabilityScore: 95,
-    hipaaCompliant: true,
-    enabled: false
-  }
-];
-
-const mockProvider = {
-  id: 'provider_001',
-  name: 'Dr. Sarah Johnson',
-  address: '456 Medical Plaza, Healthcare City, CA 90211',
-  phone: '(555) 123-4567',
-  fax: '(555) 123-4568',
-  email: 'records@drjohnson.com',
-  hasPortalAccess: false
-};
-
-export function DocumentDistribution({ document, onBack }: DocumentDistributionProps) {
-  const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
-  const [deliveryAttempts, setDeliveryAttempts] = useState<DeliveryAttempt[]>([]);
-  const [isDelivering, setIsDelivering] = useState(false);
-  const [tracking, setTracking] = useState<DeliveryTracking>({
-    documentId: document.id,
-    attempts: [],
+export function DocumentDistribution({ onBack }: DocumentDistributionProps) {
+  const [deliveryMethods, setDeliveryMethods] = useState<DeliveryMethod[]>([]);
+  const [activeAttempts, setActiveAttempts] = useState<DeliveryAttempt[]>([]);
+  const [deliveryStats, setDeliveryStats] = useState({
+    totalDeliveries: 0,
+    successRate: 0,
     totalCost: 0,
-    successfulDelivery: false,
-    responseReceived: false
+    averageCost: 0
   });
 
-  const handleMethodSelection = (methodId: string) => {
-    setSelectedMethods(prev => 
-      prev.includes(methodId) 
-        ? prev.filter(m => m !== methodId)
-        : [...prev, methodId]
-    );
+  useEffect(() => {
+    loadDeliveryMethods();
+    loadActiveAttempts();
+    loadDeliveryStats();
+  }, []);
+
+  const loadDeliveryMethods = async () => {
+    try {
+      const methods = await deliveryService.getDeliveryMethods();
+      setDeliveryMethods(methods);
+    } catch (error) {
+      console.error('Error loading delivery methods:', error);
+    }
   };
 
-  const calculateTotalCost = () => {
-    return selectedMethods.reduce((total, methodId) => {
-      const method = deliveryMethods.find(m => m.id === methodId);
-      return total + (method?.cost || 0);
-    }, 0);
+  const loadActiveAttempts = async () => {
+    try {
+      const attempts = await deliveryService.getActiveAttempts();
+      setActiveAttempts(attempts);
+    } catch (error) {
+      console.error('Error loading active attempts:', error);
+    }
+  };
+
+  const loadDeliveryStats = async () => {
+    try {
+      const stats = await deliveryService.getDeliveryStats();
+      setDeliveryStats(stats);
+    } catch (error) {
+      console.error('Error loading delivery stats:', error);
+    }
   };
 
   const getMethodIcon = (type: string) => {
@@ -110,11 +70,11 @@ export function DocumentDistribution({ document, onBack }: DocumentDistributionP
       case 'usps':
         return <Truck className="h-4 w-4" />;
       case 'fax':
-        return <Phone className="h-4 w-4" />;
+        return <Fax className="h-4 w-4" />;
       case 'email':
         return <Mail className="h-4 w-4" />;
       case 'portal':
-        return <Globe className="h-4 w-4" />;
+        return <Upload className="h-4 w-4" />;
       default:
         return <Send className="h-4 w-4" />;
     }
@@ -124,325 +84,263 @@ export function DocumentDistribution({ document, onBack }: DocumentDistributionP
     switch (status) {
       case 'delivered':
         return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'pending':
-      case 'sending':
-        return <Clock className="h-4 w-4 text-yellow-500" />;
       case 'failed':
       case 'bounced':
-        return <AlertCircle className="h-4 w-4 text-red-500" />;
+        return <XCircle className="h-4 w-4 text-red-500" />;
+      case 'sending':
+        return <Clock className="h-4 w-4 text-blue-500 animate-pulse" />;
       default:
-        return <Clock className="h-4 w-4 text-gray-500" />;
+        return <Clock className="h-4 w-4 text-yellow-500" />;
     }
   };
 
-  const handleDelivery = async () => {
-    if (selectedMethods.length === 0) {
-      toast({
-        title: "No Methods Selected",
-        description: "Please select at least one delivery method.",
-        variant: "destructive",
-      });
-      return;
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status) {
+      case 'delivered':
+        return 'default' as const;
+      case 'failed':
+      case 'bounced':
+        return 'destructive' as const;
+      case 'sending':
+        return 'secondary' as const;
+      default:
+        return 'outline' as const;
     }
+  };
 
-    setIsDelivering(true);
-
+  const handleRetryDelivery = async (attemptId: string) => {
     try {
-      const newAttempts: DeliveryAttempt[] = [];
+      await deliveryService.retryDelivery(attemptId);
+      loadActiveAttempts();
+    } catch (error) {
+      console.error('Error retrying delivery:', error);
+    }
+  };
 
-      for (const methodId of selectedMethods) {
-        const method = deliveryMethods.find(m => m.id === methodId);
-        if (!method) continue;
-
-        const attempt: DeliveryAttempt = {
-          id: `attempt_${Date.now()}_${Math.random().toString(36).substring(2)}`,
-          documentId: document.id,
-          methodId,
-          providerId: mockProvider.id,
-          status: 'sending',
-          sentAt: new Date().toISOString(),
-          cost: method.cost,
-          confirmationReceived: false,
-          retryCount: 0,
-          maxRetries: 3
-        };
-
-        newAttempts.push(attempt);
-
-        // Simulate delivery process
-        setTimeout(() => {
-          const success = Math.random() > 0.1; // 90% success rate simulation
-          
-          const updatedAttempt = { ...attempt };
-          if (success) {
-            updatedAttempt.status = 'delivered';
-            updatedAttempt.deliveredAt = new Date().toISOString();
-            updatedAttempt.trackingNumber = `TRK${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-            updatedAttempt.confirmationReceived = true;
-          } else {
-            updatedAttempt.status = 'failed';
-            updatedAttempt.failureReason = 'Provider system temporarily unavailable';
-          }
-
-          setDeliveryAttempts(prev => [...prev.filter(a => a.id !== attempt.id), updatedAttempt]);
-        }, 2000 + Math.random() * 3000);
-      }
-
-      setDeliveryAttempts(prev => [...prev, ...newAttempts]);
-      
-      const newTracking: DeliveryTracking = {
-        ...tracking,
-        attempts: [...tracking.attempts, ...newAttempts],
-        totalCost: tracking.totalCost + calculateTotalCost()
+  const handleTestDelivery = async (methodId: string) => {
+    try {
+      const mockDocument = {
+        id: 'test_doc',
+        content: 'Test document content',
+        trackingId: 'TEST-' + Date.now()
       };
       
-      setTracking(newTracking);
-
-      toast({
-        title: "Delivery Initiated",
-        description: `Document delivery started via ${selectedMethods.length} method(s).`,
-      });
-
+      await deliveryService.sendDocument(mockDocument, methodId, 'test_provider');
+      loadActiveAttempts();
     } catch (error) {
-      console.error('Error initiating delivery:', error);
-      toast({
-        title: "Delivery Failed",
-        description: "Failed to initiate document delivery. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsDelivering(false);
+      console.error('Error sending test delivery:', error);
     }
-  };
-
-  const handleRetry = async (attemptId: string) => {
-    const attempt = deliveryAttempts.find(a => a.id === attemptId);
-    if (!attempt || attempt.retryCount >= attempt.maxRetries) return;
-
-    const updatedAttempt = {
-      ...attempt,
-      status: 'sending' as const,
-      retryCount: attempt.retryCount + 1
-    };
-
-    setDeliveryAttempts(prev => prev.map(a => a.id === attemptId ? updatedAttempt : a));
-
-    // Simulate retry
-    setTimeout(() => {
-      const success = Math.random() > 0.2; // 80% success rate on retry
-      
-      const finalAttempt = { ...updatedAttempt };
-      if (success) {
-        finalAttempt.status = 'delivered';
-        finalAttempt.deliveredAt = new Date().toISOString();
-        finalAttempt.trackingNumber = `TRK${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-        finalAttempt.confirmationReceived = true;
-      } else {
-        finalAttempt.status = 'failed';
-        finalAttempt.failureReason = 'Retry failed - provider system error';
-      }
-
-      setDeliveryAttempts(prev => prev.map(a => a.id === attemptId ? finalAttempt : a));
-    }, 2000);
   };
 
   return (
     <div className="container mx-auto p-6 space-y-6">
       {onBack && (
         <Button onClick={onBack} variant="outline" className="mb-4">
-          ← Back to Documents
+          ← Back to Dashboard
         </Button>
       )}
 
       <div className="flex items-center gap-2 mb-6">
         <Send className="h-6 w-6 text-primary" />
-        <h1 className="text-3xl font-bold text-foreground">Document Distribution</h1>
+        <h1 className="text-3xl font-bold text-foreground">Document Distribution Center</h1>
       </div>
 
-      {/* Document Info */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Document Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label className="text-sm font-medium">Document Type</Label>
-              <p className="text-sm text-muted-foreground">{document.type.replace('-', ' ').toUpperCase()}</p>
+      {/* Delivery Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <Send className="h-4 w-4 text-blue-500" />
+              <div>
+                <p className="text-sm text-muted-foreground">Total Deliveries</p>
+                <p className="text-2xl font-bold">{deliveryStats.totalDeliveries}</p>
+              </div>
             </div>
-            <div>
-              <Label className="text-sm font-medium">Tracking ID</Label>
-              <p className="text-sm text-muted-foreground">{document.trackingId}</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500" />
+              <div>
+                <p className="text-sm text-muted-foreground">Success Rate</p>
+                <p className="text-2xl font-bold">{deliveryStats.successRate}%</p>
+              </div>
             </div>
-            <div>
-              <Label className="text-sm font-medium">Provider</Label>
-              <p className="text-sm text-muted-foreground">{mockProvider.name}</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4 text-green-600" />
+              <div>
+                <p className="text-sm text-muted-foreground">Total Cost</p>
+                <p className="text-2xl font-bold">${deliveryStats.totalCost}</p>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4 text-blue-600" />
+              <div>
+                <p className="text-sm text-muted-foreground">Avg Cost</p>
+                <p className="text-2xl font-bold">${deliveryStats.averageCost}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Delivery Methods */}
       <Card>
         <CardHeader>
-          <CardTitle>Select Delivery Methods</CardTitle>
-          <CardDescription>Choose one or more methods to deliver this document</CardDescription>
+          <CardTitle>Available Delivery Methods</CardTitle>
+          <CardDescription>Configure and test document delivery channels</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {deliveryMethods.map((method) => (
-            <div key={method.id} className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex items-center gap-4">
-                <input
-                  type="checkbox"
-                  id={method.id}
-                  checked={selectedMethods.includes(method.id)}
-                  onChange={() => handleMethodSelection(method.id)}
-                  disabled={!method.enabled}
-                  className="h-4 w-4"
-                />
-                <div className="flex items-center gap-2">
-                  {getMethodIcon(method.type)}
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {deliveryMethods.map((method) => (
+              <div key={method.id} className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {getMethodIcon(method.type)}
+                    <span className="font-medium">{method.name}</span>
+                  </div>
+                  <Badge variant={method.enabled ? "default" : "secondary"}>
+                    {method.enabled ? "Active" : "Disabled"}
+                  </Badge>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <Label htmlFor={method.id} className="font-medium cursor-pointer">
-                      {method.name}
-                    </Label>
-                    <p className="text-sm text-muted-foreground">
-                      {method.estimatedDeliveryTime} • {method.reliabilityScore}% reliability
-                    </p>
+                    <p className="text-muted-foreground">Cost</p>
+                    <p className="font-medium">${method.cost}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Delivery Time</p>
+                    <p className="font-medium">{method.estimatedDeliveryTime}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Reliability</p>
+                    <p className="font-medium">{method.reliabilityScore}%</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">HIPAA</p>
+                    <p className="font-medium">{method.hipaaCompliant ? "✓" : "✗"}</p>
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Reliability Score</span>
+                    <span>{method.reliabilityScore}%</span>
+                  </div>
+                  <Progress value={method.reliabilityScore} className="h-2" />
+                </div>
+
+                <Button 
+                  onClick={() => handleTestDelivery(method.id)}
+                  variant="outline" 
+                  size="sm"
+                  disabled={!method.enabled}
+                  className="w-full"
+                >
+                  Test Delivery
+                </Button>
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant={method.hipaaCompliant ? "default" : "secondary"}>
-                  {method.hipaaCompliant ? "HIPAA" : "Standard"}
-                </Badge>
-                <span className="text-sm font-medium">${method.cost.toFixed(2)}</span>
-              </div>
-            </div>
-          ))}
-          
-          {selectedMethods.length > 0 && (
-            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-              <span className="font-medium">Total Cost:</span>
-              <span className="text-lg font-bold">${calculateTotalCost().toFixed(2)}</span>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Active Delivery Attempts */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Active Delivery Attempts</CardTitle>
+          <CardDescription>Monitor ongoing and recent delivery attempts</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {activeAttempts.length === 0 ? (
+            <p className="text-center text-muted-foreground py-8">No active delivery attempts</p>
+          ) : (
+            <div className="space-y-4">
+              {activeAttempts.map((attempt) => (
+                <div key={attempt.id} className="border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      {getStatusIcon(attempt.status)}
+                      <span className="font-medium">Document #{attempt.documentId.substring(0, 8)}</span>
+                      <Badge variant={getStatusBadgeVariant(attempt.status)}>
+                        {attempt.status}
+                      </Badge>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      ${attempt.cost}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-muted-foreground">Method</p>
+                      <p className="font-medium">
+                        {deliveryMethods.find(m => m.id === attempt.methodId)?.name || 'Unknown'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Sent At</p>
+                      <p className="font-medium">
+                        {new Date(attempt.sentAt).toLocaleString()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Tracking</p>
+                      <p className="font-medium font-mono text-xs">
+                        {attempt.trackingNumber || 'N/A'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {attempt.status === 'failed' && (
+                    <div className="mt-3 p-3 bg-red-50 rounded border border-red-200">
+                      <p className="text-sm text-red-800">
+                        <strong>Failure Reason:</strong> {attempt.failureReason}
+                      </p>
+                      <div className="mt-2 flex items-center gap-2">
+                        <Button 
+                          onClick={() => handleRetryDelivery(attempt.id)}
+                          size="sm"
+                          variant="outline"
+                          disabled={attempt.retryCount >= attempt.maxRetries}
+                        >
+                          Retry ({attempt.retryCount}/{attempt.maxRetries})
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {attempt.deliveredAt && (
+                    <div className="mt-3 p-3 bg-green-50 rounded border border-green-200">
+                      <p className="text-sm text-green-800">
+                        <strong>Delivered:</strong> {new Date(attempt.deliveredAt).toLocaleString()}
+                      </p>
+                      {attempt.confirmationReceived && (
+                        <p className="text-sm text-green-800">
+                          ✓ Delivery confirmation received
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </CardContent>
       </Card>
-
-      {/* Delivery Button */}
-      <div className="flex justify-center">
-        <Button 
-          onClick={handleDelivery}
-          disabled={selectedMethods.length === 0 || isDelivering}
-          size="lg"
-          className="w-full md:w-auto"
-        >
-          {isDelivering ? (
-            <>
-              <Clock className="mr-2 h-4 w-4 animate-spin" />
-              Sending Document...
-            </>
-          ) : (
-            <>
-              <Send className="mr-2 h-4 w-4" />
-              Send Document ({selectedMethods.length} method{selectedMethods.length !== 1 ? 's' : ''})
-            </>
-          )}
-        </Button>
-      </div>
-
-      {/* Delivery Tracking */}
-      {deliveryAttempts.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Delivery Tracking</CardTitle>
-            <CardDescription>Real-time status of document delivery attempts</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {deliveryAttempts.map((attempt) => {
-                const method = deliveryMethods.find(m => m.id === attempt.methodId);
-                return (
-                  <div key={attempt.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      {getStatusIcon(attempt.status)}
-                      <div>
-                        <p className="font-medium">{method?.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          Sent: {new Date(attempt.sentAt).toLocaleString()}
-                          {attempt.trackingNumber && ` • Tracking: ${attempt.trackingNumber}`}
-                        </p>
-                        {attempt.failureReason && (
-                          <p className="text-sm text-red-600">{attempt.failureReason}</p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge 
-                        variant={
-                          attempt.status === 'delivered' ? 'default' : 
-                          attempt.status === 'failed' ? 'destructive' : 
-                          'secondary'
-                        }
-                      >
-                        {attempt.status}
-                      </Badge>
-                      {attempt.status === 'failed' && attempt.retryCount < attempt.maxRetries && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleRetry(attempt.id)}
-                        >
-                          Retry
-                        </Button>
-                      )}
-                      <span className="text-sm">${attempt.cost.toFixed(2)}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Analytics Summary */}
-      {tracking.totalCost > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
-              Delivery Analytics
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{tracking.attempts.length}</div>
-                <p className="text-sm text-muted-foreground">Total Attempts</p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {tracking.attempts.filter(a => a.status === 'delivered').length}
-                </div>
-                <p className="text-sm text-muted-foreground">Successful</p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">${tracking.totalCost.toFixed(2)}</div>
-                <p className="text-sm text-muted-foreground">Total Cost</p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">
-                  {tracking.attempts.length > 0 ? 
-                    Math.round((tracking.attempts.filter(a => a.status === 'delivered').length / tracking.attempts.length) * 100) : 0}%
-                </div>
-                <p className="text-sm text-muted-foreground">Success Rate</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }
