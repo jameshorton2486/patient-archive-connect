@@ -180,12 +180,12 @@ ${firmBranding.website ? 'Website: ' + firmBranding.website : ''}
   downloadDocument(document: GeneratedDocument): void {
     const blob = this.exportToPDF(document);
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = window.document.createElement('a');
     link.href = url;
     link.download = `${document.type}_${document.trackingId}.txt`;
-    document.body.appendChild(link);
+    window.document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    window.document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
 }

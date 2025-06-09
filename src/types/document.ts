@@ -108,6 +108,227 @@ export interface DeliveryTracking {
   responseDate?: string;
 }
 
+// Deadline Management Types
+export interface ProviderDeadlineRule {
+  id: string;
+  providerType: ProviderType;
+  standardDeadlineDays: number;
+  reminderSchedule: ReminderSchedule[];
+  escalationRules: EscalationRule[];
+  autoEscalation: boolean;
+}
+
+export interface ReminderSchedule {
+  dayOffset: number;
+  type: 'courtesy' | 'formal' | 'escalation' | 'final';
+  templateType: DocumentType;
+  description: string;
+}
+
+export interface EscalationRule {
+  dayOffset: number;
+  action: 'reminder' | 'escalation' | 'manual_intervention' | 'final_demand';
+  requiresApproval: boolean;
+  notifyStaff: boolean;
+  description: string;
+}
+
+export interface FollowUpRequest {
+  id: string;
+  originalDocumentId: string;
+  clientId: string;
+  providerId: string;
+  deadlineDate: string;
+  remindersSent: ReminderSent[];
+  currentStatus: 'pending' | 'responded' | 'overdue' | 'escalated' | 'closed';
+  manualIntervention: boolean;
+  notes: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReminderSent {
+  id: string;
+  followUpRequestId: string;
+  reminderType: 'courtesy' | 'formal' | 'escalation' | 'final';
+  sentDate: string;
+  documentId: string;
+  deliveryMethod: string;
+  delivered: boolean;
+  responseReceived: boolean;
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate?: string;
+  type: 'deadline' | 'reminder' | 'escalation' | 'meeting';
+  relatedRequestId?: string;
+  attendees: string[];
+  calendarProvider: 'google' | 'outlook' | 'internal';
+  synced: boolean;
+}
+
+export type ProviderType = 
+  | 'hospital'
+  | 'private-practice'
+  | 'imaging-center'
+  | 'physical-therapy'
+  | 'emergency-room'
+  | 'specialist'
+  | 'laboratory'
+  | 'pharmacy'
+  | 'other';
+
+export const PROVIDER_DEADLINE_RULES: Record<ProviderType, ProviderDeadlineRule> = {
+  'hospital': {
+    id: 'hospital_rule',
+    providerType: 'hospital',
+    standardDeadlineDays: 30,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 30, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 45, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 45, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 60, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'private-practice': {
+    id: 'private_rule',
+    providerType: 'private-practice',
+    standardDeadlineDays: 14,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 21, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 30, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 30, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 45, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'imaging-center': {
+    id: 'imaging_rule',
+    providerType: 'imaging-center',
+    standardDeadlineDays: 21,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 21, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 35, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 35, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 50, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'physical-therapy': {
+    id: 'pt_rule',
+    providerType: 'physical-therapy',
+    standardDeadlineDays: 14,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 21, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 30, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 30, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 45, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'emergency-room': {
+    id: 'er_rule',
+    providerType: 'emergency-room',
+    standardDeadlineDays: 45,
+    reminderSchedule: [
+      { dayOffset: 14, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 30, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 45, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 60, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 60, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 75, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'specialist': {
+    id: 'specialist_rule',
+    providerType: 'specialist',
+    standardDeadlineDays: 21,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 21, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 35, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 35, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 50, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'laboratory': {
+    id: 'lab_rule',
+    providerType: 'laboratory',
+    standardDeadlineDays: 14,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 21, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 30, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 30, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 45, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'pharmacy': {
+    id: 'pharmacy_rule',
+    providerType: 'pharmacy',
+    standardDeadlineDays: 14,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 21, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 30, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 30, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 45, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  },
+  'other': {
+    id: 'other_rule',
+    providerType: 'other',
+    standardDeadlineDays: 21,
+    reminderSchedule: [
+      { dayOffset: 7, type: 'courtesy', templateType: 'follow-up-reminder', description: 'Courtesy reminder' },
+      { dayOffset: 14, type: 'formal', templateType: 'formal-follow-up', description: 'First formal follow-up' },
+      { dayOffset: 21, type: 'escalation', templateType: 'formal-follow-up', description: 'Escalation notice' },
+      { dayOffset: 35, type: 'final', templateType: 'final-demand', description: 'Final demand' }
+    ],
+    escalationRules: [
+      { dayOffset: 35, action: 'manual_intervention', requiresApproval: true, notifyStaff: true, description: 'Manual intervention required' },
+      { dayOffset: 50, action: 'final_demand', requiresApproval: true, notifyStaff: true, description: 'Final demand processing' }
+    ],
+    autoEscalation: true
+  }
+};
+
 export const DOCUMENT_TEMPLATES: Record<DocumentType, string> = {
   'hipaa-authorization': `
 HIPAA AUTHORIZATION FOR RELEASE OF MEDICAL INFORMATION
@@ -252,11 +473,11 @@ Medical Records Department
 
 Re: Payment for Medical Records
 Patient: {{clientName}}
-Invoice Amount: ${{feeAmount}}
+Invoice Amount: ${{amount}}
 
 Dear Billing Department:
 
-Please find enclosed payment in the amount of ${{feeAmount}} for medical records requested for {{clientName}}.
+Please find enclosed payment in the amount of ${{amount}} for medical records requested for {{clientName}}.
 
 Please process our records request upon receipt of this payment and forward the documentation to our office.
 

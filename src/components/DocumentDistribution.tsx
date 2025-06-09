@@ -173,17 +173,18 @@ export function DocumentDistribution({ document, onBack }: DocumentDistributionP
         setTimeout(() => {
           const success = Math.random() > 0.1; // 90% success rate simulation
           
+          const updatedAttempt = { ...attempt };
           if (success) {
-            attempt.status = 'delivered';
-            attempt.deliveredAt = new Date().toISOString();
-            attempt.trackingNumber = `TRK${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-            attempt.confirmationReceived = true;
+            updatedAttempt.status = 'delivered';
+            updatedAttempt.deliveredAt = new Date().toISOString();
+            updatedAttempt.trackingNumber = `TRK${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+            updatedAttempt.confirmationReceived = true;
           } else {
-            attempt.status = 'failed';
-            attempt.failureReason = 'Provider system temporarily unavailable';
+            updatedAttempt.status = 'failed';
+            updatedAttempt.failureReason = 'Provider system temporarily unavailable';
           }
 
-          setDeliveryAttempts(prev => [...prev.filter(a => a.id !== attempt.id), attempt]);
+          setDeliveryAttempts(prev => [...prev.filter(a => a.id !== attempt.id), updatedAttempt]);
         }, 2000 + Math.random() * 3000);
       }
 
@@ -230,17 +231,18 @@ export function DocumentDistribution({ document, onBack }: DocumentDistributionP
     setTimeout(() => {
       const success = Math.random() > 0.2; // 80% success rate on retry
       
+      const finalAttempt = { ...updatedAttempt };
       if (success) {
-        updatedAttempt.status = 'delivered';
-        updatedAttempt.deliveredAt = new Date().toISOString();
-        updatedAttempt.trackingNumber = `TRK${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-        updatedAttempt.confirmationReceived = true;
+        finalAttempt.status = 'delivered';
+        finalAttempt.deliveredAt = new Date().toISOString();
+        finalAttempt.trackingNumber = `TRK${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+        finalAttempt.confirmationReceived = true;
       } else {
-        updatedAttempt.status = 'failed';
-        updatedAttempt.failureReason = 'Retry failed - provider system error';
+        finalAttempt.status = 'failed';
+        finalAttempt.failureReason = 'Retry failed - provider system error';
       }
 
-      setDeliveryAttempts(prev => prev.map(a => a.id === attemptId ? updatedAttempt : a));
+      setDeliveryAttempts(prev => prev.map(a => a.id === attemptId ? finalAttempt : a));
     }, 2000);
   };
 
