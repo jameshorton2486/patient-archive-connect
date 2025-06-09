@@ -8,18 +8,20 @@ import {
   UserPlus,
   Stethoscope,
   Scale,
-  UserCheck
+  UserCheck,
+  Building2
 } from "lucide-react";
 
 interface SidebarProps {
   activeView: string;
-  onViewChange: (view: 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients') => void;
+  onViewChange: (view: 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider') => void;
 }
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'clients', label: 'Clients', icon: Scale },
   { id: 'client-intake', label: 'Client Intake', icon: UserCheck },
+  { id: 'providers', label: 'Healthcare Providers', icon: Building2 },
   { id: 'patients', label: 'Patients', icon: Users },
   { id: 'records', label: 'Medical Records', icon: FileText },
   { id: 'appointments', label: 'Appointments', icon: Calendar },
