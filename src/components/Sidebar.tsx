@@ -9,12 +9,13 @@ import {
   Stethoscope,
   Scale,
   UserCheck,
-  Building2
+  Building2,
+  FileType
 } from "lucide-react";
 
 interface SidebarProps {
   activeView: string;
-  onViewChange: (view: 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider') => void;
+  onViewChange: (view: 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider' | 'document-generation') => void;
 }
 
 const menuItems = [
@@ -22,6 +23,7 @@ const menuItems = [
   { id: 'clients', label: 'Clients', icon: Scale },
   { id: 'client-intake', label: 'Client Intake', icon: UserCheck },
   { id: 'providers', label: 'Healthcare Providers', icon: Building2 },
+  { id: 'document-generation', label: 'Document Generation', icon: FileType },
   { id: 'patients', label: 'Patients', icon: Users },
   { id: 'records', label: 'Medical Records', icon: FileText },
   { id: 'appointments', label: 'Appointments', icon: Calendar },

@@ -10,8 +10,9 @@ import { ClientIntake } from "@/components/ClientIntake";
 import { ClientList } from "@/components/ClientList";
 import { ProviderList } from "@/components/ProviderList";
 import { ProviderForm } from "@/components/ProviderForm";
+import { DocumentGeneration } from "@/components/DocumentGeneration";
 
-type ActiveView = 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider';
+type ActiveView = 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider' | 'document-generation';
 
 const Index = () => {
   const [activeView, setActiveView] = useState<ActiveView>('dashboard');
@@ -36,6 +37,8 @@ const Index = () => {
         return <ProviderList onAddProvider={() => setActiveView('add-provider')} />;
       case 'add-provider':
         return <ProviderForm onBack={() => setActiveView('providers')} />;
+      case 'document-generation':
+        return <DocumentGeneration onBack={() => setActiveView('dashboard')} />;
       default:
         return <Dashboard />;
     }
