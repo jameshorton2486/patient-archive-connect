@@ -65,6 +65,29 @@
     --input: var(--neutral-200);
     --ring: var(--healthcare-blue);
     --radius: 0.5rem;
+
+    /* FORCE OVERRIDE ALL POSSIBLE YELLOW SOURCES */
+    --yellow-50: var(--light-canvas);
+    --yellow-100: var(--light-canvas);
+    --yellow-200: var(--light-canvas);
+    --yellow-300: var(--light-canvas);
+    --yellow-400: var(--light-canvas);
+    --yellow-500: var(--light-canvas);
+    --yellow-600: var(--light-canvas);
+    --yellow-700: var(--light-canvas);
+    --yellow-800: var(--light-canvas);
+    --yellow-900: var(--light-canvas);
+    
+    --amber-50: var(--light-canvas);
+    --amber-100: var(--light-canvas);
+    --amber-200: var(--light-canvas);
+    --amber-300: var(--light-canvas);
+    --amber-400: var(--light-canvas);
+    --amber-500: var(--light-canvas);
+    --amber-600: var(--light-canvas);
+    --amber-700: var(--light-canvas);
+    --amber-800: var(--light-canvas);
+    --amber-900: var(--light-canvas);
   }
 
   .dark {
@@ -97,6 +120,11 @@
     @apply border-border;
   }
   
+  /* AGGRESSIVE YELLOW OVERRIDE - HIGHEST PRIORITY */
+  * {
+    --tw-bg-opacity: 1 !important;
+  }
+  
   /* Force healthcare design system backgrounds */
   html, body {
     background-color: hsl(var(--light-canvas)) !important;
@@ -108,6 +136,18 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  /* NUCLEAR OPTION - Override ANY possible yellow/amber classes */
+  .bg-yellow-50, .bg-yellow-100, .bg-yellow-200, .bg-yellow-300, .bg-yellow-400, .bg-yellow-500, .bg-yellow-600, .bg-yellow-700, .bg-yellow-800, .bg-yellow-900,
+  .bg-amber-50, .bg-amber-100, .bg-amber-200, .bg-amber-300, .bg-amber-400, .bg-amber-500, .bg-amber-600, .bg-amber-700, .bg-amber-800, .bg-amber-900 {
+    background-color: hsl(var(--light-canvas)) !important;
+  }
+  
+  /* Override any text colors that might be problematic */
+  .text-yellow-50, .text-yellow-100, .text-yellow-200, .text-yellow-300, .text-yellow-400, .text-yellow-500, .text-yellow-600, .text-yellow-700, .text-yellow-800, .text-yellow-900,
+  .text-amber-50, .text-amber-100, .text-amber-200, .text-amber-300, .text-amber-400, .text-amber-500, .text-amber-600, .text-amber-700, .text-amber-800, .text-amber-900 {
+    color: hsl(var(--medical-charcoal)) !important;
   }
   
   /* Eliminate any remaining yellow backgrounds globally */
@@ -129,7 +169,11 @@
   /* Remove any yellow/warning backgrounds */
   *[style*="yellow"],
   *[style*="#FFFF00"],
-  *[style*="rgb(255, 255, 0)"] {
+  *[style*="#FFFF"],
+  *[style*="rgb(255, 255, 0)"],
+  *[style*="hsl(60"],
+  *[class*="yellow"],
+  *[class*="amber"] {
     background-color: hsl(var(--light-canvas)) !important;
     background: hsl(var(--light-canvas)) !important;
   }
