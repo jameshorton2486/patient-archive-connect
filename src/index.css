@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
@@ -41,6 +40,16 @@
     /* Blue gradient background variables */
     --bg-gradient-from: 219 78% 95%;
     --bg-gradient-to: 217 91% 85%;
+    
+    /* Sidebar colors - darker blue theme */
+    --sidebar-background: 217 91% 20%; /* Dark blue background */
+    --sidebar-foreground: 210 40% 98%; /* White text */
+    --sidebar-primary: 217 91% 60%; /* Blue accent */
+    --sidebar-primary-foreground: 210 40% 98%; /* White text on blue */
+    --sidebar-accent: 217 91% 25%; /* Slightly lighter blue for hover */
+    --sidebar-accent-foreground: 210 40% 98%; /* White text on hover */
+    --sidebar-border: 217 91% 25%; /* Darker blue border */
+    --sidebar-ring: 217 91% 60%; /* Blue focus ring */
   }
 
   .dark {
@@ -69,6 +78,16 @@
     --success-600: 142 71% 45%;
     --error-500: 0 84% 60%;
     --error-600: 0 84% 55%;
+    
+    /* Sidebar colors for dark mode - even darker blue */
+    --sidebar-background: 217 91% 15%; /* Even darker blue background */
+    --sidebar-foreground: 210 40% 98%; /* White text */
+    --sidebar-primary: 217 91% 60%; /* Blue accent */
+    --sidebar-primary-foreground: 210 40% 98%; /* White text on blue */
+    --sidebar-accent: 217 91% 20%; /* Darker blue for hover */
+    --sidebar-accent-foreground: 210 40% 98%; /* White text on hover */
+    --sidebar-border: 217 91% 20%; /* Darker blue border */
+    --sidebar-ring: 217 91% 60%; /* Blue focus ring */
   }
 }
 
