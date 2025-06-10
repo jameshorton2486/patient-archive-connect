@@ -1,80 +1,85 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ApplicationShell } from "@/components/layout/ApplicationShell";
-import { LinearDashboard } from "@/components/LinearDashboard";
-import { LinearClientForm } from "@/components/LinearClientForm";
-import { DenialManagement } from "@/components/DenialManagement";
-import { PatientList } from "@/components/PatientList";
-import { PatientForm } from "@/components/PatientForm";
-import { ProviderList } from "@/components/ProviderList";
-import { MedicalRecords } from "@/components/MedicalRecords";
-import { PredictiveAnalytics } from "@/components/PredictiveAnalytics";
-import { SecureIntakeForm } from "@/components/SecureIntakeForm";
-import { useState } from "react";
+import React, { useState } from 'react';
+import { ApplicationShell } from './components/layout/ApplicationShell';
+import { Dashboard } from './components/dashboards/Dashboard';
+import { ClientIntake } from './components/ClientIntake';
+import { IntelligentClientIntake } from './components/IntelligentClientIntake';
+import { SecureIntakeForm } from './components/SecureIntakeForm';
+import { PatientList } from './components/PatientList';
+import { ProviderList } from './components/ProviderList';
+import { MedicalRecords } from './components/MedicalRecords';
+import { Appointments } from './components/Appointments';
+import { DocumentGeneration } from './components/DocumentGeneration';
+import { AutomatedDocumentGenerator } from './components/AutomatedDocumentGenerator';
+import { AIDocumentProcessing } from './components/AIDocumentProcessing';
+import { DocumentDistribution } from './components/DocumentDistribution';
+import { DeadlineManagement } from './components/DeadlineManagement';
+import { DenialManagement } from './components/DenialManagement';
+import { PredictiveAnalytics } from './components/PredictiveAnalytics';
+import { IntegrationEcosystem } from './components/IntegrationEcosystem';
+import { DesignSystemPreview } from './components/DesignSystemPreview';
 
-console.log('App.tsx: Starting application initialization');
-
-const queryClient = new QueryClient();
-
-const App = () => {
-  console.log('App.tsx: Rendering App component');
-  
+function App() {
   const [activeView, setActiveView] = useState('dashboard');
-  const [user] = useState('Dr. Sarah Johnson');
+  const [user] = useState('Dr. Sarah Wilson');
 
   const handleLogout = () => {
-    console.log('App.tsx: Logging out...');
-    // Add logout logic here
+    console.log('Logout clicked');
   };
 
-  const renderActiveView = () => {
-    console.log('App.tsx: Rendering active view:', activeView);
-    
+  const renderContent = () => {
     switch (activeView) {
       case 'dashboard':
-        return <LinearDashboard />;
+        return <Dashboard />;
+      case 'design-system':
+        return <DesignSystemPreview />;
       case 'client-intake':
-        return <LinearClientForm onBack={() => setActiveView('dashboard')} />;
-      case 'denial-management':
-        return <DenialManagement onBack={() => setActiveView('dashboard')} />;
+        return <ClientIntake />;
+      case 'intelligent-intake':
+        return <IntelligentClientIntake />;
+      case 'secure-intake':
+        return <SecureIntakeForm />;
       case 'patient-list':
-        return <PatientList onAddPatient={() => setActiveView('patient-form')} />;
-      case 'patient-form':
-        return <PatientForm onBack={() => setActiveView('patient-list')} />;
+        return <PatientList />;
       case 'provider-list':
-        return <ProviderList onAddProvider={() => console.log('Add provider')} />;
+        return <ProviderList />;
       case 'medical-records':
         return <MedicalRecords />;
+      case 'appointments':
+        return <Appointments />;
+      case 'document-generation':
+        return <DocumentGeneration />;
+      case 'automated-generator':
+        return <AutomatedDocumentGenerator />;
+      case 'ai-processing':
+        return <AIDocumentProcessing />;
+      case 'document-distribution':
+        return <DocumentDistribution />;
+      case 'deadline-management':
+        return <DeadlineManagement />;
+      case 'denial-management':
+        return <DenialManagement />;
       case 'predictive-analytics':
-        return <PredictiveAnalytics onBack={() => setActiveView('dashboard')} />;
-      case 'secure-intake':
-        return <SecureIntakeForm onBack={() => setActiveView('dashboard')} />;
+        return <PredictiveAnalytics />;
+      case 'integration-ecosystem':
+        return <IntegrationEcosystem />;
       default:
-        return <LinearDashboard />;
+        return <Dashboard />;
     }
   };
-  
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <ApplicationShell
-          activeView={activeView}
-          onViewChange={setActiveView}
-          user={user}
-          onLogout={handleLogout}
-        >
-          {renderActiveView()}
-        </ApplicationShell>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-};
 
-console.log('App.tsx: App component defined successfully');
+  return (
+    <div className="min-h-screen bg-[var(--bg-primary)]">
+      <ApplicationShell
+        activeView={activeView}
+        onViewChange={setActiveView}
+        user={user}
+        onLogout={handleLogout}
+      >
+        {renderContent()}
+      </ApplicationShell>
+    </div>
+  );
+}
 
 export default App;

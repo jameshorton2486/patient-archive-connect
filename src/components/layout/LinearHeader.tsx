@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +10,7 @@ interface LinearHeaderProps {
 
 const viewTitles: Record<string, string> = {
   'dashboard': 'Dashboard',
+  'design-system': 'Design System Preview',
   'client-intake': 'Client Intake',
   'intelligent-intake': 'Smart Intake',
   'secure-intake': 'Secure Form',

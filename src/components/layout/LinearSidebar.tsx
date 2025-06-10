@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +18,8 @@ import {
   LogOut,
   Shield,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Palette
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +44,8 @@ export function LinearSidebar({
     {
       title: "Overview",
       items: [
-        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null }
+        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
+        { id: 'design-system', label: 'Design System', icon: Palette, badge: 'PREVIEW' }
       ]
     },
     {
@@ -166,7 +167,8 @@ export function LinearSidebar({
                               "ml-2 text-xs h-5 px-1.5 transition-all duration-200",
                               item.badge === 'AI' && "bg-green-100 text-green-800 border-green-200",
                               item.badge === 'NEW' && "bg-blue-100 text-blue-800 border-blue-200",
-                              item.badge === 'PRO' && "bg-amber-100 text-amber-800 border-amber-200"
+                              item.badge === 'PRO' && "bg-amber-100 text-amber-800 border-amber-200",
+                              item.badge === 'PREVIEW' && "bg-purple-100 text-purple-800 border-purple-200"
                             )}
                           >
                             {item.badge}
