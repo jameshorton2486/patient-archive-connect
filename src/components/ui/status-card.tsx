@@ -30,7 +30,7 @@ export function StatusOverview({ title, items, className, style }: StatusOvervie
   return (
     <Card className={cn('bg-sidebar border-sidebar-border', className)} style={style}>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-black">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold text-white">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -43,10 +43,10 @@ export function StatusOverview({ title, items, className, style }: StatusOvervie
               >
                 <div className="flex items-center gap-3">
                   <div className={cn('w-3 h-3 rounded-full', styles.dot)} aria-hidden="true" />
-                  <span className="text-sm font-medium text-black">{item.label}</span>
+                  <span className="text-sm font-medium text-white">{item.label}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-black">{item.count}</span>
+                  <span className="text-sm font-bold text-white">{item.count}</span>
                   <span className={cn('text-xs font-medium', styles.text)}>
                     {item.percentage}%
                   </span>

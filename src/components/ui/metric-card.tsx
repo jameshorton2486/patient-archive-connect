@@ -28,10 +28,10 @@ export function MetricCard({
   style
 }: MetricCardProps) {
   const colorClasses = {
-    blue: 'text-accent-medical bg-blue-50 border-blue-200',
-    green: 'text-success-600 bg-success-50 border-success-200',
-    amber: 'text-warning-600 bg-warning-50 border-warning-200',
-    red: 'text-error-600 bg-error-50 border-error-200'
+    blue: 'text-blue-400 bg-sidebar-accent border-sidebar-border',
+    green: 'text-green-400 bg-sidebar-accent border-sidebar-border',
+    amber: 'text-amber-400 bg-sidebar-accent border-sidebar-border',
+    red: 'text-red-400 bg-sidebar-accent border-sidebar-border'
   };
 
   return (
@@ -39,22 +39,22 @@ export function MetricCard({
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-primary-500 mb-1">{title}</p>
-            <p className="text-3xl font-bold text-primary-900">{value}</p>
+            <p className="text-sm font-medium text-white/70 mb-1">{title}</p>
+            <p className="text-3xl font-bold text-white">{value}</p>
             {trendValue && (
               <div className="flex items-center gap-1 mt-2">
-                {trend === 'up' && <TrendingUp className="h-3 w-3 text-success-600" aria-hidden="true" />}
-                {trend === 'down' && <TrendingDown className="h-3 w-3 text-error-600" aria-hidden="true" />}
+                {trend === 'up' && <TrendingUp className="h-3 w-3 text-green-400" aria-hidden="true" />}
+                {trend === 'down' && <TrendingDown className="h-3 w-3 text-red-400" aria-hidden="true" />}
                 <span className={cn(
                   "text-sm font-medium",
-                  trend === 'up' && 'text-success-600',
-                  trend === 'down' && 'text-error-600',
-                  trend === 'neutral' && 'text-primary-500'
+                  trend === 'up' && 'text-green-400',
+                  trend === 'down' && 'text-red-400',
+                  trend === 'neutral' && 'text-white/70'
                 )}>
                   {trendValue}
                 </span>
                 {description && (
-                  <span className="text-sm text-primary-400 ml-1">{description}</span>
+                  <span className="text-sm text-white/50 ml-1">{description}</span>
                 )}
               </div>
             )}
