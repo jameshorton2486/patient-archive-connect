@@ -7,23 +7,37 @@
 
 @layer base {
   :root {
+    /* FONT + ROOT VARIABLES */
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Light Mode Colors */
+    --primary-50: #f8fafc;
+    --primary-500: #64748b;
+    --accent-medical: #0ea5e9;
+    --error-600: #dc2626;
+
+    --bg-primary: #ffffff;
+    --text-primary: #1e293b;
+    --border-primary: #e2e8f0;
+
     /* Linear Light Theme Colors - Updated to match Linear exactly */
     --background: 255 255 255;
-    --foreground: 23 23 23;
+    --foreground: 30 41 59;
 
     --card: 255 255 255;
-    --card-foreground: 23 23 23;
+    --card-foreground: 30 41 59;
 
     --popover: 255 255 255;
-    --popover-foreground: 23 23 23;
+    --popover-foreground: 30 41 59;
 
     /* Linear's exact neutral palette */
     --primary: 255 255 255;
-    --primary-foreground: 23 23 23;
+    --primary-foreground: 30 41 59;
 
     /* Linear's signature purple accent */
     --accent: 248 249 255;
-    --accent-foreground: 94 106 210;
+    --accent-foreground: 14 165 233;
 
     /* Linear's subtle gray backgrounds */
     --secondary: 249 250 251;
@@ -37,33 +51,39 @@
     --tertiary: 249 250 251;
 
     /* Linear's minimal borders */
-    --border: 229 231 235;
-    --input: 229 231 235;
-    --ring: 94 106 210;
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 14 165 233;
 
     /* Linear Sidebar - darker theme matching Linear's sidebar */
     --sidebar-background: 23 23 23;
     --sidebar-foreground: 245 245 245;
-    --sidebar-primary: 94 106 210;
+    --sidebar-primary: 14 165 233;
     --sidebar-primary-foreground: 255 255 255;
     --sidebar-accent: 38 38 38;
     --sidebar-accent-foreground: 245 245 245;
     --sidebar-border: 38 38 38;
-    --sidebar-ring: 94 106 210;
+    --sidebar-ring: 14 165 233;
   }
 
-  :root[data-theme="dark"] {
-    --background: 9 9 11;
-    --foreground: 250 250 250;
+  /* Dark Mode Override */
+  :root[data-theme='dark'] {
+    --bg-primary: #0f172a;
+    --text-primary: #f8fafc;
+    --border-primary: #334155;
+    --accent-medical: #38bdf8;
+
+    --background: 15 23 42;
+    --foreground: 248 250 252;
 
     --card: 23 23 23;
-    --card-foreground: 250 250 250;
+    --card-foreground: 248 250 252;
 
     --popover: 23 23 23;
-    --popover-foreground: 250 250 250;
+    --popover-foreground: 248 250 252;
 
     --primary: 23 23 23;
-    --primary-foreground: 250 250 250;
+    --primary-foreground: 248 250 252;
 
     --secondary: 38 38 38;
     --secondary-foreground: 161 161 170;
@@ -72,13 +92,13 @@
     --muted-foreground: 161 161 170;
 
     --accent: 23 23 23;
-    --accent-foreground: 161 161 255;
+    --accent-foreground: 56 189 248;
 
-    --tertiary: 9 9 11;
+    --tertiary: 15 23 42;
 
-    --border: 38 38 38;
-    --input: 38 38 38;
-    --ring: 161 161 255;
+    --border: 51 65 85;
+    --input: 51 65 85;
+    --ring: 56 189 248;
   }
 }
 
@@ -87,9 +107,11 @@
     @apply border-border;
   }
 
+  /* Typography Base */
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    background: var(--bg-primary);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-variation-settings: normal;
     text-rendering: optimizeLegibility;
@@ -99,27 +121,33 @@
 
   /* Linear Typography Hierarchy */
   h1 {
-    @apply text-2xl font-semibold tracking-tight text-foreground;
+    @apply text-2xl font-semibold tracking-tight;
+    color: var(--text-primary);
   }
 
   h2 {
-    @apply text-xl font-semibold tracking-tight text-foreground;
+    @apply text-xl font-semibold tracking-tight;
+    color: var(--text-primary);
   }
 
   h3 {
-    @apply text-lg font-semibold text-foreground;
+    @apply text-lg font-semibold;
+    color: var(--text-primary);
   }
 
   h4 {
-    @apply text-base font-semibold text-foreground;
+    @apply text-base font-semibold;
+    color: var(--text-primary);
   }
 
   h5, h6 {
-    @apply text-sm font-semibold text-foreground;
+    @apply text-sm font-semibold;
+    color: var(--text-primary);
   }
 
   p {
-    @apply text-sm text-muted-foreground leading-relaxed;
+    @apply text-sm leading-relaxed;
+    color: var(--primary-500);
   }
 }
 
@@ -130,25 +158,40 @@
   }
 
   .btn-linear-primary {
-    @apply btn-linear bg-accent-medical text-white hover:bg-accent-medical/90 shadow-linear hover:shadow-linear-lg;
+    background-color: var(--accent-medical);
+    @apply btn-linear text-white hover:opacity-90 shadow-linear hover:shadow-linear-lg;
   }
 
   .btn-linear-secondary {
-    @apply btn-linear bg-secondary hover:bg-muted text-foreground border border-border hover:border-border;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+    @apply btn-linear hover:bg-muted;
   }
 
   .btn-linear-ghost {
-    @apply btn-linear bg-transparent hover:bg-muted text-muted-foreground hover:text-foreground;
+    @apply btn-linear bg-transparent hover:bg-muted;
+    color: var(--primary-500);
   }
 
   /* Linear Input Styles */
   .input-linear {
-    @apply flex h-9 w-full rounded-linear border border-input bg-background px-3 py-1 text-sm shadow-linear transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+    @apply flex h-9 w-full rounded-linear px-3 py-1 text-sm shadow-linear transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .input-linear:focus-visible {
+    ring-color: var(--accent-medical);
+    border-color: var(--accent-medical);
   }
 
   /* Linear Card Styles */
   .card-linear {
-    @apply rounded-linear border bg-card text-card-foreground shadow-linear;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    @apply rounded-linear shadow-linear;
   }
 
   /* Linear Navigation Item */
@@ -188,15 +231,19 @@
   }
 
   .table-linear th {
-    @apply border-b border-border bg-muted/50 px-3 py-2 text-left font-medium text-muted-foreground;
+    border-bottom: 1px solid var(--border-primary);
+    background-color: var(--primary-50);
+    @apply px-3 py-2 text-left font-medium;
+    color: var(--primary-500);
   }
 
   .table-linear td {
-    @apply border-b border-border px-3 py-2;
+    border-bottom: 1px solid var(--border-primary);
+    @apply px-3 py-2;
   }
 
   .table-linear tr:hover {
-    @apply bg-muted/30;
+    background-color: var(--primary-50);
   }
 }
 
@@ -242,15 +289,19 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: var(--border-primary);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
+  background: var(--primary-500);
 }
 
 /* Linear focus styles */
 .focus-linear {
-  @apply focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1;
+  @apply focus:outline-none focus:ring-1 focus:ring-offset-1;
+}
+
+.focus-linear:focus {
+  ring-color: var(--accent-medical);
 }

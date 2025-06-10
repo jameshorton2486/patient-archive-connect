@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        // Linear's exact color system
+        // Linear's exact color system matching your CSS variables
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -45,8 +45,8 @@ module.exports = {
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
-          // Linear's signature purple
-          medical: '#5e6ad2',
+          // Linear's signature medical blue
+          medical: '#0ea5e9',
           secondary: '#8b5cf6'
         },
         muted: {
