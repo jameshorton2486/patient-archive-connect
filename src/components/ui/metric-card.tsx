@@ -13,6 +13,7 @@ interface MetricCardProps {
   icon: LucideIcon;
   color?: 'blue' | 'green' | 'amber' | 'red';
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export function MetricCard({ 
@@ -23,7 +24,8 @@ export function MetricCard({
   description, 
   icon: Icon, 
   color = 'blue',
-  className 
+  className,
+  style
 }: MetricCardProps) {
   const colorClasses = {
     blue: 'text-accent-medical bg-blue-50 border-blue-200',
@@ -33,7 +35,7 @@ export function MetricCard({
   };
 
   return (
-    <Card className={cn('hover:shadow-lg transition-shadow duration-200', className)}>
+    <Card className={cn('hover:shadow-lg transition-shadow duration-200', className)} style={style}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
