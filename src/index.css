@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,6 +14,13 @@
     --medical-sage: 39 174 96; /* #27AE60 */
     --clinical-gray: 149 165 166; /* #95A5A6 */
     --light-canvas: 248 249 250; /* #F8F9FA */
+    
+    /* Additional Canvas Variables - FIXES UNDEFINED VARIABLES */
+    --bg-light: 248 249 250; /* #F8F9FA */
+    --canvas: 248 249 250; /* #F8F9FA */
+    --surface: 248 249 250; /* #F8F9FA */
+    --theme-bg: 248 249 250; /* #F8F9FA */
+    --background-color: 248 249 250; /* #F8F9FA */
     
     /* Semantic Colors - DO NOT CHANGE */
     --success-primary: 39 174 96; /* #27AE60 */
@@ -43,7 +51,7 @@
     --neutral-800: 44 62 80; /* #2C3E50 */
     --neutral-900: 27 38 49; /* #1B2631 */
 
-    /* Design System Mapping - DO NOT CHANGE */
+    /* Design System Mapping - FIXED TO USE LIGHT CANVAS */
     --background: 248 249 250; /* Direct Light Canvas mapping */
     --foreground: var(--medical-charcoal);
     --card: var(--pure-white);
@@ -110,12 +118,37 @@
     background-color: hsl(var(--light-canvas)) !important;
   }
 
-  /* Force all background classes to use Light Canvas */
+  /* COMPREHENSIVE BACKGROUND FIX - FORCE ALL ELEMENTS TO USE LIGHT CANVAS */
   .bg-background {
     background-color: hsl(var(--light-canvas)) !important;
   }
 
   .bg-accent {
+    background-color: hsl(var(--light-canvas)) !important;
+  }
+  
+  .bg-popover {
+    background-color: hsl(var(--pure-white)) !important;
+  }
+  
+  /* Fix opacity variants that might be causing yellow */
+  .bg-background\/80 {
+    background-color: hsla(var(--light-canvas), 0.8) !important;
+  }
+  
+  .bg-background\/50 {
+    background-color: hsla(var(--light-canvas), 0.5) !important;
+  }
+  
+  /* Prevent warning colors from being applied to backgrounds */
+  .bg-warning {
+    background-color: hsl(var(--warning-background)) !important;
+  }
+  
+  /* Ensure any surface/canvas classes use correct color */
+  .bg-canvas,
+  .bg-surface,
+  .bg-theme {
     background-color: hsl(var(--light-canvas)) !important;
   }
 }
