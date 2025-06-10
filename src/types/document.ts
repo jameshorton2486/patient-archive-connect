@@ -1,3 +1,4 @@
+
 export interface DocumentTemplate {
   id: string;
   name: string;
@@ -260,6 +261,16 @@ export interface DeliveryTracking {
   notes?: string;
 }
 
+// Fixed BillingAmount interface
+export interface BillingAmount {
+  chargeDescription: string;
+  amount: number;
+  dateOfService: string;
+  insurancePaid?: number;
+  patientResponsibility?: number;
+  confidence: number;
+}
+
 // Add the missing DOCUMENT_TEMPLATES export
 export const DOCUMENT_TEMPLATES: Record<DocumentType, string> = {
   'records-request': `
@@ -391,7 +402,7 @@ Tracking ID: {{trackingId}}
 
 Dear Medical Records Department,
 
-Please find enclosed payment of ${{amount}} for the medical records request dated {{originalRequestDate}}.
+Please find enclosed payment of ${{paymentAmount}} for the medical records request dated {{originalRequestDate}}.
 
 Please process our request promptly upon receipt of this payment.
 
