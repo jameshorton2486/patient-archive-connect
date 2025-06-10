@@ -1,5 +1,5 @@
 
-import { DocumentTemplate, GeneratedDocument, DocumentType, QRCodeData, FirmBranding, DOCUMENT_TEMPLATES } from '@/types/document';
+import { GeneratedDocument, DocumentType, QRCodeData, FirmBranding, DOCUMENT_TEMPLATES } from '@/types/document';
 
 export class DocumentService {
   private static instance: DocumentService;
@@ -107,6 +107,18 @@ export class DocumentService {
     };
 
     return document;
+  }
+
+  // Add the missing batchGenerateDocuments method
+  batchGenerateDocuments(
+    documentTypes: DocumentType[],
+    clientData: any,
+    providerData?: any,
+    firmBranding?: FirmBranding
+  ): GeneratedDocument[] {
+    return documentTypes.map(type => 
+      this.generateDocument(type, clientData, providerData, firmBranding)
+    );
   }
 
   exportToPDF(document: GeneratedDocument): Blob {

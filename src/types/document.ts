@@ -270,6 +270,95 @@ export interface QRCodeData {
   caseId?: string;
 }
 
+// New types that were missing
+export interface FollowUpRequest {
+  id: string;
+  requestId: string;
+  type: 'reminder' | 'escalation';
+  scheduledDate: string;
+  sent: boolean;
+  currentStatus: 'pending' | 'sent' | 'overdue';
+  createdAt: string;
+  deadlineDate?: string;
+  remindersSent?: number;
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  date: string;
+  type: 'follow_up' | 'deadline' | 'reminder';
+  requestId: string;
+  priority: 'low' | 'medium' | 'high';
+  completed: boolean;
+  description?: string;
+}
+
+export interface ReminderSent {
+  id: string;
+  requestId: string;
+  reminderType: 'follow_up' | 'deadline' | 'escalation';
+  sentAt: string;
+  method: 'email' | 'fax' | 'mail' | 'phone';
+  followUpRequestId?: string;
+}
+
+export interface ProviderDeadlineRule {
+  providerType: string;
+  standardDays: number;
+  reminderSchedule: number[];
+  escalationDays: number[];
+  maxFollowUps: number;
+}
+
+export interface DeliveryTracking {
+  id: string;
+  requestId: string;
+  trackingNumber?: string;
+  status: 'pending' | 'delivered' | 'failed' | 'returned';
+  lastUpdate: string;
+  deliveryAttempts: DeliveryAttempt[];
+}
+
+export interface DeliveryStats {
+  totalDeliveries: number;
+  successfulDeliveries: number;
+  failedDeliveries: number;
+  averageDeliveryTime: number;
+  successRate: number;
+}
+
+export const PROVIDER_DEADLINE_RULES: Record<string, ProviderDeadlineRule> = {
+  physician: {
+    providerType: 'physician',
+    standardDays: 30,
+    reminderSchedule: [14, 21, 28],
+    escalationDays: [35, 45],
+    maxFollowUps: 3
+  },
+  hospital: {
+    providerType: 'hospital',
+    standardDays: 45,
+    reminderSchedule: [21, 35, 42],
+    escalationDays: [50, 60],
+    maxFollowUps: 3
+  },
+  therapy: {
+    providerType: 'therapy',
+    standardDays: 21,
+    reminderSchedule: [10, 14, 18],
+    escalationDays: [25, 30],
+    maxFollowUps: 2
+  },
+  imaging: {
+    providerType: 'imaging',
+    standardDays: 14,
+    reminderSchedule: [7, 10, 12],
+    escalationDays: [16, 21],
+    maxFollowUps: 2
+  }
+};
+
 // Simplified template system to avoid complex dependency issues
 export const DOCUMENT_TEMPLATES: Record<DocumentType, string> = {
   'records-request': `
