@@ -1,213 +1,254 @@
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Send, 
-  Download, 
-  CheckCircle, 
-  Clock, 
-  AlertCircle, 
-  Mail,
-  Phone,
-  Globe,
-  RefreshCw
-} from 'lucide-react';
-import { DeliveryMethod, DeliveryAttempt, DeliveryTracking } from '@/types/document';
-import { deliveryService } from '@/services/deliveryService';
+import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { deliveryService } from "@/services/deliveryService";
+import { DeliveryMethod, DeliveryAttempt } from "@/types/document";
 
-interface DocumentDistributionProps {
-  onBack?: () => void;
-}
+const DocumentDistribution = () => {
+  const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [recipientEmail, setRecipientEmail] = useState('');
+  const [recipientFax, setRecipientFax] = useState('');
+  
+  const deliveryMethods = deliveryService.getAvailableMethods();
+  const activeDeliveries = deliveryService.getActiveDeliveries();
+  const stats = deliveryService.getDeliveryStatistics();
 
-export function DocumentDistribution({ onBack }: DocumentDistributionProps) {
-  const [deliveryMethods, setDeliveryMethods] = useState<DeliveryMethod[]>([]);
-  const [activeAttempts, setActiveAttempts] = useState<DeliveryAttempt[]>([]);
-  const [deliveryStats, setDeliveryStats] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const handleSendDocument = async () => {
+    if (!selectedMethod) {
+      toast.error("Please select a delivery method");
+      return;
+    }
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    setIsLoading(true);
     try {
-      const methods = await deliveryService.getAvailableMethods();
-      const attempts = await deliveryService.getActiveDeliveries();
-      const stats = await deliveryService.getDeliveryStatistics();
+      const mockDocumentId = 'doc_' + Date.now();
+      const mockProviderId = 'prov_001';
       
-      setDeliveryMethods(methods);
-      setActiveAttempts(attempts);
-      setDeliveryStats(stats);
+      await deliveryService.initiateDelivery(mockDocumentId, selectedMethod, mockProviderId);
+      toast.success("Document sent successfully!");
+      
+      // Reset form
+      setSelectedMethod('');
+      setRecipientEmail('');
+      setRecipientFax('');
     } catch (error) {
-      console.error('Error loading delivery data:', error);
-    } finally {
-      setIsLoading(false);
+      toast.error("Failed to send document");
+      console.error('Delivery error:', error);
     }
   };
 
-  const handleRetry = async (attemptId: string) => {
+  const handleRetryDelivery = async (deliveryId: string) => {
     try {
-      await deliveryService.retryFailedDelivery(attemptId);
-      await loadData();
+      await deliveryService.retryDelivery(deliveryId);
+      toast.success("Delivery retry initiated");
     } catch (error) {
-      console.error('Error retrying delivery:', error);
+      toast.error("Failed to retry delivery");
+      console.error('Retry error:', error);
     }
   };
 
-  const handleSendDocument = async (methodId: string, documentId: string, providerId: string) => {
-    try {
-      await deliveryService.initiateDelivery(documentId, methodId, providerId);
-      await loadData();
-    } catch (error) {
-      console.error('Error sending document:', error);
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'delivered':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'failed':
-        return <AlertCircle className="h-4 w-4 text-red-500" />;
-      case 'sending':
-        return <Clock className="h-4 w-4 text-blue-500 animate-spin" />;
-      default:
-        return <Clock className="h-4 w-4 text-yellow-500" />;
-    }
-  };
-
-  const getMethodIcon = (type: string) => {
-    switch (type) {
-      case 'email':
-        return <Mail className="h-4 w-4" />;
-      case 'usps':
-        return <Send className="h-4 w-4" />;
-      case 'fax':
-        return <Phone className="h-4 w-4" />;
-      case 'portal':
-        return <Globe className="h-4 w-4" />;
-      default:
-        return <Send className="h-4 w-4" />;
-    }
+  const getStatusBadge = (status: string) => {
+    const variants = {
+      'delivered': 'default',
+      'pending': 'secondary',
+      'failed': 'destructive',
+      'sending': 'outline'
+    } as const;
+    
+    return <Badge variant={variants[status as keyof typeof variants] || 'secondary'}>{status}</Badge>;
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {onBack && (
-        <Button onClick={onBack} variant="outline" className="mb-4">
-          ← Back to Dashboard
-        </Button>
-      )}
-
-      <div className="flex items-center gap-2 mb-6">
-        <Send className="h-6 w-6 text-primary" />
-        <h1 className="text-3xl font-bold text-foreground">Document Distribution</h1>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Document Distribution</h1>
       </div>
 
-      {/* Delivery Methods */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Available Delivery Methods</CardTitle>
-          <CardDescription>Configure and manage document delivery channels</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {deliveryMethods.map((method) => (
-              <div key={method.id} className="p-4 border rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  {getMethodIcon(method.type)}
-                  <h3 className="font-medium">{method.name}</h3>
-                </div>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <p>Cost: ${method.cost}</p>
-                  <p>Delivery: {method.estimatedDeliveryTime}</p>
-                  <p>Reliability: {(method.reliabilityScore * 100).toFixed(0)}%</p>
-                </div>
-                <Badge variant={method.enabled ? "default" : "secondary"} className="mt-2">
-                  {method.enabled ? 'Active' : 'Disabled'}
-                </Badge>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Distribution Statistics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium">Total Sent</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalSent}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium">Delivered</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">{stats.delivered}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium">Failed</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600">{stats.failed}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium">Delivery Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.deliveryRate}%</div>
+          </CardContent>
+        </Card>
+      </div>
 
-      {/* Active Deliveries */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Active Deliveries</CardTitle>
-          <CardDescription>Track ongoing document deliveries</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {activeAttempts.map((attempt) => (
-              <div key={attempt.id} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  {getStatusIcon(attempt.status)}
-                  <div>
-                    <p className="font-medium">Document #{attempt.documentId}</p>
-                    <p className="text-sm text-muted-foreground">
-                      Method: {deliveryMethods.find(m => m.id === attempt.methodId)?.name}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Sent: {new Date(attempt.sentAt).toLocaleDateString()}
-                    </p>
+      <Tabs defaultValue="send" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="send">Send Document</TabsTrigger>
+          <TabsTrigger value="tracking">Active Deliveries</TabsTrigger>
+          <TabsTrigger value="methods">Delivery Methods</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="send" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Send Document</CardTitle>
+              <CardDescription>Choose delivery method and recipient details</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="delivery-method">Delivery Method</Label>
+                <Select value={selectedMethod} onValueChange={setSelectedMethod}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select delivery method" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {deliveryMethods.map((method) => (
+                      <SelectItem key={method.id} value={method.id}>
+                        {method.name} - ${method.cost} ({method.estimatedDeliveryTime})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {selectedMethod === 'email' && (
+                <div className="space-y-2">
+                  <Label htmlFor="email">Recipient Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={recipientEmail}
+                    onChange={(e) => setRecipientEmail(e.target.value)}
+                    placeholder="provider@example.com"
+                  />
+                </div>
+              )}
+
+              {selectedMethod === 'fax' && (
+                <div className="space-y-2">
+                  <Label htmlFor="fax">Recipient Fax Number</Label>
+                  <Input
+                    id="fax"
+                    value={recipientFax}
+                    onChange={(e) => setRecipientFax(e.target.value)}
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+              )}
+
+              <Button onClick={handleSendDocument} className="w-full">
+                Send Document
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="tracking" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Active Deliveries</CardTitle>
+              <CardDescription>Track the status of sent documents</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {activeDeliveries.map((delivery) => (
+                  <div key={delivery.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="space-y-1">
+                      <div className="font-medium">Document {delivery.documentId}</div>
+                      <div className="text-sm text-muted-foreground">
+                        Sent via {deliveryMethods.find(m => m.id === delivery.methodId)?.name} 
+                        on {new Date(delivery.sentAt).toLocaleDateString()}
+                      </div>
+                      {delivery.retryCount > 0 && (
+                        <div className="text-sm text-orange-600">
+                          Retry attempts: {delivery.retryCount}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {getStatusBadge(delivery.status)}
+                      {delivery.status === 'failed' && (
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleRetryDelivery(delivery.id)}
+                        >
+                          Retry
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {attempt.trackingNumber && (
-                    <Badge variant="outline">{attempt.trackingNumber}</Badge>
-                  )}
-                  {attempt.status === 'failed' && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleRetry(attempt.id)}
-                    >
-                      <RefreshCw className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
+                ))}
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="methods" className="space-y-4">
+          <div className="grid gap-4">
+            {deliveryMethods.map((method) => (
+              <Card key={method.id}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-lg">{method.name}</CardTitle>
+                      <CardDescription>
+                        Delivery time: {method.estimatedDeliveryTime}
+                      </CardDescription>
+                    </div>
+                    <Badge variant={method.enabled ? "default" : "secondary"}>
+                      {method.enabled ? "Enabled" : "Disabled"}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <div className="font-medium">Cost</div>
+                      <div>${method.cost}</div>
+                    </div>
+                    <div>
+                      <div className="font-medium">Reliability</div>
+                      <div>{method.reliabilityScore}%</div>
+                    </div>
+                    <div>
+                      <div className="font-medium">HIPAA Compliant</div>
+                      <div>{method.hipaaCompliant ? "Yes" : "No"}</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Delivery Statistics */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Delivery Statistics</CardTitle>
-          <CardDescription>Performance metrics across all delivery methods</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-primary">{deliveryStats.totalDeliveries || 0}</p>
-              <p className="text-sm text-muted-foreground">Total Deliveries</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-600">
-                {deliveryStats.successRate ? (deliveryStats.successRate * 100).toFixed(1) : 0}%
-              </p>
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600">${deliveryStats.totalCost || 0}</p>
-              <p className="text-sm text-muted-foreground">Total Cost</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-orange-600">
-                {deliveryStats.averageDeliveryTime || 0} days
-              </p>
-              <p className="text-sm text-muted-foreground">Avg. Delivery Time</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
-}
+};
+
+export default DocumentDistribution;
