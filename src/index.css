@@ -6,14 +6,14 @@
 
 @layer base {
   :root {
-    /* Linear-inspired color system */
+    /* Linear-inspired color system with dark blue instead of purple */
     --background: 210 20% 98%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 238 100% 68%;
+    --primary: 217 91% 60%; /* Dark blue instead of purple */
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 84% 4.9%;
@@ -21,12 +21,12 @@
     --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 188 95% 53%;
     --accent-foreground: 222.2 84% 4.9%;
-    --accent-medical: 238 100% 68%;
+    --accent-medical: 217 91% 60%; /* Dark blue instead of purple */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 238 100% 68%;
+    --ring: 217 91% 60%; /* Dark blue instead of purple */
     --radius: 1rem;
     
     /* Success and error colors */
@@ -37,6 +37,10 @@
     /* Container and spacing utilities */
     --container-linear: 1200px;
     --spacing-linear: 1.5rem;
+    
+    /* Blue gradient background variables */
+    --bg-gradient-from: 219 78% 95%;
+    --bg-gradient-to: 217 91% 85%;
   }
 
   .dark {
@@ -46,7 +50,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 217 19% 11%;
     --popover-foreground: 210 40% 98%;
-    --primary: 238 100% 68%;
+    --primary: 217 91% 60%; /* Dark blue instead of purple */
     --primary-foreground: 217 19% 9%;
     --secondary: 217 19% 15%;
     --secondary-foreground: 210 40% 98%;
@@ -54,12 +58,12 @@
     --muted-foreground: 215 20.2% 65.1%;
     --accent: 188 95% 53%;
     --accent-foreground: 217 19% 9%;
-    --accent-medical: 238 100% 68%;
+    --accent-medical: 217 91% 60%; /* Dark blue instead of purple */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 217 19% 18%;
     --input: 217 19% 18%;
-    --ring: 238 100% 68%;
+    --ring: 217 91% 60%; /* Dark blue instead of purple */
     
     /* Success and error colors for dark mode */
     --success-600: 142 71% 45%;
@@ -73,8 +77,14 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply text-foreground font-sans;
+    /* Blue gradient background for light mode, solid dark background for dark mode */
+    background: linear-gradient(135deg, hsl(var(--bg-gradient-from)), hsl(var(--bg-gradient-to)));
     transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .dark body {
+    background: hsl(var(--background));
   }
 }
 
@@ -99,6 +109,14 @@
   
   .shadow-linear-lg {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .bg-blue-gradient {
+    background: linear-gradient(135deg, hsl(var(--bg-gradient-from)), hsl(var(--bg-gradient-to)));
+  }
+  
+  .dark .bg-blue-gradient {
+    background: hsl(var(--background));
   }
 }
 

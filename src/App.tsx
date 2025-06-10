@@ -31,7 +31,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)]">
+    <div className="min-h-screen">
       <Router>
         <ApplicationShell user={user} onLogout={handleLogout}>
           <Routes>

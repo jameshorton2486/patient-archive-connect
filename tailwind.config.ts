@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        // Linear's exact color system
+        // Linear's color system with dark blue instead of purple
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -57,6 +57,11 @@ module.exports = {
           'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))'
+        },
+        // Custom blue gradient colors
+        'blue-gradient': {
+          'from': 'hsl(var(--bg-gradient-from))',
+          'to': 'hsl(var(--bg-gradient-to))'
         }
       },
       fontFamily: {
@@ -108,6 +113,9 @@ module.exports = {
       animation: {
         'fade-in': 'fade-in 0.2s ease-out',
         'scale-in': 'scale-in 0.15s ease-out',
+      },
+      backgroundImage: {
+        'blue-gradient': 'linear-gradient(135deg, hsl(var(--bg-gradient-from)), hsl(var(--bg-gradient-to)))'
       }
     }
   },
