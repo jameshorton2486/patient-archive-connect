@@ -97,15 +97,18 @@
   
   html {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background-color: hsl(var(--light-canvas));
   }
   
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-color: hsl(var(--light-canvas)) !important;
   }
   
   #root, #__next {
-    @apply min-h-screen bg-background;
+    @apply min-h-screen;
+    background-color: hsl(var(--light-canvas));
   }
 }
 
