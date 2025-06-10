@@ -4,7 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { LoadingSpinner, LoadingState, EmptyState } from '@/components/ui/loading';
 import { 
   FileText, 
   Download, 
@@ -13,10 +15,12 @@ import {
   Eye,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Plus
 } from 'lucide-react';
 import { DocumentType, GeneratedDocument, FirmBranding, DOCUMENT_TEMPLATES } from '@/types/document';
 import { documentService } from '@/services/documentService';
+import { toast } from '@/components/ui/sonner';
 
 interface DocumentGenerationProps {
   onBack?: () => void;
@@ -128,6 +132,8 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
   const [additionalData, setAdditionalData] = useState<Record<string, string>>({});
   const [previewDocument, setPreviewDocument] = useState<GeneratedDocument | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [downloadingDoc, setDownloadingDoc] = useState<string | null>(null);
 
   const handleDocumentSelection = (docType: DocumentType) => {
     setSelectedDocuments(prev => 
@@ -146,7 +152,13 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
   };
 
   const handleBatchGeneration = async () => {
+    if (selectedDocuments.length === 0) {
+      setError('Please select at least one document type to generate.');
+      return;
+    }
+
     setIsGenerating(true);
+    setError(null);
     
     try {
       const providers = mockProviders.filter(p => selectedProviders.includes(p.id));
@@ -158,48 +170,68 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
       );
       
       setGeneratedDocuments(documents);
+      toast.success(`Successfully generated ${documents.length} document(s)`);
     } catch (error) {
       console.error('Error generating documents:', error);
+      setError('Failed to generate documents. Please try again.');
+      toast.error('Document generation failed');
     } finally {
       setIsGenerating(false);
     }
   };
 
-  const handleDownload = (document: GeneratedDocument) => {
-    documentService.downloadDocument(document);
+  const handleDownload = async (document: GeneratedDocument) => {
+    setDownloadingDoc(document.id);
+    try {
+      // Enhanced PDF download functionality
+      await documentService.downloadDocument(document);
+      toast.success('Document downloaded successfully');
+    } catch (error) {
+      console.error('Download failed:', error);
+      toast.error('Failed to download document');
+    } finally {
+      setDownloadingDoc(null);
+    }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'generated':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-green-500" aria-label="Generated" />;
       case 'sent':
-        return <Send className="h-4 w-4 text-blue-500" />;
+        return <Send className="h-4 w-4 text-blue-500" aria-label="Sent" />;
       case 'signed':
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
+        return <CheckCircle className="h-4 w-4 text-green-600" aria-label="Signed" />;
       case 'expired':
-        return <AlertCircle className="h-4 w-4 text-red-500" />;
+        return <AlertCircle className="h-4 w-4 text-red-500" aria-label="Expired" />;
       default:
-        return <Clock className="h-4 w-4 text-yellow-500" />;
+        return <Clock className="h-4 w-4 text-yellow-500" aria-label="Pending" />;
     }
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container-app space-y-6">
       {onBack && (
-        <Button onClick={onBack} variant="outline" className="mb-4">
+        <Button onClick={onBack} variant="outline" className="mb-4" aria-label="Return to dashboard">
           ← Back to Dashboard
         </Button>
       )}
 
       <div className="flex items-center gap-2 mb-6">
-        <FileText className="h-6 w-6 text-primary" />
+        <FileText className="h-6 w-6 text-primary" aria-hidden="true" />
         <h1 className="text-3xl font-bold text-foreground">Document Generation Engine</h1>
       </div>
 
+      {error && (
+        <Alert variant="destructive" role="alert">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Document Selection */}
-        <Card>
+        <Card className="card-enhanced">
           <CardHeader>
             <CardTitle>Select Document Types</CardTitle>
             <CardDescription>Choose which documents to generate for this case</CardDescription>
@@ -212,13 +244,16 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
                   id={option.value}
                   checked={selectedDocuments.includes(option.value)}
                   onChange={() => handleDocumentSelection(option.value)}
-                  className="mt-1"
+                  className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                  aria-describedby={`${option.value}-description`}
                 />
                 <div className="flex-1">
                   <Label htmlFor={option.value} className="font-medium cursor-pointer">
                     {option.label}
                   </Label>
-                  <p className="text-sm text-muted-foreground">{option.description}</p>
+                  <p id={`${option.value}-description`} className="text-sm text-muted-foreground">
+                    {option.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -226,35 +261,51 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
         </Card>
 
         {/* Provider Selection */}
-        <Card>
+        <Card className="card-enhanced">
           <CardHeader>
             <CardTitle>Select Healthcare Providers</CardTitle>
             <CardDescription>Choose providers for record requests</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {mockProviders.map((provider) => (
-              <div key={provider.id} className="flex items-start space-x-3">
-                <input
-                  type="checkbox"
-                  id={provider.id}
-                  checked={selectedProviders.includes(provider.id)}
-                  onChange={() => handleProviderSelection(provider.id)}
-                  className="mt-1"
-                />
-                <div className="flex-1">
-                  <Label htmlFor={provider.id} className="font-medium cursor-pointer">
-                    {provider.name}
-                  </Label>
-                  <p className="text-sm text-muted-foreground">{provider.specialty}</p>
+            {mockProviders.length > 0 ? (
+              mockProviders.map((provider) => (
+                <div key={provider.id} className="flex items-start space-x-3">
+                  <input
+                    type="checkbox"
+                    id={provider.id}
+                    checked={selectedProviders.includes(provider.id)}
+                    onChange={() => handleProviderSelection(provider.id)}
+                    className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    aria-describedby={`${provider.id}-description`}
+                  />
+                  <div className="flex-1">
+                    <Label htmlFor={provider.id} className="font-medium cursor-pointer">
+                      {provider.name}
+                    </Label>
+                    <p id={`${provider.id}-description`} className="text-sm text-muted-foreground">
+                      {provider.specialty}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <EmptyState 
+                title="No providers available"
+                description="Add healthcare providers to enable document generation"
+                action={
+                  <Button variant="outline" size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Provider
+                  </Button>
+                }
+              />
+            )}
           </CardContent>
         </Card>
       </div>
 
       {/* Additional Data */}
-      <Card>
+      <Card className="card-enhanced">
         <CardHeader>
           <CardTitle>Additional Information</CardTitle>
           <CardDescription>Provide any additional details for document customization</CardDescription>
@@ -267,7 +318,11 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
               placeholder="$25.00"
               value={additionalData.feeAmount || ''}
               onChange={(e) => setAdditionalData(prev => ({ ...prev, feeAmount: e.target.value }))}
+              aria-describedby="feeAmount-help"
             />
+            <p id="feeAmount-help" className="text-xs text-muted-foreground mt-1">
+              Standard processing fee for medical records
+            </p>
           </div>
           <div>
             <Label htmlFor="originalRequestDate">Original Request Date</Label>
@@ -276,7 +331,11 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
               type="date"
               value={additionalData.originalRequestDate || ''}
               onChange={(e) => setAdditionalData(prev => ({ ...prev, originalRequestDate: e.target.value }))}
+              aria-describedby="requestDate-help"
             />
+            <p id="requestDate-help" className="text-xs text-muted-foreground mt-1">
+              Date of initial record request
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -287,11 +346,13 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
           onClick={handleBatchGeneration}
           disabled={selectedDocuments.length === 0 || isGenerating}
           size="lg"
-          className="w-full md:w-auto"
+          className="btn-primary w-full md:w-auto min-h-[44px]"
+          aria-busy={isGenerating}
+          aria-describedby="generate-help"
         >
           {isGenerating ? (
             <>
-              <Clock className="mr-2 h-4 w-4 animate-spin" />
+              <LoadingSpinner size="sm" className="mr-2" />
               Generating Documents...
             </>
           ) : (
@@ -302,10 +363,13 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
           )}
         </Button>
       </div>
+      <p id="generate-help" className="text-center text-xs text-muted-foreground">
+        Select document types and providers above to generate legal documents
+      </p>
 
       {/* Generated Documents */}
       {generatedDocuments.length > 0 && (
-        <Card>
+        <Card className="card-enhanced">
           <CardHeader>
             <CardTitle>Generated Documents</CardTitle>
             <CardDescription>Download, preview, or manage your generated documents</CardDescription>
@@ -313,7 +377,7 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
           <CardContent>
             <div className="space-y-4">
               {generatedDocuments.map((doc) => (
-                <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/50 transition-colors">
                   <div className="flex items-center gap-3">
                     {getStatusIcon(doc.status)}
                     <div>
@@ -328,6 +392,8 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
                       variant="outline"
                       size="sm"
                       onClick={() => setPreviewDocument(doc)}
+                      className="min-h-[44px] min-w-[44px]"
+                      aria-label={`Preview ${documentTypeOptions.find(opt => opt.value === doc.type)?.label}`}
                     >
                       <Eye className="h-4 w-4" />
                     </Button>
@@ -335,10 +401,17 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
                       variant="outline"
                       size="sm"
                       onClick={() => handleDownload(doc)}
+                      disabled={downloadingDoc === doc.id}
+                      className="min-h-[44px] min-w-[44px]"
+                      aria-label={`Download ${documentTypeOptions.find(opt => opt.value === doc.type)?.label}`}
                     >
-                      <Download className="h-4 w-4" />
+                      {downloadingDoc === doc.id ? (
+                        <LoadingSpinner size="sm" />
+                      ) : (
+                        <Download className="h-4 w-4" />
+                      )}
                     </Button>
-                    <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center" aria-label="QR Code">
                       <QrCode className="h-4 w-4" />
                     </div>
                   </div>
@@ -351,18 +424,18 @@ export function DocumentGeneration({ onBack }: DocumentGenerationProps) {
 
       {/* Document Preview Modal */}
       {previewDocument && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="preview-title">
           <div className="bg-card rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
             <div className="p-6 border-b">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Document Preview</h2>
-                <Button variant="outline" onClick={() => setPreviewDocument(null)}>
+                <h2 id="preview-title" className="text-xl font-semibold">Document Preview</h2>
+                <Button variant="outline" onClick={() => setPreviewDocument(null)} aria-label="Close preview">
                   Close
                 </Button>
               </div>
             </div>
             <div className="p-6 overflow-y-auto max-h-[60vh]">
-              <pre className="whitespace-pre-wrap text-sm font-mono bg-muted p-4 rounded">
+              <pre className="whitespace-pre-wrap text-sm font-mono bg-muted p-4 rounded" aria-label="Document content">
                 {previewDocument.content}
               </pre>
             </div>
