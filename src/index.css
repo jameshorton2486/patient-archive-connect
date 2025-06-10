@@ -6,89 +6,49 @@
 
 @layer base {
   :root {
-    /* Linear-inspired color system with darker blue */
-    --background: 210 20% 98%;
+    /* Default color system - neutral palette */
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 217 91% 60%; /* Dark blue instead of purple */
+    --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 84% 4.9%;
     --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 200 95% 88%; /* Changed from teal to light blue */
-    --accent-foreground: 217 91% 30%; /* Dark blue text for contrast */
-    --accent-medical: 217 91% 60%; /* Dark blue instead of purple */
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 217 91% 60%; /* Dark blue instead of purple */
-    --radius: 1rem;
-    
-    /* Success and error colors */
-    --success-600: 142 71% 45%;
-    --error-500: 0 84% 60%;
-    --error-600: 0 84% 55%;
-    
-    /* Container and spacing utilities */
-    --container-linear: 1200px;
-    --spacing-linear: 1.5rem;
-    
-    /* Blue gradient background variables */
-    --bg-gradient-from: 219 78% 95%;
-    --bg-gradient-to: 217 91% 85%;
-    
-    /* Sidebar colors - darker blue theme matching reference */
-    --sidebar-background: 214 95% 15%; /* Much darker blue to match reference */
-    --sidebar-foreground: 210 40% 98%; /* White text */
-    --sidebar-primary: 217 91% 60%; /* Blue accent */
-    --sidebar-primary-foreground: 210 40% 98%; /* White text on blue */
-    --sidebar-accent: 214 95% 20%; /* Slightly lighter blue for hover */
-    --sidebar-accent-foreground: 210 40% 98%; /* White text on hover */
-    --sidebar-border: 214 95% 20%; /* Darker blue border */
-    --sidebar-ring: 217 91% 60%; /* Blue focus ring */
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 217 19% 9%;
+    --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 217 19% 11%;
+    --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 217 19% 11%;
+    --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%; /* Dark blue instead of purple */
-    --primary-foreground: 217 19% 9%;
-    --secondary: 217 19% 15%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217 19% 15%;
+    --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217 91% 25%; /* Dark blue accent for dark mode */
+    --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-    --accent-medical: 217 91% 60%; /* Dark blue instead of purple */
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217 19% 18%;
-    --input: 217 19% 18%;
-    --ring: 217 91% 60%; /* Dark blue instead of purple */
-    
-    /* Success and error colors for dark mode */
-    --success-600: 142 71% 45%;
-    --error-500: 0 84% 60%;
-    --error-600: 0 84% 55%;
-    
-    /* Sidebar colors for dark mode - even darker blue matching reference */
-    --sidebar-background: 214 95% 12%; /* Even darker blue background */
-    --sidebar-foreground: 210 40% 98%; /* White text */
-    --sidebar-primary: 217 91% 60%; /* Blue accent */
-    --sidebar-primary-foreground: 210 40% 98%; /* White text on blue */
-    --sidebar-accent: 214 95% 17%; /* Darker blue for hover */
-    --sidebar-accent-foreground: 210 40% 98%; /* White text on hover */
-    --sidebar-border: 214 95% 17%; /* Darker blue border */
-    --sidebar-ring: 217 91% 60%; /* Blue focus ring */
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
   }
 }
 
@@ -97,61 +57,7 @@
     @apply border-border;
   }
   body {
-    @apply text-foreground font-sans;
-    /* Blue gradient background for light mode, solid dark background for dark mode */
-    background: linear-gradient(135deg, hsl(var(--bg-gradient-from)), hsl(var(--bg-gradient-to)));
-    transition: background-color 0.2s ease, color 0.2s ease;
+    @apply bg-background text-foreground;
+    font-family: "Inter", sans-serif;
   }
-  
-  .dark body {
-    background: hsl(var(--background));
-  }
-}
-
-@layer utilities {
-  .container-linear {
-    max-width: var(--container-linear);
-    margin: 0 auto;
-    padding: 0 var(--spacing-linear);
-  }
-  
-  .responsive-padding {
-    @apply px-4 md:px-6 lg:px-8;
-  }
-  
-  .animate-linear-fade-in {
-    animation: linear-fade-in 0.3s ease-out;
-  }
-  
-  .shadow-linear {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  }
-  
-  .shadow-linear-lg {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  
-  .bg-blue-gradient {
-    background: linear-gradient(135deg, hsl(var(--bg-gradient-from)), hsl(var(--bg-gradient-to)));
-  }
-  
-  .dark .bg-blue-gradient {
-    background: hsl(var(--background));
-  }
-}
-
-@keyframes linear-fade-in {
-  0% {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Form focus states */
-.focus-ring {
-  @apply focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200;
 }

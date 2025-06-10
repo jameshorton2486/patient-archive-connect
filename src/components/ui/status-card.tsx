@@ -20,17 +20,17 @@ interface StatusOverviewProps {
 export function StatusOverview({ title, items, className, style }: StatusOverviewProps) {
   const getStatusStyles = (status: string) => {
     const statusConfig = {
-      completed: { dot: 'bg-green-500', text: 'text-green-400' },
-      pending: { dot: 'bg-amber-500', text: 'text-amber-400' },
-      failed: { dot: 'bg-red-500', text: 'text-red-400' }
+      completed: { dot: 'bg-green-500', text: 'text-green-600' },
+      pending: { dot: 'bg-yellow-500', text: 'text-yellow-600' },
+      failed: { dot: 'bg-red-500', text: 'text-red-600' }
     };
     return statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
   };
 
   return (
-    <Card className={cn('bg-sidebar border-sidebar-border', className)} style={style}>
+    <Card className={cn('', className)} style={style}>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-white">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -39,14 +39,14 @@ export function StatusOverview({ title, items, className, style }: StatusOvervie
             return (
               <div 
                 key={index} 
-                className="flex items-center justify-between p-3 rounded-lg bg-sidebar-accent border border-sidebar-border"
+                className="flex items-center justify-between p-3 rounded-lg border"
               >
                 <div className="flex items-center gap-3">
                   <div className={cn('w-3 h-3 rounded-full', styles.dot)} aria-hidden="true" />
-                  <span className="text-sm font-medium text-white">{item.label}</span>
+                  <span className="text-sm font-medium">{item.label}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-white">{item.count}</span>
+                  <span className="text-sm font-bold">{item.count}</span>
                   <span className={cn('text-xs font-medium', styles.text)}>
                     {item.percentage}%
                   </span>

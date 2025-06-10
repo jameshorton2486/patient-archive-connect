@@ -27,42 +27,32 @@ export function MetricCard({
   className,
   style
 }: MetricCardProps) {
-  const colorClasses = {
-    blue: 'text-blue-400 bg-sidebar-accent border-sidebar-border',
-    green: 'text-green-400 bg-sidebar-accent border-sidebar-border',
-    amber: 'text-amber-400 bg-sidebar-accent border-sidebar-border',
-    red: 'text-red-400 bg-sidebar-accent border-sidebar-border'
-  };
-
   return (
-    <Card className={cn('hover:shadow-lg transition-shadow duration-200', className)} style={style}>
+    <Card className={cn('hover:shadow-md transition-shadow duration-200', className)} style={style}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-white/70 mb-1">{title}</p>
-            <p className="text-3xl font-bold text-white">{value}</p>
+            <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
+            <p className="text-3xl font-bold">{value}</p>
             {trendValue && (
               <div className="flex items-center gap-1 mt-2">
-                {trend === 'up' && <TrendingUp className="h-3 w-3 text-green-400" aria-hidden="true" />}
-                {trend === 'down' && <TrendingDown className="h-3 w-3 text-red-400" aria-hidden="true" />}
+                {trend === 'up' && <TrendingUp className="h-3 w-3 text-green-600" aria-hidden="true" />}
+                {trend === 'down' && <TrendingDown className="h-3 w-3 text-red-600" aria-hidden="true" />}
                 <span className={cn(
                   "text-sm font-medium",
-                  trend === 'up' && 'text-green-400',
-                  trend === 'down' && 'text-red-400',
-                  trend === 'neutral' && 'text-white/70'
+                  trend === 'up' && 'text-green-600',
+                  trend === 'down' && 'text-red-600',
+                  trend === 'neutral' && 'text-muted-foreground'
                 )}>
                   {trendValue}
                 </span>
                 {description && (
-                  <span className="text-sm text-white/50 ml-1">{description}</span>
+                  <span className="text-sm text-muted-foreground ml-1">{description}</span>
                 )}
               </div>
             )}
           </div>
-          <div className={cn(
-            'flex h-12 w-12 items-center justify-center rounded-lg border',
-            colorClasses[color]
-          )}>
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg border">
             <Icon className="h-6 w-6" aria-hidden="true" />
           </div>
         </div>
