@@ -1,10 +1,5 @@
 
-import { 
-  DeliveryMethod, 
-  DeliveryAttempt, 
-  DeliveryTracking,
-  GeneratedDocument 
-} from '@/types/document';
+import { DeliveryMethod, DeliveryAttempt, DeliveryTracking } from '@/types/document';
 
 export class DeliveryService {
   private static instance: DeliveryService;
@@ -16,140 +11,87 @@ export class DeliveryService {
     return DeliveryService.instance;
   }
 
-  async getDeliveryMethods(): Promise<DeliveryMethod[]> {
+  getAvailableMethods(): DeliveryMethod[] {
     return [
       {
-        id: 'usps_certified',
+        id: 'email',
+        name: 'Email',
+        type: 'email',
+        enabled: true,
+        cost: 0,
+        estimatedDeliveryTime: 'Instant',
+        reliabilityScore: 0.95,
+        configuration: {},
+        hipaaCompliant: true
+      },
+      {
+        id: 'fax',
+        name: 'Fax',
+        type: 'fax',
+        enabled: true,
+        cost: 1.50,
+        estimatedDeliveryTime: '5-10 minutes',
+        reliabilityScore: 0.90,
+        configuration: {},
+        hipaaCompliant: true
+      },
+      {
+        id: 'usps',
         name: 'USPS Certified Mail',
         type: 'usps',
         enabled: true,
         cost: 8.50,
         estimatedDeliveryTime: '3-5 business days',
-        reliabilityScore: 0.95,
-        configuration: {
-          serviceType: 'certified',
-          returnReceipt: true
-        },
-        hipaaCompliant: true
-      },
-      {
-        id: 'secure_fax',
-        name: 'Secure Fax',
-        type: 'fax',
-        enabled: true,
-        cost: 2.50,
-        estimatedDeliveryTime: 'Immediate',
-        reliabilityScore: 0.88,
-        configuration: {
-          encryption: true,
-          deliveryConfirmation: true
-        },
-        hipaaCompliant: true
-      },
-      {
-        id: 'hipaa_email',
-        name: 'HIPAA-Compliant Email',
-        type: 'email',
-        enabled: true,
-        cost: 1.00,
-        estimatedDeliveryTime: 'Immediate',
-        reliabilityScore: 0.92,
-        configuration: {
-          encryption: 'end-to-end',
-          readReceipt: true
-        },
-        hipaaCompliant: true
-      },
-      {
-        id: 'portal_upload',
-        name: 'Provider Portal',
-        type: 'portal',
-        enabled: false,
-        cost: 0.50,
-        estimatedDeliveryTime: 'Immediate',
         reliabilityScore: 0.98,
-        configuration: {
-          autoNotification: true
-        },
+        configuration: {},
         hipaaCompliant: true
       }
     ];
   }
 
-  async sendDocument(documentId: string, providerId: string, methodId: string): Promise<DeliveryAttempt> {
-    console.log(`Sending document ${documentId} to provider ${providerId} via ${methodId}`);
-    
+  getActiveDeliveries(): DeliveryAttempt[] {
+    return [
+      {
+        id: 'del_001',
+        documentId: 'doc_001',
+        methodId: 'email',
+        providerId: 'prov_001',
+        sentAt: new Date().toISOString(),
+        status: 'delivered',
+        retryCount: 0,
+        cost: 0
+      }
+    ];
+  }
+
+  getDeliveryStatistics() {
+    return {
+      totalDeliveries: 156,
+      successRate: 0.94,
+      avgDeliveryTime: '2.3 hours',
+      costSavings: '$1,250'
+    };
+  }
+
+  initiateDelivery(documentId: string, methodId: string, providerId: string): Promise<DeliveryAttempt> {
     const attempt: DeliveryAttempt = {
-      id: `attempt_${Date.now()}`,
+      id: `del_${Date.now()}`,
       documentId,
       methodId,
       providerId,
       sentAt: new Date().toISOString(),
       status: 'sending',
-      retryCount: 0
+      retryCount: 0,
+      cost: this.getAvailableMethods().find(m => m.id === methodId)?.cost || 0
     };
 
-    // Simulate sending process
+    // Simulate delivery process
     setTimeout(() => {
-      attempt.status = Math.random() > 0.1 ? 'delivered' : 'failed';
-      if (attempt.status === 'delivered') {
-        attempt.deliveredAt = new Date().toISOString();
-        attempt.trackingNumber = `TRK${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-      } else {
-        attempt.errorMessage = 'Provider fax line busy';
-      }
+      attempt.status = 'delivered';
+      attempt.deliveredAt = new Date().toISOString();
     }, 2000);
 
-    return attempt;
-  }
-
-  async retryFailedDelivery(attemptId: string): Promise<DeliveryAttempt> {
-    console.log(`Retrying failed delivery: ${attemptId}`);
-    
-    // Mock retry logic
-    const retryAttempt: DeliveryAttempt = {
-      id: `retry_${Date.now()}`,
-      documentId: 'doc_123',
-      methodId: 'secure_fax',
-      providerId: 'provider_123',
-      sentAt: new Date().toISOString(),
-      status: 'sending',
-      retryCount: 1
-    };
-
-    return retryAttempt;
-  }
-
-  async getDeliveryHistory(documentId: string): Promise<DeliveryAttempt[]> {
-    // Mock delivery history
-    return [
-      {
-        id: 'attempt_1',
-        documentId,
-        methodId: 'secure_fax',
-        providerId: 'provider_123',
-        sentAt: new Date(Date.now() - 86400000).toISOString(),
-        deliveredAt: new Date(Date.now() - 86000000).toISOString(),
-        status: 'delivered',
-        trackingNumber: 'TRK123456789',
-        retryCount: 0,
-        cost: 2.50
-      }
-    ];
-  }
-
-  async trackDelivery(trackingNumber: string): Promise<DeliveryTracking[]> {
-    // Mock tracking information
-    return [
-      {
-        id: 'track_1',
-        deliveryAttemptId: 'attempt_1',
-        status: 'Delivered',
-        timestamp: new Date().toISOString(),
-        location: 'Provider Office',
-        notes: 'Signed by medical records department'
-      }
-    ];
+    return Promise.resolve(attempt);
   }
 }
 
