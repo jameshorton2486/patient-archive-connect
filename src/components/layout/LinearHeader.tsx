@@ -1,0 +1,82 @@
+
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Menu, FileText, Bell, Search, Settings } from "lucide-react";
+
+interface LinearHeaderProps {
+  activeView: string;
+  onToggleSidebar: () => void;
+}
+
+const viewTitles: Record<string, string> = {
+  'dashboard': 'Dashboard',
+  'client-intake': 'Client Intake',
+  'intelligent-intake': 'Smart Intake',
+  'secure-intake': 'Secure Form',
+  'patient-list': 'Patients',
+  'provider-list': 'Providers',
+  'medical-records': 'Medical Records',
+  'appointments': 'Appointments',
+  'document-generation': 'Documents',
+  'automated-generator': 'Auto Generate',
+  'ai-processing': 'AI Processing',
+  'document-distribution': 'Distribution',
+  'deadline-management': 'Deadlines',
+  'denial-management': 'Denials',
+  'predictive-analytics': 'Analytics',
+  'integration-ecosystem': 'Integrations'
+};
+
+export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps) {
+  const currentTitle = viewTitles[activeView] || 'Patient Archive Connect';
+
+  return (
+    <header className="h-header bg-background border-b border-border shadow-sm flex items-center justify-between px-6">
+      {/* Left Side - Mobile Menu & Breadcrumbs */}
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onToggleSidebar}
+          className="lg:hidden p-2"
+          aria-label="Toggle menu"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+        
+        <div className="flex items-center space-x-2">
+          <div className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground">
+            <FileText className="h-4 w-4" />
+            <span>/</span>
+            <span className="font-medium text-foreground">{currentTitle}</span>
+          </div>
+          <div className="sm:hidden">
+            <h1 className="text-lg font-semibold text-foreground">{currentTitle}</h1>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Actions */}
+      <div className="flex items-center space-x-3">
+        <Button variant="ghost" size="sm" className="relative p-2" aria-label="Search">
+          <Search className="h-4 w-4" />
+        </Button>
+        
+        <Button variant="ghost" size="sm" className="relative p-2" aria-label="Notifications">
+          <Bell className="h-4 w-4" />
+          <Badge 
+            variant="secondary" 
+            className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs badge-error"
+          >
+            3
+          </Badge>
+        </Button>
+        
+        <Button variant="ghost" size="sm" className="p-2" aria-label="Settings">
+          <Settings className="h-4 w-4" />
+        </Button>
+      </div>
+    </header>
+  );
+}
