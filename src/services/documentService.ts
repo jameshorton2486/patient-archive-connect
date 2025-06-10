@@ -78,6 +78,7 @@ export class DocumentService {
       
       // Firm information
       firmName: firmBranding?.firmName || 'Your Law Firm',
+      firmAddress: firmBranding ? `${firmBranding.address.street}, ${firmBranding.address.city}, ${firmBranding.address.state} ${firmBranding.address.zipCode}` : '',
       firmPhone: firmBranding?.phone || '',
       firmLetterhead: this.generateLetterhead(firmBranding),
       attorneyName: firmBranding?.firmName || 'Attorney Name',
@@ -97,6 +98,13 @@ export class DocumentService {
       state: clientData.address?.state || '',
       county: 'County Name', // This would come from address lookup
       responseTimeFrame: '30', // State-specific requirement
+      
+      // Fee and payment information
+      feeAmount: providerData?.treatmentInfo?.estimatedRecordsCost?.toString() || '25.00',
+      
+      // Follow-up dates
+      followUpDate: new Date().toLocaleDateString(),
+      originalRequestDate: new Date().toLocaleDateString(),
       
       // Additional variables
       ...additionalData
