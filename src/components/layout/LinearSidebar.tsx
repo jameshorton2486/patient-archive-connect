@@ -86,14 +86,14 @@ export function LinearSidebar({
 
   return (
     <div className={cn(
-      "flex flex-col bg-sidebar border-r border-sidebar-border shadow-lg transition-all duration-300",
+      "flex flex-col bg-sidebar border-r border-sidebar-border shadow-lg transition-all duration-300 animate-fade-in",
       collapsed ? "w-16" : "w-sidebar"
     )}>
       {/* Logo/Header */}
       <div className="flex h-header items-center justify-between px-4 border-b border-sidebar-border">
         {!collapsed && (
-          <div className="flex items-center space-x-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary">
+          <div className="flex items-center space-x-3 animate-fade-in">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary transition-transform duration-200 hover:scale-110">
               <FileText className="h-5 w-5 text-sidebar-primary-foreground" />
             </div>
             <div>
@@ -106,7 +106,7 @@ export function LinearSidebar({
           variant="ghost"
           size="sm"
           onClick={onToggleCollapse}
-          className="text-sidebar-foreground hover:bg-sidebar-accent p-1.5"
+          className="text-sidebar-foreground hover:bg-sidebar-accent p-1.5 transition-all duration-200 hover:scale-105"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -115,8 +115,8 @@ export function LinearSidebar({
 
       {/* User Info */}
       {!collapsed && (
-        <div className="flex items-center px-4 py-4 border-b border-sidebar-border bg-sidebar-accent/50">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sidebar-primary/20">
+        <div className="flex items-center px-4 py-4 border-b border-sidebar-border bg-sidebar-accent/50 animate-slide-up">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sidebar-primary/20 transition-transform duration-200 hover:scale-110">
             <UserCheck className="h-4 w-4 text-sidebar-primary" />
           </div>
           <div className="ml-3 flex-1 min-w-0">
@@ -127,8 +127,8 @@ export function LinearSidebar({
       )}
       
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-4">
-        {menuSections.map((section) => (
+      <nav className="flex-1 overflow-y-auto py-4" role="navigation" aria-label="Main navigation">
+        {menuSections.map((section, sectionIndex) => (
           <div key={section.title} className="mb-6">
             {!collapsed && (
               <h3 className="mb-2 px-4 text-xs font-semibold text-sidebar-foreground/50 uppercase tracking-wider">
@@ -136,7 +136,7 @@ export function LinearSidebar({
               </h3>
             )}
             <div className="space-y-1 px-2">
-              {section.items.map((item) => {
+              {section.items.map((item, itemIndex) => {
                 const Icon = item.icon;
                 const isActive = activeView === item.id;
                 return (
@@ -144,16 +144,18 @@ export function LinearSidebar({
                     key={item.id}
                     variant="ghost"
                     className={cn(
-                      "w-full justify-start h-10 text-sm font-medium transition-all duration-200",
+                      "w-full justify-start h-10 text-sm font-medium transition-all duration-200 animate-fade-in",
                       collapsed ? "px-2" : "px-3",
                       isActive
-                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm hover:bg-sidebar-primary/90"
-                        : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm hover:bg-sidebar-primary/90 scale-in"
+                        : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:scale-105"
                     )}
                     onClick={() => onViewChange(item.id)}
                     title={collapsed ? item.label : undefined}
+                    aria-current={isActive ? "page" : undefined}
+                    style={{ animationDelay: `${(sectionIndex * 100) + (itemIndex * 50)}ms` }}
                   >
-                    <Icon className={cn("h-4 w-4 flex-shrink-0", !collapsed && "mr-3")} />
+                    <Icon className={cn("h-4 w-4 flex-shrink-0", !collapsed && "mr-3")} aria-hidden="true" />
                     {!collapsed && (
                       <>
                         <span className="flex-1 text-left truncate">{item.label}</span>
@@ -161,10 +163,10 @@ export function LinearSidebar({
                           <Badge 
                             variant="secondary" 
                             className={cn(
-                              "ml-2 text-xs h-5 px-1.5",
-                              item.badge === 'AI' && "badge-success",
-                              item.badge === 'NEW' && "badge-info",
-                              item.badge === 'PRO' && "badge-warning"
+                              "ml-2 text-xs h-5 px-1.5 transition-all duration-200",
+                              item.badge === 'AI' && "bg-success-100 text-success-800 border-success-200",
+                              item.badge === 'NEW' && "bg-info-100 text-info-800 border-info-200",
+                              item.badge === 'PRO' && "bg-warning-100 text-warning-800 border-warning-200"
                             )}
                           >
                             {item.badge}
@@ -186,12 +188,13 @@ export function LinearSidebar({
           variant="ghost"
           onClick={onLogout}
           className={cn(
-            "w-full justify-start h-10 text-sm font-medium text-sidebar-foreground/70 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200",
+            "w-full justify-start h-10 text-sm font-medium text-sidebar-foreground/70 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 hover:scale-105",
             collapsed ? "px-2" : "px-3"
           )}
           title={collapsed ? "Sign Out" : undefined}
+          aria-label="Sign out of application"
         >
-          <LogOut className={cn("h-4 w-4 flex-shrink-0", !collapsed && "mr-3")} />
+          <LogOut className={cn("h-4 w-4 flex-shrink-0", !collapsed && "mr-3")} aria-hidden="true" />
           {!collapsed && <span>Sign Out</span>}
         </Button>
       </div>
