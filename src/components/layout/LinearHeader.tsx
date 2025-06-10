@@ -32,7 +32,7 @@ export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps)
   const currentTitle = viewTitles[activeView] || 'Legal Records';
 
   return (
-    <header className="h-14 bg-background border-b border-border shadow-linear flex items-center justify-between px-6 sticky top-0 z-40">
+    <header className="h-14 bg-[var(--bg-primary)] border-b border-[var(--border-primary)] shadow-sm flex items-center justify-between px-6 sticky top-0 z-40">
       {/* Left Side - Mobile Menu & Breadcrumbs */}
       <div className="flex items-center space-x-4">
         <Button
@@ -46,13 +46,13 @@ export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps)
         </Button>
         
         <div className="flex items-center space-x-2">
-          <div className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground">
+          <div className="hidden sm:flex items-center space-x-2 text-sm text-[var(--text-secondary)]">
             <FileText className="h-4 w-4" />
             <span>/</span>
-            <span className="font-medium text-foreground">{currentTitle}</span>
+            <span className="font-medium text-[var(--text-primary)]">{currentTitle}</span>
           </div>
           <div className="sm:hidden">
-            <h1 className="text-lg font-semibold text-foreground">{currentTitle}</h1>
+            <h1 className="text-lg font-semibold text-[var(--text-primary)]">{currentTitle}</h1>
           </div>
         </div>
       </div>

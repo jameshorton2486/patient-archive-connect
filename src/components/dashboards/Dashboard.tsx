@@ -114,12 +114,12 @@ export function Dashboard() {
   const clearFilter = () => setStatusFilter(null);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 py-6 lg:py-8">
+    <div className="space-y-8">
       {/* Header Section */}
       <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">💼 Legal Dashboard</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">💼 Legal Dashboard</h1>
+          <p className="text-[var(--text-secondary)] mt-1">
             Welcome back! Here's what's happening with your cases today.
           </p>
         </div>
@@ -132,7 +132,7 @@ export function Dashboard() {
             <Calendar className="h-4 w-4 mr-2" />
             View Calendar
           </Button>
-          <Button size="sm" className="btn-primary min-h-[44px] w-full sm:w-auto">
+          <Button size="sm" className="btn-linear-primary min-h-[44px] w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             New Case
           </Button>
@@ -160,8 +160,8 @@ export function Dashboard() {
       {/* Main Content Grid - Responsive Layout */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activity with Status Filtering */}
-        <Card className="card-enhanced border border-border">
-          <CardHeader className="pb-4 border-b border-border">
+        <Card className="rounded-xl shadow-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+          <CardHeader className="pb-4 border-b border-[var(--border-primary)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
               <div>
                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
@@ -176,7 +176,7 @@ export function Dashboard() {
             </div>
             {statusFilter && (
               <div className="flex items-center gap-2 pt-2">
-                <span className="text-sm text-muted-foreground">Filtered by:</span>
+                <span className="text-sm text-[var(--text-secondary)]">Filtered by:</span>
                 <Badge variant="outline" className="cursor-pointer" onClick={clearFilter}>
                   {statusFilter} ✕
                 </Badge>
@@ -196,7 +196,7 @@ export function Dashboard() {
                   <div className="flex gap-1 mt-1 ml-3 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => handleStatusClick(activity.status)}
-                      className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded hover:bg-accent"
+                      className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-2 py-1 rounded hover:bg-accent"
                       aria-label={`Filter by ${activity.status} status`}
                     >
                       Filter by {activity.status}
@@ -209,8 +209,8 @@ export function Dashboard() {
         </Card>
 
         {/* Upcoming Deadlines */}
-        <Card className="card-enhanced border border-border">
-          <CardHeader className="pb-4 border-b border-border">
+        <Card className="rounded-xl shadow-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+          <CardHeader className="pb-4 border-b border-[var(--border-primary)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
               <div>
                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
@@ -243,8 +243,8 @@ export function Dashboard() {
 
       {/* Quick Actions - Enhanced Card Structure */}
       <section>
-        <Card className="card-enhanced border border-border">
-          <CardHeader className="border-b border-border">
+        <Card className="rounded-xl shadow-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+          <CardHeader className="border-b border-[var(--border-primary)]">
             <CardTitle className="text-lg font-semibold">⚡ Quick Actions</CardTitle>
             <CardDescription>Common tasks and shortcuts to streamline your workflow</CardDescription>
           </CardHeader>
@@ -257,7 +257,7 @@ export function Dashboard() {
                     key={index}
                     variant="outline"
                     onClick={action.action}
-                    className="h-auto flex-col py-6 px-4 space-y-3 min-h-[120px] hover:bg-accent/50 hover:shadow-lg transition-all duration-200 border border-border"
+                    className="h-auto flex-col py-6 px-4 space-y-3 min-h-[120px] hover:bg-accent/50 hover:shadow-lg transition-all duration-200 border border-[var(--border-primary)]"
                     aria-label={action.description}
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
@@ -265,7 +265,7 @@ export function Dashboard() {
                     </div>
                     <div className="text-center">
                       <span className="font-medium text-sm">{action.label}</span>
-                      <p className="text-xs text-muted-foreground mt-1">{action.description}</p>
+                      <p className="text-xs text-[var(--text-secondary)] mt-1">{action.description}</p>
                     </div>
                   </Button>
                 );

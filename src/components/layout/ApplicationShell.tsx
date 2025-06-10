@@ -21,7 +21,7 @@ export function ApplicationShell({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen flex w-full bg-background" data-theme="light">
+    <div className="min-h-screen flex w-full bg-[var(--bg-primary)]" data-theme="light">
       {/* Linear Sidebar - Fixed 256px width */}
       <LinearSidebar
         activeView={activeView}
@@ -41,7 +41,7 @@ export function ApplicationShell({
         />
 
         {/* Main Content with Linear constraints */}
-        <main className="flex-1 bg-background overflow-auto">
+        <main className="flex-1 bg-[var(--bg-primary)] overflow-auto">
           <div className="max-w-7xl mx-auto p-6 lg:p-8">
             <div className="animate-fade-in">
               {children}

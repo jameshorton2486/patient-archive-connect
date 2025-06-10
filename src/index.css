@@ -11,15 +11,14 @@
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* Light Mode Colors */
-    --primary-50: #f8fafc;
-    --primary-500: #64748b;
+    /* Light Mode Colors - Linear Style */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-primary: #e2e8f0;
     --accent-medical: #0ea5e9;
     --error-600: #dc2626;
-
-    --bg-primary: #ffffff;
-    --text-primary: #1e293b;
-    --border-primary: #e2e8f0;
 
     /* Linear Light Theme Colors - Updated to match Linear exactly */
     --background: 255 255 255;
@@ -69,7 +68,9 @@
   /* Dark Mode Override */
   :root[data-theme='dark'] {
     --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
     --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
     --border-primary: #334155;
     --accent-medical: #38bdf8;
 
@@ -147,19 +148,26 @@
 
   p {
     @apply text-sm leading-relaxed;
-    color: var(--primary-500);
+    color: var(--text-secondary);
   }
 }
 
 @layer components {
+  /* Linear Card Styles */
+  .card-linear {
+    @apply rounded-xl shadow-sm;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+  }
+
   /* Linear Button Styles */
   .btn-linear {
-    @apply inline-flex items-center justify-center rounded-linear px-3 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-50;
   }
 
   .btn-linear-primary {
     background-color: var(--accent-medical);
-    @apply btn-linear text-white hover:opacity-90 shadow-linear hover:shadow-linear-lg;
+    @apply btn-linear text-white hover:opacity-90 shadow-sm hover:shadow-md;
   }
 
   .btn-linear-secondary {
@@ -171,7 +179,7 @@
 
   .btn-linear-ghost {
     @apply btn-linear bg-transparent hover:bg-muted;
-    color: var(--primary-500);
+    color: var(--text-secondary);
   }
 
   /* Linear Input Styles */
@@ -179,7 +187,7 @@
     background-color: var(--bg-primary);
     border: 1px solid var(--border-primary);
     color: var(--text-primary);
-    @apply flex h-9 w-full rounded-linear px-3 py-1 text-sm shadow-linear transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply flex h-9 w-full rounded-md px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .input-linear:focus-visible {
@@ -187,33 +195,13 @@
     border-color: var(--accent-medical);
   }
 
-  /* Linear Card Styles */
-  .card-linear {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-primary);
-    @apply rounded-linear shadow-linear;
-  }
-
   /* Linear Navigation Item */
   .nav-item-linear {
-    @apply flex items-center gap-2 rounded-linear px-2 py-1.5 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground;
+    @apply flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground;
   }
 
   .nav-item-linear.active {
     @apply bg-accent text-accent-foreground;
-  }
-
-  /* Linear Sidebar Navigation */
-  .sidebar-nav-linear {
-    @apply flex items-center gap-3 rounded-linear px-3 py-2 text-sm font-medium transition-colors;
-  }
-
-  .sidebar-nav-linear:hover {
-    @apply bg-sidebar-accent text-sidebar-accent-foreground;
-  }
-
-  .sidebar-nav-linear.active {
-    @apply bg-sidebar-primary text-sidebar-primary-foreground;
   }
 
   /* Linear Form Field */
@@ -223,27 +211,7 @@
 
   .form-label-linear {
     @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
-  }
-
-  /* Linear Table Styles */
-  .table-linear {
-    @apply w-full border-collapse border-spacing-0 text-sm;
-  }
-
-  .table-linear th {
-    border-bottom: 1px solid var(--border-primary);
-    background-color: var(--primary-50);
-    @apply px-3 py-2 text-left font-medium;
-    color: var(--primary-500);
-  }
-
-  .table-linear td {
-    border-bottom: 1px solid var(--border-primary);
-    @apply px-3 py-2;
-  }
-
-  .table-linear tr:hover {
-    background-color: var(--primary-50);
+    color: var(--text-primary);
   }
 }
 
@@ -294,7 +262,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-500);
+  background: var(--text-secondary);
 }
 
 /* Linear focus styles */
