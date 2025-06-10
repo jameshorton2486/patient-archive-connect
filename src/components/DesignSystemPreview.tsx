@@ -143,7 +143,7 @@ export function DesignSystemPreview() {
                 <Input 
                   placeholder="Invalid input" 
                   error={true}
-                  className="bg-[var(--bg-primary)] border-red-500 rounded-md"
+                  className="bg-[var(--bg-primary)] border-[var(--error)] rounded-md"
                 />
               </div>
             </div>
@@ -182,19 +182,19 @@ export function DesignSystemPreview() {
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-[var(--text-secondary)]">Status Badges</h4>
               <div className="flex flex-wrap gap-2">
-                <Badge className="bg-green-100 text-green-800 border-green-200">
+                <Badge className="bg-[var(--success)]/10 text-[var(--success)] border-[var(--success)]/20">
                   <CheckCircle className="h-3 w-3 mr-1" />
                   Success
                 </Badge>
-                <Badge className="bg-red-100 text-red-800 border-red-200">
+                <Badge className="bg-[var(--error)]/10 text-[var(--error)] border-[var(--error)]/20">
                   <XCircle className="h-3 w-3 mr-1" />
                   Error
                 </Badge>
-                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                <Badge className="bg-[var(--warning)]/10 text-[var(--warning)] border-[var(--warning)]/20">
                   <AlertCircle className="h-3 w-3 mr-1" />
                   Warning
                 </Badge>
-                <Badge className="bg-blue-100 text-blue-800 border-blue-200">
+                <Badge className="bg-[var(--accent-medical)]/10 text-[var(--accent-medical)] border-[var(--accent-medical)]/20">
                   <Info className="h-3 w-3 mr-1" />
                   Info
                 </Badge>
@@ -210,10 +210,10 @@ export function DesignSystemPreview() {
                 <Badge variant="outline">
                   Legal
                 </Badge>
-                <Badge className="bg-purple-100 text-purple-800 border-purple-200">
+                <Badge className="bg-[var(--accent-secondary)]/10 text-[var(--accent-secondary)] border-[var(--accent-secondary)]/20">
                   AI Powered
                 </Badge>
-                <Badge className="bg-gray-100 text-gray-800 border-gray-200">
+                <Badge className="bg-[var(--bg-tertiary)] text-[var(--text-secondary)] border-[var(--border-secondary)]">
                   Pro Feature
                 </Badge>
               </div>
