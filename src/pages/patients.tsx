@@ -11,13 +11,13 @@ export default function PatientsPage() {
   };
 
   return (
-    <>
+    <div>
       <PageHeader 
         title={meta.title}
         description={meta.description}
         breadcrumb={meta.breadcrumb}
       />
       <PatientList onAddPatient={handleAddPatient} />
-    </>
+    </div>
   );
 }

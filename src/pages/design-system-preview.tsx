@@ -7,7 +7,7 @@ export default function DesignSystemPreviewPage() {
   const meta = ROUTE_META[ROUTES.designSystemPreview];
   
   return (
-    <>
+    <div>
       <PageHeader 
         title={meta.title}
         description={meta.description}
@@ -21,6 +21,6 @@ export default function DesignSystemPreviewPage() {
       </div>
       
       <DesignSystemPreview />
-    </>
+    </div>
   );
 }

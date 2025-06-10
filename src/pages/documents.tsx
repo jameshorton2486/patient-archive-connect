@@ -7,13 +7,13 @@ export default function DocumentsPage() {
   const meta = ROUTE_META[ROUTES.documents];
 
   return (
-    <>
+    <div>
       <PageHeader 
         title={meta.title}
         description={meta.description}
         breadcrumb={meta.breadcrumb}
       />
       <DocumentGeneration />
-    </>
+    </div>
   );
 }

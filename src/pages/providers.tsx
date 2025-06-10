@@ -11,13 +11,13 @@ export default function ProvidersPage() {
   };
 
   return (
-    <>
+    <div>
       <PageHeader 
         title={meta.title}
         description={meta.description}
         breadcrumb={meta.breadcrumb}
       />
       <ProviderList onAddProvider={handleAddProvider} />
-    </>
+    </div>
   );
 }
