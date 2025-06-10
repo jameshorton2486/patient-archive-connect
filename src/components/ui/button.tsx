@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -11,12 +10,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-accent-medical text-white hover:bg-accent-medical/90 shadow-sm hover:shadow-md focus:ring-accent-medical/20 px-6 py-3",
-        destructive: "bg-error-500 text-white hover:bg-error-600 shadow-sm hover:shadow-md focus:ring-error-500/20 px-6 py-3",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground px-6 py-3",
-        secondary: "bg-transparent hover:bg-primary-100 text-primary-600 hover:text-primary-700 border border-primary-200 hover:border-primary-300 px-6 py-3",
-        ghost: "bg-transparent hover:bg-primary-50 text-primary-500 hover:text-primary-600 px-4 py-2",
-        link: "text-primary underline-offset-4 hover:underline px-4 py-2",
+        default: "bg-[var(--accent-medical)] text-white hover:bg-[var(--accent-medical)]/90 shadow-sm hover:shadow-md focus:ring-[var(--accent-medical)]/20 px-6 py-3",
+        destructive: "bg-[var(--error)] text-white hover:bg-[var(--error)]/90 shadow-sm hover:shadow-md focus:ring-[var(--error)]/20 px-6 py-3",
+        outline: "border border-[var(--border-primary)] bg-[var(--bg-primary)] hover:bg-[var(--bg-secondary)] text-[var(--text-primary)] px-6 py-3",
+        secondary: "bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--border-primary)] hover:border-[var(--border-secondary)] px-6 py-3",
+        ghost: "bg-transparent hover:bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-4 py-2",
+        link: "text-[var(--accent-medical)] underline-offset-4 hover:underline px-4 py-2",
       },
       size: {
         default: "h-10 px-6 py-3",
