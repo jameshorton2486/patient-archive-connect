@@ -94,39 +94,39 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 lg:space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="mt-1 text-sm text-gray-500">
             Welcome back! Here's what's happening with your cases today.
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 flex space-x-3">
-          <Button variant="outline" size="sm">
+        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
+          <Button variant="outline" size="sm" className="min-h-[44px] w-full sm:w-auto">
             <Calendar className="h-4 w-4 mr-2" />
             View Calendar
           </Button>
-          <Button size="sm">
+          <Button size="sm" className="min-h-[44px] w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             New Case
           </Button>
         </div>
       </div>
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Metrics Grid - Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {metrics.map((metric) => {
           const Icon = metric.icon;
           return (
             <Card key={metric.title} className="hover:shadow-md transition-shadow duration-200">
-              <CardContent className="p-6">
+              <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
                     <p className="text-sm font-medium text-gray-600">{metric.title}</p>
                     <div className="flex items-baseline space-x-2">
-                      <p className="text-3xl font-bold text-gray-900">{metric.value}</p>
+                      <p className="text-2xl lg:text-3xl font-bold text-gray-900">{metric.value}</p>
                       <span className={`text-xs font-medium ${
                         metric.trend === 'up' ? 'text-green-600' : 'text-red-600'
                       }`}>
@@ -134,8 +134,8 @@ export function Dashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${metric.bgColor}`}>
-                    <Icon className={`h-6 w-6 ${metric.color}`} />
+                  <div className={`flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-lg ${metric.bgColor}`}>
+                    <Icon className={`h-5 w-5 lg:h-6 lg:w-6 ${metric.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -144,17 +144,17 @@ export function Dashboard() {
         })}
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Main Content Grid - Responsive */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {/* Recent Activity */}
         <Card>
           <CardHeader className="pb-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
               <div>
                 <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
                 <CardDescription>Latest case updates and actions</CardDescription>
               </div>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="min-h-[44px] w-full sm:w-auto">
                 View All
               </Button>
             </div>
@@ -162,21 +162,21 @@ export function Dashboard() {
           <CardContent>
             <div className="space-y-4">
               {recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                <div key={index} className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 py-3 border-b border-gray-100 last:border-0">
                   <div className="flex items-center space-x-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 flex-shrink-0">
                       <CheckCircle className="h-4 w-4 text-gray-600" />
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{activity.title}</p>
-                      <p className="text-xs text-gray-500">{activity.subtitle}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
+                      <p className="text-xs text-gray-500 truncate">{activity.subtitle}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-between sm:justify-end space-x-2 ml-11 sm:ml-0">
                     <Badge className={activity.statusColor} variant="secondary">
                       {activity.status}
                     </Badge>
-                    <span className="text-xs text-gray-500">{activity.time}</span>
+                    <span className="text-xs text-gray-500 whitespace-nowrap">{activity.time}</span>
                   </div>
                 </div>
               ))}
@@ -187,12 +187,12 @@ export function Dashboard() {
         {/* Upcoming Deadlines */}
         <Card>
           <CardHeader className="pb-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
               <div>
                 <CardTitle className="text-lg font-semibold">Upcoming Deadlines</CardTitle>
                 <CardDescription>Important dates and milestones</CardDescription>
               </div>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="min-h-[44px] w-full sm:w-auto">
                 <Clock className="h-4 w-4 mr-2" />
                 Manage
               </Button>
@@ -201,21 +201,21 @@ export function Dashboard() {
           <CardContent>
             <div className="space-y-4">
               {upcomingDeadlines.map((deadline, index) => (
-                <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                <div key={index} className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 py-3 border-b border-gray-100 last:border-0">
                   <div className="flex items-center space-x-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 flex-shrink-0">
                       <Calendar className="h-4 w-4 text-blue-600" />
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{deadline.title}</p>
-                      <p className="text-xs text-gray-500">{deadline.subtitle}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-gray-900 truncate">{deadline.title}</p>
+                      <p className="text-xs text-gray-500 truncate">{deadline.subtitle}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-between sm:justify-end space-x-2 ml-11 sm:ml-0">
                     <Badge className={deadline.statusColor} variant="secondary">
                       {deadline.status}
                     </Badge>
-                    <span className="text-xs font-medium text-gray-900">{deadline.date}</span>
+                    <span className="text-xs font-medium text-gray-900 whitespace-nowrap">{deadline.date}</span>
                   </div>
                 </div>
               ))}
@@ -224,7 +224,7 @@ export function Dashboard() {
         </Card>
       </div>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Responsive */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
@@ -232,19 +232,19 @@ export function Dashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2">
+            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
               <Users className="h-6 w-6" />
               <span>Add Client</span>
             </Button>
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2">
+            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
               <FileText className="h-6 w-6" />
               <span>Request Records</span>
             </Button>
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2">
+            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
               <Calendar className="h-6 w-6" />
               <span>Schedule Meeting</span>
             </Button>
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2">
+            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
               <TrendingUp className="h-6 w-6" />
               <span>View Reports</span>
             </Button>

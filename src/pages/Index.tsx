@@ -17,10 +17,7 @@ import { DenialManagement } from '@/components/DenialManagement';
 import { PredictiveAnalytics } from '@/components/PredictiveAnalytics';
 import { IntegrationEcosystem } from '@/components/IntegrationEcosystem';
 import { SecureIntakeForm } from '@/components/SecureIntakeForm';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { TopNav } from '@/components/layout/TopNav';
-import { Button } from '@/components/ui/button';
-import { LogOut } from 'lucide-react';
+import { ResponsiveNavigation } from '@/components/layout/ResponsiveNavigation';
 
 export default function Index() {
   const [user, setUser] = useState<string | null>(null);
@@ -100,39 +97,27 @@ export default function Index() {
   if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-        <LoginForm onLogin={handleLogin} />
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+          <LoginForm onLogin={handleLogin} />
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="flex h-screen">
-        {/* Sidebar */}
-        <div className="hidden lg:flex lg:w-64 lg:flex-col">
-          <Sidebar activeView={currentView} onViewChange={setCurrentView} user={user} onLogout={handleLogout} />
+      <ResponsiveNavigation 
+        activeView={currentView} 
+        onViewChange={setCurrentView} 
+        user={user} 
+        onLogout={handleLogout} 
+      />
+      
+      <main className="min-h-screen">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          {renderCurrentView()}
         </div>
-
-        {/* Main Content */}
-        <div className="flex flex-1 flex-col overflow-hidden">
-          {/* Top Navigation for Mobile */}
-          <div className="lg:hidden">
-            <TopNav 
-              activeView={currentView} 
-              onViewChange={setCurrentView} 
-              user={user} 
-              onLogout={handleLogout} 
-            />
-          </div>
-
-          {/* Main Content Area */}
-          <main className="flex-1 overflow-y-auto">
-            <div className="p-4 lg:p-8">
-              {renderCurrentView()}
-            </div>
-          </main>
-        </div>
-      </div>
+      </main>
     </div>
   );
 }
