@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { Dashboard } from '@/components/dashboards/Dashboard';
@@ -16,6 +17,10 @@ import { DenialManagement } from '@/components/DenialManagement';
 import { PredictiveAnalytics } from '@/components/PredictiveAnalytics';
 import { IntegrationEcosystem } from '@/components/IntegrationEcosystem';
 import { SecureIntakeForm } from '@/components/SecureIntakeForm';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { TopNav } from '@/components/layout/TopNav';
+import { Button } from '@/components/ui/button';
+import { LogOut } from 'lucide-react';
 
 export default function Index() {
   const [user, setUser] = useState<string | null>(null);
@@ -41,6 +46,11 @@ export default function Index() {
 
   const handleLogin = (role: string) => {
     setUser(role);
+    setCurrentView('dashboard');
+  };
+
+  const handleLogout = () => {
+    setUser(null);
     setCurrentView('dashboard');
   };
 
@@ -87,67 +97,42 @@ export default function Index() {
     }
   };
 
-  return (
-    <div>
-      {user ? (
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <button onClick={() => setCurrentView('dashboard')}>Dashboard</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('client-intake')}>Client Intake</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('intelligent-intake')}>Intelligent Intake</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('medical-records')}>Medical Records</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('provider-list')}>Provider List</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('patient-list')}>Patient List</button>
-              </li>
-               <li>
-                <button onClick={() => setCurrentView('appointments')}>Appointments</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('deadline-management')}>Deadline Management</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('document-generation')}>Document Generation</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('document-distribution')}>Document Distribution</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('ai-processing')}>AI Processing</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('automated-generator')}>Automated Generator</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('denial-management')}>Denial Management</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('predictive-analytics')}>Predictive Analytics</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('integration-ecosystem')}>Integration Ecosystem</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('secure-intake')}>Secure Intake Form</button>
-              </li>
-            </ul>
-          </nav>
-          <main>{renderCurrentView()}</main>
-        </div>
-      ) : (
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
         <LoginForm onLogin={handleLogin} />
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="flex h-screen">
+        {/* Sidebar */}
+        <div className="hidden lg:flex lg:w-64 lg:flex-col">
+          <Sidebar activeView={currentView} onViewChange={setCurrentView} user={user} onLogout={handleLogout} />
+        </div>
+
+        {/* Main Content */}
+        <div className="flex flex-1 flex-col overflow-hidden">
+          {/* Top Navigation for Mobile */}
+          <div className="lg:hidden">
+            <TopNav 
+              activeView={currentView} 
+              onViewChange={setCurrentView} 
+              user={user} 
+              onLogout={handleLogout} 
+            />
+          </div>
+
+          {/* Main Content Area */}
+          <main className="flex-1 overflow-y-auto">
+            <div className="p-4 lg:p-8">
+              {renderCurrentView()}
+            </div>
+          </main>
+        </div>
+      </div>
     </div>
   );
 }
