@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,10 +25,10 @@ export function MetricCard({
   color 
 }: MetricCardProps) {
   const colorClasses = {
-    blue: 'text-[var(--accent-medical)] bg-[var(--bg-secondary)] border-[var(--border-primary)]',
-    green: 'text-[var(--success)] bg-[var(--bg-secondary)] border-[var(--border-primary)]',
-    amber: 'text-[var(--warning)] bg-[var(--bg-secondary)] border-[var(--border-primary)]',
-    red: 'text-[var(--error)] bg-[var(--bg-secondary)] border-[var(--border-primary)]'
+    blue: 'text-primary bg-sidebar-accent border-sidebar-border',
+    green: 'text-green-400 bg-sidebar-accent border-sidebar-border',
+    amber: 'text-amber-400 bg-sidebar-accent border-sidebar-border',
+    red: 'text-red-400 bg-sidebar-accent border-sidebar-border'
   };
 
   return (
@@ -35,21 +36,21 @@ export function MetricCard({
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-[var(--text-secondary)]">{title}</p>
-            <p className="text-2xl font-bold text-[var(--text-primary)] mt-1">{value}</p>
+            <p className="text-sm font-medium text-sidebar-foreground/60">{title}</p>
+            <p className="text-2xl font-bold text-sidebar-foreground mt-1">{value}</p>
             <div className="flex items-center gap-1 mt-2">
               {trend === 'up' ? (
-                <TrendingUp className="h-3 w-3 text-[var(--success)]" />
+                <TrendingUp className="h-3 w-3 text-green-400" />
               ) : (
-                <TrendingDown className="h-3 w-3 text-[var(--error)]" />
+                <TrendingDown className="h-3 w-3 text-red-400" />
               )}
               <span className={cn(
                 "text-xs font-medium",
-                trend === 'up' ? 'text-[var(--success)]' : 'text-[var(--error)]'
+                trend === 'up' ? 'text-green-400' : 'text-red-400'
               )}>
                 {trendValue}
               </span>
-              <span className="text-xs text-[var(--text-muted)] ml-1">{description}</span>
+              <span className="text-xs text-sidebar-foreground/40 ml-1">{description}</span>
             </div>
           </div>
           <div className={cn(
@@ -80,15 +81,15 @@ export function ActivityItem({
   icon: Icon 
 }: ActivityItemProps) {
   return (
-    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors duration-200">
+    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors duration-200">
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-[var(--text-primary)] truncate">{title}</p>
-        <p className="text-xs text-[var(--text-secondary)] truncate">{subtitle}</p>
+        <p className="text-sm font-medium text-sidebar-foreground truncate">{title}</p>
+        <p className="text-xs text-sidebar-foreground/60 truncate">{subtitle}</p>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         <StatusBadge status={status} />
-        <span className="text-xs text-[var(--text-muted)]">{timestamp}</span>
-        {Icon && <Icon className="h-4 w-4 text-[var(--text-muted)]" />}
+        <span className="text-xs text-sidebar-foreground/40">{timestamp}</span>
+        {Icon && <Icon className="h-4 w-4 text-sidebar-foreground/40" />}
       </div>
     </div>
   );
