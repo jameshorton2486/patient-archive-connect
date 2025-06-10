@@ -14,11 +14,20 @@
     /* Light Mode Colors - Linear Style */
     --bg-primary: #ffffff;
     --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    
     --text-primary: #1e293b;
-    --text-secondary: #64748b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    
     --border-primary: #e2e8f0;
+    --border-secondary: #cbd5e1;
+    
     --accent-medical: #0ea5e9;
-    --error-600: #dc2626;
+    --accent-secondary: #8b5cf6;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --error: #ef4444;
 
     /* Linear Light Theme Colors - Updated to match Linear exactly */
     --background: 255 255 255;
@@ -46,9 +55,6 @@
     --muted: 249 250 251;
     --muted-foreground: 107 114 128;
 
-    /* Linear's clean background */
-    --tertiary: 249 250 251;
-
     /* Linear's minimal borders */
     --border: 226 232 240;
     --input: 226 232 240;
@@ -69,10 +75,20 @@
   :root[data-theme='dark'] {
     --bg-primary: #0f172a;
     --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    
     --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    
     --border-primary: #334155;
+    --border-secondary: #475569;
+    
     --accent-medical: #38bdf8;
+    --accent-secondary: #c084fc;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --error: #f87171;
 
     --background: 15 23 42;
     --foreground: 248 250 252;
@@ -94,8 +110,6 @@
 
     --accent: 23 23 23;
     --accent-foreground: 56 189 248;
-
-    --tertiary: 15 23 42;
 
     --border: 51 65 85;
     --input: 51 65 85;

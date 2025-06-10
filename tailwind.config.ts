@@ -1,3 +1,4 @@
+
 module.exports = {
   darkMode: ["class", '[data-theme="dark"]'],
   content: [
@@ -63,17 +64,17 @@ module.exports = {
         tertiary: 'hsl(var(--tertiary))',
         success: {
           50: '#f0fdf4',
-          500: '#22c55e',
+          500: 'var(--success)',
           600: '#16a34a',
         },
         error: {
           50: '#fef2f2',
-          500: '#ef4444',
+          500: 'var(--error)',
           600: '#dc2626',
         },
         warning: {
           50: '#fffbeb',
-          500: '#f59e0b',
+          500: 'var(--warning)',
           600: '#d97706',
         },
         info: {

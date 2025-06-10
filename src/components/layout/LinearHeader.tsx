@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Menu, FileText, Bell, Search, Settings } from "lucide-react";
+import { DarkModeToggle } from "../DarkModeToggle";
 
 interface LinearHeaderProps {
   activeView: string;
@@ -82,6 +83,8 @@ export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps)
             3
           </Badge>
         </Button>
+        
+        <DarkModeToggle />
         
         <Button 
           variant="ghost" 

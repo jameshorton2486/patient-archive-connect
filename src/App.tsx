@@ -27,6 +27,18 @@ function App() {
     console.log('Logout clicked');
   };
 
+  const handleGoBack = () => {
+    setActiveView('dashboard');
+  };
+
+  const handleAddPatient = () => {
+    console.log('Add patient clicked');
+  };
+
+  const handleAddProvider = () => {
+    console.log('Add provider clicked');
+  };
+
   const renderContent = () => {
     switch (activeView) {
       case 'dashboard':
@@ -34,15 +46,15 @@ function App() {
       case 'design-system':
         return <DesignSystemPreview />;
       case 'client-intake':
-        return <ClientIntake />;
+        return <ClientIntake onBack={handleGoBack} />;
       case 'intelligent-intake':
-        return <IntelligentClientIntake />;
+        return <IntelligentClientIntake onBack={handleGoBack} />;
       case 'secure-intake':
-        return <SecureIntakeForm />;
+        return <SecureIntakeForm onBack={handleGoBack} />;
       case 'patient-list':
-        return <PatientList />;
+        return <PatientList onAddPatient={handleAddPatient} />;
       case 'provider-list':
-        return <ProviderList />;
+        return <ProviderList onAddProvider={handleAddProvider} />;
       case 'medical-records':
         return <MedicalRecords />;
       case 'appointments':
