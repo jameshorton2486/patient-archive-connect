@@ -1,3 +1,4 @@
+
 export interface DocumentTemplate {
   id: string;
   name: string;
@@ -31,7 +32,16 @@ export type DocumentType =
   'follow-up-reminder' |
   'formal-follow-up' |
   'fee-payment' |
-  'final-demand';
+  'final-demand' |
+  'emergency_record' |
+  'specialist_notes' |
+  'lab_results' |
+  'imaging_report' |
+  'therapy_notes' |
+  'billing_statement' |
+  'insurance_correspondence' |
+  'prescription_record' |
+  'other';
 
 export interface QRCodeData {
   trackingId: string;
@@ -433,7 +443,16 @@ This is our final request before pursuing other legal remedies.
 
 {{firmName}}
 {{attorneyName}}, Attorney
-  `
+  `,
+  'emergency_record': '',
+  'specialist_notes': '',
+  'lab_results': '',
+  'imaging_report': '',
+  'therapy_notes': '',
+  'billing_statement': '',
+  'insurance_correspondence': '',
+  'prescription_record': '',
+  'other': ''
 };
 
 export interface Client {
@@ -547,17 +566,6 @@ export interface Document {
   uploadedBy: string;
 }
 
-export type DocumentType = 
-  | 'emergency_record'
-  | 'specialist_notes'
-  | 'lab_results'
-  | 'imaging_report'
-  | 'therapy_notes'
-  | 'billing_statement'
-  | 'insurance_correspondence'
-  | 'prescription_record'
-  | 'other';
-
 export interface ExtractedMedicalData {
   patientInfo: {
     name?: string;
@@ -582,7 +590,7 @@ export interface ExtractedMedicalData {
     totalCharges?: number;
     insurancePaid?: number;
     patientResponsibility?: number;
-    paymentAmount?: number; // This was likely the missing variable
+    paymentAmount?: number;
     balanceDue?: number;
     claimNumber?: string;
   };
