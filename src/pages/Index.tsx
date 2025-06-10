@@ -1,69 +1,160 @@
+import React, { useState } from 'react';
+import { LoginForm } from '@/components/auth/LoginForm';
+import { Dashboard } from '@/components/dashboards/Dashboard';
+import { ClientIntake } from '@/components/ClientIntake';
+import { IntelligentClientIntake } from '@/components/IntelligentClientIntake';
+import { MedicalRecords } from '@/components/MedicalRecords';
+import { ProviderList } from '@/components/ProviderList';
+import { PatientList } from '@/components/PatientList';
+import { Appointments } from '@/components/Appointments';
+import { DeadlineManagement } from '@/components/DeadlineManagement';
+import { DocumentGeneration } from '@/components/DocumentGeneration';
+import { DocumentDistribution } from '@/components/DocumentDistribution';
+import { AIDocumentProcessing } from '@/components/AIDocumentProcessing';
+import { AIDocumentEngine } from '@/components/AIEngine';
+import { AutomatedDocumentGenerator } from '@/components/AutomatedDocumentGenerator';
+import { DenialManagement } from '@/components/DenialManagement';
+import { PredictiveAnalytics } from '@/components/PredictiveAnalytics';
+import { IntegrationEcosystem } from '@/components/IntegrationEcosystem';
+import { SecureIntakeForm } from '@/components/SecureIntakeForm';
 
-import { useState } from "react";
-import { Sidebar } from "@/components/Sidebar";
-import { Dashboard } from "@/components/Dashboard";
-import { PatientList } from "@/components/PatientList";
-import { MedicalRecords } from "@/components/MedicalRecords";
-import { Appointments } from "@/components/Appointments";
-import { PatientForm } from "@/components/PatientForm";
-import { ClientIntake } from "@/components/ClientIntake";
-import { ClientList } from "@/components/ClientList";
-import { ProviderList } from "@/components/ProviderList";
-import { ProviderForm } from "@/components/ProviderForm";
-import { DocumentGeneration } from "@/components/DocumentGeneration";
-import { DeadlineManagement } from "@/components/DeadlineManagement";
-import { AIDocumentProcessing } from "@/components/AIDocumentProcessing";
-import { DenialManagement } from "@/components/DenialManagement";
-import { IntegrationEcosystem } from "@/components/IntegrationEcosystem";
+export default function Index() {
+  const [user, setUser] = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState<
+    | 'dashboard'
+    | 'client-intake'
+    | 'intelligent-intake'
+    | 'medical-records'
+    | 'provider-list'
+    | 'patient-list'
+    | 'appointments'
+    | 'deadline-management'
+    | 'document-generation'
+    | 'document-distribution'
+    | 'ai-processing'
+    | 'ai-engine'
+    | 'automated-generator'
+    | 'denial-management'
+    | 'predictive-analytics'
+    | 'integration-ecosystem'
+    | 'secure-intake'
+    | null
+  >('dashboard');
 
-type ActiveView = 'dashboard' | 'patients' | 'records' | 'appointments' | 'add-patient' | 'client-intake' | 'clients' | 'providers' | 'add-provider' | 'document-generation' | 'deadline-management' | 'ai-processing' | 'denial-management' | 'integrations';
+  const handleLogin = (role: string) => {
+    setUser(role);
+    setCurrentView('dashboard');
+  };
 
-const Index = () => {
-  const [activeView, setActiveView] = useState<ActiveView>('dashboard');
+  const renderCurrentView = () => {
+    if (!user) {
+      return <LoginForm onLogin={handleLogin} />;
+    }
 
-  const renderActiveView = () => {
-    switch (activeView) {
+    switch (currentView) {
       case 'dashboard':
         return <Dashboard />;
-      case 'patients':
-        return <PatientList onAddPatient={() => setActiveView('add-patient')} />;
-      case 'records':
+      case 'client-intake':
+        return <ClientIntake />;
+      case 'intelligent-intake':
+        return <IntelligentClientIntake onBack={() => setCurrentView('dashboard')} />;
+      case 'medical-records':
         return <MedicalRecords />;
+      case 'provider-list':
+        return <ProviderList />;
+      case 'patient-list':
+        return <PatientList />;
       case 'appointments':
         return <Appointments />;
-      case 'add-patient':
-        return <PatientForm onBack={() => setActiveView('patients')} />;
-      case 'client-intake':
-        return <ClientIntake onBack={() => setActiveView('clients')} />;
-      case 'clients':
-        return <ClientList onAddClient={() => setActiveView('client-intake')} />;
-      case 'providers':
-        return <ProviderList onAddProvider={() => setActiveView('add-provider')} />;
-      case 'add-provider':
-        return <ProviderForm onBack={() => setActiveView('providers')} />;
-      case 'document-generation':
-        return <DocumentGeneration onBack={() => setActiveView('dashboard')} />;
       case 'deadline-management':
-        return <DeadlineManagement onBack={() => setActiveView('dashboard')} />;
+        return <DeadlineManagement />;
+      case 'document-generation':
+        return <DocumentGeneration />;
+      case 'document-distribution':
+        return <DocumentDistribution />;
       case 'ai-processing':
-        return <AIDocumentProcessing onBack={() => setActiveView('dashboard')} />;
+        return <AIDocumentProcessing />;
+      case 'ai-engine':
+        return <AIDocumentEngine />;
+      case 'automated-generator':
+        return <AutomatedDocumentGenerator />;
       case 'denial-management':
-        return <DenialManagement onBack={() => setActiveView('dashboard')} />;
-      case 'integrations':
-        return <IntegrationEcosystem onBack={() => setActiveView('dashboard')} />;
+        return <DenialManagement />;
+      case 'predictive-analytics':
+        return <PredictiveAnalytics />;
+      case 'integration-ecosystem':
+        return <IntegrationEcosystem />;
+      case 'secure-intake':
+        return <SecureIntakeForm />;
       default:
         return <Dashboard />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
-      <Sidebar activeView={activeView} onViewChange={setActiveView} />
-      <main className="flex-1 p-6">
-        {renderActiveView()}
-      </main>
+    <div>
+      {user ? (
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <button onClick={() => setCurrentView('dashboard')}>Dashboard</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('client-intake')}>Client Intake</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('intelligent-intake')}>Intelligent Intake</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('medical-records')}>Medical Records</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('provider-list')}>Provider List</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('patient-list')}>Patient List</button>
+              </li>
+               <li>
+                <button onClick={() => setCurrentView('appointments')}>Appointments</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('deadline-management')}>Deadline Management</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('document-generation')}>Document Generation</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('document-distribution')}>Document Distribution</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('ai-processing')}>AI Processing</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('ai-engine')}>AI Engine</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('automated-generator')}>Automated Generator</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('denial-management')}>Denial Management</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('predictive-analytics')}>Predictive Analytics</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('integration-ecosystem')}>Integration Ecosystem</button>
+              </li>
+              <li>
+                <button onClick={() => setCurrentView('secure-intake')}>Secure Intake Form</button>
+              </li>
+            </ul>
+          </nav>
+          <main>{renderCurrentView()}</main>
+        </div>
+      ) : (
+        <LoginForm onLogin={handleLogin} />
+      )}
     </div>
   );
-};
-
-export default Index;
+}

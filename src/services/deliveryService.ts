@@ -1,25 +1,25 @@
 
-export interface DeliveryStats {
-  total: number;
-  delivered: number;
-  failed: number;
-  inProgress: number;
-}
+import { DeliveryMethod, DeliveryStatus } from '../types/document';
 
 export interface DeliveryAttempt {
   id: string;
   documentId: string;
-  method: 'email' | 'fax' | 'postal' | 'secure_portal';
-  status: 'pending' | 'delivered' | 'failed' | 'in_progress';
+  method: DeliveryMethod;
+  status: DeliveryStatus;
   attemptedAt: string;
-  deliveredAt?: string;
-  errorMessage?: string;
-  recipientInfo: {
-    name: string;
-    email?: string;
-    fax?: string;
-    address?: string;
-  };
+  completedAt?: string;
+  error?: string;
+  trackingNumber?: string;
+  recipientEmail?: string;
+  recipientAddress?: string;
+}
+
+export interface DeliveryStats {
+  totalDeliveries: number;
+  successfulDeliveries: number;
+  failedDeliveries: number;
+  pendingDeliveries: number;
+  averageDeliveryTime: number;
 }
 
 export class DeliveryService {
@@ -32,104 +32,73 @@ export class DeliveryService {
     return DeliveryService.instance;
   }
 
-  async scheduleDelivery(
-    documentId: string,
-    method: 'email' | 'fax' | 'postal' | 'secure_portal',
-    recipientInfo: any
-  ): Promise<DeliveryAttempt> {
-    // Simulate scheduling delivery
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const attempt: DeliveryAttempt = {
-          id: `delivery_${Date.now()}_${Math.random().toString(36).substring(2)}`,
-          documentId,
-          method,
-          status: 'pending',
-          attemptedAt: new Date().toISOString(),
-          recipientInfo
-        };
-        resolve(attempt);
-      }, 500);
-    });
+  async getAvailableMethods(): Promise<DeliveryMethod[]> {
+    // Return available delivery methods
+    return ['email', 'secure_portal', 'mail', 'fax'];
   }
 
-  async getDeliveryHistory(documentId: string): Promise<DeliveryAttempt[]> {
-    // Simulate fetching delivery history
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const mockHistory: DeliveryAttempt[] = [
-          {
-            id: 'del_1',
-            documentId,
-            method: 'email',
-            status: 'delivered',
-            attemptedAt: '2024-01-10T10:00:00Z',
-            deliveredAt: '2024-01-10T10:05:00Z',
-            recipientInfo: {
-              name: 'Medical Records Dept',
-              email: 'records@hospital.com'
-            }
-          }
-        ];
-        resolve(mockHistory);
-      }, 300);
-    });
+  async getActiveDeliveries(): Promise<DeliveryAttempt[]> {
+    // Mock active deliveries
+    return [
+      {
+        id: '1',
+        documentId: 'doc-123',
+        method: 'email',
+        status: 'pending',
+        attemptedAt: new Date().toISOString(),
+        recipientEmail: 'client@example.com'
+      },
+      {
+        id: '2',
+        documentId: 'doc-124',
+        method: 'secure_portal',
+        status: 'delivered',
+        attemptedAt: new Date(Date.now() - 3600000).toISOString(),
+        completedAt: new Date().toISOString()
+      }
+    ];
   }
 
-  async retryDelivery(attemptId: string): Promise<DeliveryAttempt> {
-    // Simulate retry logic
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const retryAttempt: DeliveryAttempt = {
-          id: `retry_${Date.now()}_${Math.random().toString(36).substring(2)}`,
-          documentId: 'doc_123',
-          method: 'email',
-          status: 'pending',
-          attemptedAt: new Date().toISOString(),
-          recipientInfo: {
-            name: 'Medical Records Dept',
-            email: 'records@hospital.com'
-          }
-        };
-        resolve(retryAttempt);
-      }, 500);
-    });
+  async getDeliveryStatistics(): Promise<DeliveryStats> {
+    // Return delivery statistics
+    return {
+      totalDeliveries: 150,
+      successfulDeliveries: 142,
+      failedDeliveries: 5,
+      pendingDeliveries: 3,
+      averageDeliveryTime: 2.5
+    };
+  }
+
+  async initiateDelivery(documentId: string, method: DeliveryMethod, recipient: string): Promise<DeliveryAttempt> {
+    // Simulate delivery initiation
+    const delivery: DeliveryAttempt = {
+      id: `delivery-${Date.now()}`,
+      documentId,
+      method,
+      status: 'pending',
+      attemptedAt: new Date().toISOString(),
+      recipientEmail: method === 'email' ? recipient : undefined,
+      recipientAddress: method === 'mail' ? recipient : undefined
+    };
+    
+    return delivery;
   }
 
   async getDeliveryStats(): Promise<DeliveryStats> {
-    // Simulate getting delivery statistics
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const stats: DeliveryStats = {
-          total: 150,
-          delivered: 120,
-          failed: 15,
-          inProgress: 15
-        };
-        resolve(stats);
-      }, 200);
-    });
+    return this.getDeliveryStatistics();
   }
 
-  async trackDelivery(trackingId: string): Promise<DeliveryAttempt | null> {
-    // Simulate delivery tracking
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const trackingResult: DeliveryAttempt = {
-          id: trackingId,
-          documentId: 'doc_123',
-          method: 'email',
-          status: 'delivered',
-          attemptedAt: '2024-01-10T10:00:00Z',
-          deliveredAt: '2024-01-10T10:05:00Z',
-          recipientInfo: {
-            name: 'Medical Records Dept',
-            email: 'records@hospital.com'
-          }
-        };
-        resolve(trackingResult);
-      }, 300);
-    });
+  async retryFailedDelivery(deliveryId: string): Promise<boolean> {
+    // Simulate retry logic
+    console.log(`Retrying delivery ${deliveryId}`);
+    return true;
+  }
+
+  async trackDelivery(deliveryId: string): Promise<DeliveryAttempt | null> {
+    // Simulate tracking lookup
+    const deliveries = await this.getActiveDeliveries();
+    return deliveries.find(d => d.id === deliveryId) || null;
   }
 }
 
