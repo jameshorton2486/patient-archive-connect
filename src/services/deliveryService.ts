@@ -43,16 +43,16 @@ export class DeliveryService {
       {
         id: '1',
         documentId: 'doc-123',
-        method: 'email',
-        status: 'pending',
+        method: 'email' as DeliveryMethod,
+        status: 'pending' as DeliveryStatus,
         attemptedAt: new Date().toISOString(),
         recipientEmail: 'client@example.com'
       },
       {
         id: '2',
         documentId: 'doc-124',
-        method: 'secure_portal',
-        status: 'delivered',
+        method: 'secure_portal' as DeliveryMethod,
+        status: 'delivered' as DeliveryStatus,
         attemptedAt: new Date(Date.now() - 3600000).toISOString(),
         completedAt: new Date().toISOString()
       }
@@ -76,7 +76,7 @@ export class DeliveryService {
       id: `delivery-${Date.now()}`,
       documentId,
       method,
-      status: 'pending',
+      status: 'pending' as DeliveryStatus,
       attemptedAt: new Date().toISOString(),
       recipientEmail: method === 'email' ? recipient : undefined,
       recipientAddress: method === 'mail' ? recipient : undefined

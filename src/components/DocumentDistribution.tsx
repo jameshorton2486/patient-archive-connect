@@ -68,6 +68,16 @@ export function DocumentDistribution() {
     }
   };
 
+  const getMethodDisplayName = (method: DeliveryMethod) => {
+    switch (method) {
+      case 'email': return 'Email';
+      case 'secure_portal': return 'Secure Portal';
+      case 'mail': return 'Mail';
+      case 'fax': return 'Fax';
+      default: return method;
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -122,7 +132,7 @@ export function DocumentDistribution() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="method">Delivery Method</Label>
-              <Select value={selectedMethod} onValueChange={(value: DeliveryMethod) => setSelectedMethod(value)}>
+              <Select value={selectedMethod} onValueChange={(value: string) => setSelectedMethod(value as DeliveryMethod)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -131,7 +141,7 @@ export function DocumentDistribution() {
                     <SelectItem key={method} value={method}>
                       <div className="flex items-center gap-2">
                         {getMethodIcon(method)}
-                        {method.replace('_', ' ').toUpperCase()}
+                        {getMethodDisplayName(method)}
                       </div>
                     </SelectItem>
                   ))}
@@ -172,7 +182,7 @@ export function DocumentDistribution() {
                   <div>
                     <p className="font-medium">Document {delivery.documentId}</p>
                     <p className="text-sm text-muted-foreground">
-                      via {delivery.method} • {new Date(delivery.attemptedAt).toLocaleDateString()}
+                      via {getMethodDisplayName(delivery.method)} • {new Date(delivery.attemptedAt).toLocaleDateString()}
                     </p>
                   </div>
                 </div>

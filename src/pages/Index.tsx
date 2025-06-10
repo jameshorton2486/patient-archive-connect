@@ -11,7 +11,6 @@ import { DeadlineManagement } from '@/components/DeadlineManagement';
 import { DocumentGeneration } from '@/components/DocumentGeneration';
 import { DocumentDistribution } from '@/components/DocumentDistribution';
 import { AIDocumentProcessing } from '@/components/AIDocumentProcessing';
-import { AIDocumentEngine } from '@/components/AIEngine';
 import { AutomatedDocumentGenerator } from '@/components/AutomatedDocumentGenerator';
 import { DenialManagement } from '@/components/DenialManagement';
 import { PredictiveAnalytics } from '@/components/PredictiveAnalytics';
@@ -32,7 +31,6 @@ export default function Index() {
     | 'document-generation'
     | 'document-distribution'
     | 'ai-processing'
-    | 'ai-engine'
     | 'automated-generator'
     | 'denial-management'
     | 'predictive-analytics'
@@ -55,15 +53,15 @@ export default function Index() {
       case 'dashboard':
         return <Dashboard />;
       case 'client-intake':
-        return <ClientIntake />;
+        return <ClientIntake onBack={() => setCurrentView('dashboard')} />;
       case 'intelligent-intake':
         return <IntelligentClientIntake onBack={() => setCurrentView('dashboard')} />;
       case 'medical-records':
         return <MedicalRecords />;
       case 'provider-list':
-        return <ProviderList />;
+        return <ProviderList onAddProvider={() => console.log('Add provider')} />;
       case 'patient-list':
-        return <PatientList />;
+        return <PatientList onAddPatient={() => console.log('Add patient')} />;
       case 'appointments':
         return <Appointments />;
       case 'deadline-management':
@@ -74,8 +72,6 @@ export default function Index() {
         return <DocumentDistribution />;
       case 'ai-processing':
         return <AIDocumentProcessing />;
-      case 'ai-engine':
-        return <AIDocumentEngine />;
       case 'automated-generator':
         return <AutomatedDocumentGenerator />;
       case 'denial-management':
@@ -85,7 +81,7 @@ export default function Index() {
       case 'integration-ecosystem':
         return <IntegrationEcosystem />;
       case 'secure-intake':
-        return <SecureIntakeForm />;
+        return <SecureIntakeForm onBack={() => setCurrentView('dashboard')} />;
       default:
         return <Dashboard />;
     }
@@ -129,9 +125,6 @@ export default function Index() {
               </li>
               <li>
                 <button onClick={() => setCurrentView('ai-processing')}>AI Processing</button>
-              </li>
-              <li>
-                <button onClick={() => setCurrentView('ai-engine')}>AI Engine</button>
               </li>
               <li>
                 <button onClick={() => setCurrentView('automated-generator')}>Automated Generator</button>

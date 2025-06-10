@@ -1,4 +1,3 @@
-
 export interface Client {
   id: string;
   caseNumber: string;
@@ -86,7 +85,7 @@ export interface MedicalRecordRequest {
   providerId: string;
   requestDate: string;
   expectedResponseDate: string;
-  deliveryMethod: 'certified_mail' | 'fax' | 'email' | 'portal';
+  deliveryMethod: 'email' | 'secure_portal' | 'mail' | 'fax';
   trackingNumber?: string;
   status: 'pending' | 'sent' | 'received' | 'denied' | 'partial' | 'expired';
   denialReason?: string;
@@ -225,20 +224,9 @@ export interface FirmBranding {
   website?: string;
 }
 
-export interface DeliveryMethod {
-  id?: string;
-  type: 'certified_mail' | 'fax' | 'email' | 'portal';
-  name?: string;
-  address?: string;
-  trackingEnabled: boolean;
-  confirmationRequired: boolean;
-  estimatedDeliveryDays: number;
-  estimatedDeliveryTime?: number;
-  cost?: number;
-  enabled?: boolean;
-  reliabilityScore?: number;
-  hipaaCompliant?: boolean;
-}
+export type DeliveryMethod = 'email' | 'secure_portal' | 'mail' | 'fax';
+
+export type DeliveryStatus = 'pending' | 'delivered' | 'failed' | 'returned' | 'sending';
 
 export interface DeliveryAttempt {
   id: string;
@@ -249,7 +237,7 @@ export interface DeliveryAttempt {
   methodId?: string;
   attemptedAt: string;
   sentAt?: string;
-  status: 'pending' | 'delivered' | 'failed' | 'returned' | 'sending';
+  status: DeliveryStatus;
   trackingNumber?: string;
   failureReason?: string;
   nextAttemptDate?: string;
