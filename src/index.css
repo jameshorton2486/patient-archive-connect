@@ -1,114 +1,70 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Linear Design System Implementation */
-
 @layer base {
   :root {
-    /* FONT + ROOT VARIABLES */
-    --font-sans: 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-
-    /* Light Mode Colors - Linear Style */
-    --bg-primary: #F8F9FB;
-    --bg-secondary: #FFFFFF;
-    --bg-tertiary: #F1F5F9;
+    /* Linear-inspired color system */
+    --background: 210 20% 98%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 238 100% 68%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 188 95% 53%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --accent-medical: 238 100% 68%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 238 100% 68%;
+    --radius: 1rem;
     
-    --text-primary: #111827;
-    --text-secondary: #6B7280;
-    --text-muted: #9CA3AF;
+    /* Success and error colors */
+    --success-600: 142 71% 45%;
+    --error-500: 0 84% 60%;
+    --error-600: 0 84% 55%;
     
-    --border-primary: #E2E8F0;
-    --border-secondary: #CBD5E1;
-    
-    --accent-primary: #6366F1;
-    --accent-secondary: #22D3EE;
-    --success: #10B981;
-    --warning: #F59E0B;
-    --error: #EF4444;
-
-    /* Linear Light Theme Colors */
-    --background: 248 249 251;
-    --foreground: 17 24 39;
-
-    --card: 255 255 255;
-    --card-foreground: 17 24 39;
-
-    --popover: 255 255 255;
-    --popover-foreground: 17 24 39;
-
-    --primary: 99 102 241;
-    --primary-foreground: 255 255 255;
-
-    --accent: 248 250 252;
-    --accent-foreground: 99 102 241;
-
-    --secondary: 241 245 249;
-    --secondary-foreground: 75 85 99;
-
-    --muted: 241 245 249;
-    --muted-foreground: 107 114 128;
-
-    --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 99 102 241;
-
-    /* Linear Sidebar - darker theme matching Linear's sidebar */
-    --sidebar-background: 23 23 23;
-    --sidebar-foreground: 245 245 245;
-    --sidebar-primary: 99 102 241;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 38 38 38;
-    --sidebar-accent-foreground: 245 245 245;
-    --sidebar-border: 38 38 38;
-    --sidebar-ring: 99 102 241;
+    /* Container and spacing utilities */
+    --container-linear: 1200px;
+    --spacing-linear: 1.5rem;
   }
 
-  /* Dark Mode Override */
   .dark {
-    --bg-primary: #1A1D23;
-    --bg-secondary: #1F2937;
-    --bg-tertiary: #374151;
+    --background: 217 19% 9%;
+    --foreground: 210 40% 98%;
+    --card: 217 19% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 217 19% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 238 100% 68%;
+    --primary-foreground: 217 19% 9%;
+    --secondary: 217 19% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 19% 15%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 188 95% 53%;
+    --accent-foreground: 217 19% 9%;
+    --accent-medical: 238 100% 68%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 19% 18%;
+    --input: 217 19% 18%;
+    --ring: 238 100% 68%;
     
-    --text-primary: #F8FAFC;
-    --text-secondary: #E5E7EB;
-    --text-muted: #9CA3AF;
-    
-    --border-primary: #2D2F35;
-    --border-secondary: #4B5563;
-    
-    --accent-primary: #818CF8;
-    --accent-secondary: #67E8F9;
-    --success: #34D399;
-    --warning: #FBBF24;
-    --error: #F87171;
-
-    --background: 26 29 35;
-    --foreground: 248 250 252;
-
-    --card: 31 41 55;
-    --card-foreground: 248 250 252;
-
-    --popover: 31 41 55;
-    --popover-foreground: 248 250 252;
-
-    --primary: 129 140 248;
-    --primary-foreground: 26 29 35;
-
-    --secondary: 55 65 81;
-    --secondary-foreground: 229 231 235;
-
-    --muted: 55 65 81;
-    --muted-foreground: 156 163 175;
-
-    --accent: 31 41 55;
-    --accent-foreground: 129 140 248;
-
-    --border: 45 47 53;
-    --input: 45 47 53;
-    --ring: 129 140 248;
+    /* Success and error colors for dark mode */
+    --success-600: 142 71% 45%;
+    --error-500: 0 84% 60%;
+    --error-600: 0 84% 55%;
   }
 }
 
@@ -116,205 +72,48 @@
   * {
     @apply border-border;
   }
-
-  /* Typography Base */
   body {
-    font-family: var(--font-sans);
-    color: hsl(var(--text-primary));
-    background: hsl(var(--background));
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    font-variation-settings: normal;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply bg-background text-foreground font-sans;
     transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  /* Linear Typography Hierarchy */
-  h1 {
-    @apply text-3xl font-semibold tracking-tight text-foreground;
-  }
-
-  h2 {
-    @apply text-2xl font-semibold tracking-tight text-foreground;
-  }
-
-  h3 {
-    @apply text-xl font-semibold text-foreground;
-  }
-
-  h4 {
-    @apply text-lg font-semibold text-foreground;
-  }
-
-  h5, h6 {
-    @apply text-base font-semibold text-foreground;
-  }
-
-  p {
-    @apply text-sm leading-relaxed text-muted-foreground;
   }
 }
 
-@layer components {
-  /* Linear Card Styles */
-  .card-linear {
-    @apply rounded-xl shadow-sm transition-all duration-200 hover:shadow-md;
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    color: hsl(var(--card-foreground));
-  }
-
-  /* Linear Button Styles */
-  .btn-linear {
-    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98];
-  }
-
-  .btn-linear-primary {
-    @apply btn-linear bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md;
-  }
-
-  .btn-linear-secondary {
-    @apply btn-linear bg-secondary text-secondary-foreground border border-border hover:bg-secondary/80;
-  }
-
-  .btn-linear-ghost {
-    @apply btn-linear bg-transparent hover:bg-accent hover:text-accent-foreground;
-  }
-
-  /* Linear Input Styles */
-  .input-linear {
-    @apply flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200;
-  }
-
-  /* Linear Navigation Item */
-  .nav-item-linear {
-    @apply flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-[0.98];
-  }
-
-  .nav-item-linear.active {
-    @apply bg-primary text-primary-foreground shadow-sm;
-  }
-
-  /* Linear Form Field */
-  .form-field-linear {
-    @apply space-y-2;
-  }
-
-  .form-label-linear {
-    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground;
-  }
-
-  /* Linear Table Styles */
-  .table-linear {
-    @apply w-full border-collapse;
-  }
-
-  .table-linear th {
-    @apply border-b border-border px-4 py-3 text-left text-sm font-semibold text-foreground;
-  }
-
-  .table-linear td {
-    @apply border-b border-border px-4 py-3 text-sm text-foreground;
-  }
-
-  .table-linear tr:hover {
-    @apply bg-muted/50 transition-colors duration-200;
-  }
-
-  /* Responsive Container */
+@layer utilities {
   .container-linear {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
-
-  /* Mobile Responsive */
-  .mobile-stack {
-    @apply flex-col space-y-3 space-x-0;
-  }
-  
-  .mobile-full-width {
-    @apply w-full;
-  }
-
-  .responsive-grid {
-    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
-  }
-
-  .responsive-text {
-    @apply text-sm sm:text-base;
+    max-width: var(--container-linear);
+    margin: 0 auto;
+    padding: 0 var(--spacing-linear);
   }
   
   .responsive-padding {
-    @apply p-4 sm:p-6 lg:p-8;
+    @apply px-4 md:px-6 lg:px-8;
+  }
+  
+  .animate-linear-fade-in {
+    animation: linear-fade-in 0.3s ease-out;
+  }
+  
+  .shadow-linear {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+  .shadow-linear-lg {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 }
 
-/* Linear-specific animations and transitions */
 @keyframes linear-fade-in {
-  from {
+  0% {
     opacity: 0;
     transform: translateY(4px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes linear-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes linear-slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-linear-fade-in {
-  animation: linear-fade-in 0.2s ease-out;
-}
-
-.animate-linear-scale-in {
-  animation: linear-scale-in 0.15s ease-out;
-}
-
-.animate-linear-slide-up {
-  animation: linear-slide-up 0.3s ease-out;
-}
-
-/* Linear scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
-}
-
-/* Linear focus styles */
-.focus-linear {
-  @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+/* Form focus states */
+.focus-ring {
+  @apply focus:ring-2 focus:ring-accent-medical/40 focus:border-accent-medical transition-all duration-200;
 }

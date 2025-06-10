@@ -117,20 +117,30 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
 
   // Generate unique case ID on component mount
   useEffect(() => {
-    const generateCaseId = () => {
-      const year = new Date().getFullYear();
-      const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-      return `CASE-${year}-${random}`;
-    };
-    setCaseId(generateCaseId());
+    try {
+      const generateCaseId = () => {
+        const year = new Date().getFullYear();
+        const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        return `CASE-${year}-${random}`;
+      };
+      const newCaseId = generateCaseId();
+      setCaseId(newCaseId);
+      console.log("Generated case ID:", newCaseId);
+    } catch (error) {
+      console.error("Error generating case ID:", error);
+    }
   }, []);
 
   // Auto-save functionality
   useEffect(() => {
     const autoSave = () => {
-      if (caseId) {
-        localStorage.setItem(`intake-${caseId}`, JSON.stringify(formData));
-        console.log("Auto-saved form data");
+      try {
+        if (caseId) {
+          localStorage.setItem(`intake-${caseId}`, JSON.stringify(formData));
+          console.log("Auto-saved form data for case:", caseId);
+        }
+      } catch (error) {
+        console.error("Error auto-saving form data:", error);
       }
     };
 
@@ -165,14 +175,23 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically save to a secure database
-    toast({
-      title: "Client Intake Completed",
-      description: `Case ${caseId} has been successfully created and saved.`,
-    });
-    // Clear auto-save data
-    localStorage.removeItem(`intake-${caseId}`);
-    onBack();
+    try {
+      // Here you would typically save to a secure database
+      toast({
+        title: "Client Intake Completed",
+        description: `Case ${caseId} has been successfully created and saved.`,
+      });
+      // Clear auto-save data
+      localStorage.removeItem(`intake-${caseId}`);
+      onBack();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "There was an error submitting the form. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const getStepIcon = (step: number) => {
