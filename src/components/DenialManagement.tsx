@@ -31,8 +31,8 @@ export function DenialManagement({ onBack }: DenialManagementProps) {
   const [selectedDenial, setSelectedDenial] = useState<DenialRecord | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({
-    status: '',
-    category: '',
+    status: 'all-statuses',
+    category: 'all-categories',
     dateRange: { start: '', end: '' }
   });
 
@@ -64,11 +64,11 @@ export function DenialManagement({ onBack }: DenialManagementProps) {
   const applyFilters = () => {
     let filtered = [...denials];
     
-    if (filters.status) {
+    if (filters.status && filters.status !== 'all-statuses') {
       filtered = filtered.filter(denial => denial.status === filters.status);
     }
     
-    if (filters.category) {
+    if (filters.category && filters.category !== 'all-categories') {
       filtered = filtered.filter(denial => denial.category === filters.category);
     }
     
@@ -241,7 +241,7 @@ export function DenialManagement({ onBack }: DenialManagementProps) {
                   <SelectValue placeholder="All Statuses" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Statuses</SelectItem>
+                  <SelectItem value="all-statuses">All Statuses</SelectItem>
                   <SelectItem value="received">Received</SelectItem>
                   <SelectItem value="processing">Processing</SelectItem>
                   <SelectItem value="reviewing">Reviewing</SelectItem>
@@ -257,7 +257,7 @@ export function DenialManagement({ onBack }: DenialManagementProps) {
                   <SelectValue placeholder="All Categories" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Categories</SelectItem>
+                  <SelectItem value="all-categories">All Categories</SelectItem>
                   <SelectItem value="fee-required">Fee Required</SelectItem>
                   <SelectItem value="additional-authorization">Additional Authorization</SelectItem>
                   <SelectItem value="records-not-available">Records Not Available</SelectItem>
