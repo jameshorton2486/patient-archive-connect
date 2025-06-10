@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -211,7 +212,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
-                <User className="h-5 w-5 text-accent-medical" />
+                <User className="h-5 w-5 text-primary" />
                 Personal Information
               </CardTitle>
               <CardDescription>Basic client and contact details</CardDescription>
@@ -220,25 +221,25 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-sm font-medium">
-                    First Name <span className="text-error-500">*</span>
+                    First Name <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="firstName"
                     value={formData.firstName}
                     onChange={(e) => handleInputChange("firstName", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName" className="text-sm font-medium">
-                    Last Name <span className="text-error-500">*</span>
+                    Last Name <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="lastName"
                     value={formData.lastName}
                     onChange={(e) => handleInputChange("lastName", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     required
                   />
                 </div>
@@ -247,20 +248,20 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="dateOfBirth" className="text-sm font-medium">
-                    Date of Birth <span className="text-error-500">*</span>
+                    Date of Birth <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="dateOfBirth"
                     type="date"
                     value={formData.dateOfBirth}
                     onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="ssn" className="text-sm font-medium">
-                    Social Security Number <span className="text-error-500">*</span>
+                    Social Security Number <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="ssn"
@@ -268,7 +269,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                     placeholder="XXX-XX-XXXX"
                     value={formData.ssn}
                     onChange={(e) => handleInputChange("ssn", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     required
                   />
                 </div>
@@ -276,14 +277,14 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="currentAddress" className="text-sm font-medium">
-                  Current Address <span className="text-error-500">*</span>
+                  Current Address <span className="text-destructive">*</span>
                 </Label>
                 <Textarea
                   id="currentAddress"
                   value={formData.currentAddress}
                   onChange={(e) => handleInputChange("currentAddress", e.target.value)}
                   placeholder="Street, City, State, ZIP Code"
-                  className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                  className="bg-background border-input focus:border-primary focus:ring-primary/20"
                   required
                 />
               </div>
@@ -291,27 +292,27 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="phone" className="text-sm font-medium">
-                    Phone Number <span className="text-error-500">*</span>
+                    Phone Number <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="phone"
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-sm font-medium">
-                    Email Address <span className="text-error-500">*</span>
+                    Email Address <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     required
                   />
                 </div>
@@ -326,7 +327,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                     id="emergencyContactName"
                     value={formData.emergencyContactName}
                     onChange={(e) => handleInputChange("emergencyContactName", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
@@ -338,7 +339,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                     type="tel"
                     value={formData.emergencyContactPhone}
                     onChange={(e) => handleInputChange("emergencyContactPhone", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                   />
                 </div>
               </div>
@@ -351,7 +352,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
-                <FileText className="h-5 w-5 text-accent-medical" />
+                <FileText className="h-5 w-5 text-primary" />
                 Injury Details
               </CardTitle>
               <CardDescription>Information about the incident and injuries</CardDescription>
@@ -360,23 +361,23 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="incidentDate" className="text-sm font-medium">
-                    Date of Incident <span className="text-error-500">*</span>
+                    Date of Incident <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="incidentDate"
                     type="date"
                     value={formData.incidentDate}
                     onChange={(e) => handleInputChange("incidentDate", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="incidentType" className="text-sm font-medium">
-                    Type of Incident <span className="text-error-500">*</span>
+                    Type of Incident <span className="text-destructive">*</span>
                   </Label>
                   <Select onValueChange={(value) => handleInputChange("incidentType", value)}>
-                    <SelectTrigger className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20">
+                    <SelectTrigger className="bg-background border-input focus:border-primary focus:ring-primary/20">
                       <SelectValue placeholder="Select incident type" />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border">
@@ -392,7 +393,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
 
               <div className="space-y-3">
                 <Label className="text-sm font-medium">
-                  Body Parts Affected <span className="text-error-500">*</span>
+                  Body Parts Affected <span className="text-destructive">*</span>
                 </Label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3 p-4 bg-muted/50 rounded-lg border">
                   {bodyParts.map((bodyPart) => (
@@ -403,7 +404,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                         onCheckedChange={(checked) => 
                           handleBodyPartChange(bodyPart, checked as boolean)
                         }
-                        className="border-input data-[state=checked]:bg-accent-medical data-[state=checked]:border-accent-medical"
+                        className="border-input data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                       />
                       <Label htmlFor={bodyPart} className="text-sm font-normal cursor-pointer">
                         {bodyPart}
@@ -415,7 +416,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="incidentDescription" className="text-sm font-medium">
-                  Brief Description of Incident <span className="text-error-500">*</span>
+                  Brief Description of Incident <span className="text-destructive">*</span>
                 </Label>
                 <Textarea
                   id="incidentDescription"
@@ -423,7 +424,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                   onChange={(e) => handleInputChange("incidentDescription", e.target.value)}
                   placeholder="Describe what happened, how the injury occurred..."
                   rows={4}
-                  className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                  className="bg-background border-input focus:border-primary focus:ring-primary/20"
                   required
                 />
               </div>
@@ -437,7 +438,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                   value={formData.policeReportNumber}
                   onChange={(e) => handleInputChange("policeReportNumber", e.target.value)}
                   placeholder="Enter police report number if available"
-                  className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                  className="bg-background border-input focus:border-primary focus:ring-primary/20"
                 />
               </div>
             </CardContent>
@@ -449,7 +450,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
-                <Shield className="h-5 w-5 text-accent-medical" />
+                <Shield className="h-5 w-5 text-primary" />
                 Insurance Information
               </CardTitle>
               <CardDescription>Health, auto, and other insurance details</CardDescription>
@@ -464,7 +465,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="healthInsuranceCarrier"
                       value={formData.healthInsuranceCarrier}
                       onChange={(e) => handleInputChange("healthInsuranceCarrier", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                   <div className="space-y-2">
@@ -473,7 +474,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="healthPolicyNumber"
                       value={formData.healthPolicyNumber}
                       onChange={(e) => handleInputChange("healthPolicyNumber", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                   <div className="space-y-2">
@@ -482,7 +483,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="healthGroupNumber"
                       value={formData.healthGroupNumber}
                       onChange={(e) => handleInputChange("healthGroupNumber", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                 </div>
@@ -497,7 +498,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="autoInsuranceCarrier"
                       value={formData.autoInsuranceCarrier}
                       onChange={(e) => handleInputChange("autoInsuranceCarrier", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                   <div className="space-y-2">
@@ -506,7 +507,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="autoPolicyNumber"
                       value={formData.autoPolicyNumber}
                       onChange={(e) => handleInputChange("autoPolicyNumber", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                 </div>
@@ -521,7 +522,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="workersCompCarrier"
                       value={formData.workersCompCarrier}
                       onChange={(e) => handleInputChange("workersCompCarrier", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                   <div className="space-y-2">
@@ -530,7 +531,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="workersCompNumber"
                       value={formData.workersCompNumber}
                       onChange={(e) => handleInputChange("workersCompNumber", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                 </div>
@@ -545,7 +546,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="medicareNumber"
                       value={formData.medicareNumber}
                       onChange={(e) => handleInputChange("medicareNumber", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                   <div className="space-y-2">
@@ -554,7 +555,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                       id="medicaidNumber"
                       value={formData.medicaidNumber}
                       onChange={(e) => handleInputChange("medicaidNumber", e.target.value)}
-                      className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                      className="bg-background border-input focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                 </div>
@@ -568,7 +569,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
-                <Briefcase className="h-5 w-5 text-accent-medical" />
+                <Briefcase className="h-5 w-5 text-primary" />
                 Employment Information
               </CardTitle>
               <CardDescription>Current employment and wage information</CardDescription>
@@ -581,7 +582,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                     id="currentEmployer"
                     value={formData.currentEmployer}
                     onChange={(e) => handleInputChange("currentEmployer", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
@@ -590,7 +591,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                     id="position"
                     value={formData.position}
                     onChange={(e) => handleInputChange("position", e.target.value)}
-                    className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                    className="bg-background border-input focus:border-primary focus:ring-primary/20"
                   />
                 </div>
               </div>
@@ -602,7 +603,7 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                   value={formData.hourlyWage}
                   onChange={(e) => handleInputChange("hourlyWage", e.target.value)}
                   placeholder="e.g., $25.00/hour or $50,000/year"
-                  className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                  className="bg-background border-input focus:border-primary focus:ring-primary/20"
                 />
               </div>
 
@@ -614,14 +615,14 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
                   onChange={(e) => handleInputChange("timeLostFromWork", e.target.value)}
                   placeholder="Describe any time missed from work due to the injury..."
                   rows={3}
-                  className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20"
+                  className="bg-background border-input focus:border-primary focus:ring-primary/20"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="disabilityStatus" className="text-sm font-medium">Disability Status</Label>
                 <Select onValueChange={(value) => handleInputChange("disabilityStatus", value)}>
-                  <SelectTrigger className="bg-background border-input focus:border-accent-medical focus:ring-accent-medical/20">
+                  <SelectTrigger className="bg-background border-input focus:border-primary focus:ring-primary/20">
                     <SelectValue placeholder="Select disability status" />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border">
@@ -676,15 +677,15 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
           return (
             <div key={step} className="flex items-center">
               <div className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-200 ${
-                isActive ? 'border-accent-medical bg-accent-medical text-white shadow-lg scale-110' :
-                isCompleted ? 'border-success-600 bg-success-600 text-white' :
-                'border-border bg-background text-muted-foreground hover:border-accent-medical/50'
+                isActive ? 'border-primary bg-primary text-primary-foreground shadow-lg scale-110' :
+                isCompleted ? 'border-green-600 bg-green-600 text-white' :
+                'border-border bg-background text-muted-foreground hover:border-primary/50'
               }`}>
                 <Icon className="h-5 w-5" />
               </div>
               {step < totalSteps && (
                 <div className={`w-24 h-1 mx-3 rounded-full transition-all duration-300 ${
-                  isCompleted ? 'bg-success-600' : 'bg-border'
+                  isCompleted ? 'bg-green-600' : 'bg-border'
                 }`} />
               )}
             </div>
@@ -724,14 +725,14 @@ export function ClientIntake({ onBack }: ClientIntakeProps) {
               <Button 
                 type="button" 
                 onClick={nextStep}
-                className="bg-accent-medical hover:bg-accent-medical/90 text-white px-6"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-6"
               >
                 Next
               </Button>
             ) : (
               <Button 
                 type="submit" 
-                className="flex items-center gap-2 bg-accent-medical hover:bg-accent-medical/90 text-white px-6"
+                className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6"
               >
                 <Save className="h-4 w-4" />
                 Complete Intake
