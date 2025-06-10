@@ -182,16 +182,20 @@ export interface FollowUpAction {
 // Enhanced interfaces to fix build errors
 export interface GeneratedDocument {
   id: string;
-  templateType: DocumentType;
+  templateType?: DocumentType;
   type: DocumentType;
   content: string;
-  variables: Record<string, string>;
+  variables?: Record<string, string>;
   createdAt: string;
-  createdBy: string;
-  firmBranding: FirmBranding;
+  createdBy?: string;
+  firmBranding?: FirmBranding;
   trackingId: string;
   status: 'draft' | 'generated' | 'sent' | 'delivered';
   signatureRequired: boolean;
+  clientId?: string;
+  providerId?: string;
+  qrCode?: string;
+  expiresAt?: string;
 }
 
 export interface FirmBranding {
@@ -200,11 +204,17 @@ export interface FirmBranding {
   secondaryColor: string;
   letterheadTemplate?: string;
   firmName: string;
-  firmAddress: string;
-  firmPhone: string;
-  firmEmail: string;
-  address?: string;
-  phone?: string;
+  firmAddress?: string;
+  firmPhone?: string;
+  firmEmail?: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+  phone: string;
+  fax?: string;
   email?: string;
   website?: string;
 }
@@ -330,9 +340,13 @@ export interface QRCodeData {
   requestId: string;
   clientId: string;
   providerId: string;
+  trackingId: string;
   trackingUrl: string;
   expiresAt: string;
   securityHash: string;
+  documentType?: DocumentType;
+  generatedDate?: string;
+  caseId?: string;
 }
 
 export interface ProviderDeadlineRule {

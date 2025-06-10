@@ -60,7 +60,11 @@ export class DocumentService {
     const qrCodeData: QRCodeData = {
       trackingId,
       clientId: clientData.id,
-      providerId: providerData?.id,
+      providerId: providerData?.id || '',
+      trackingUrl: `https://app.example.com/track/${trackingId}`,
+      expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+      securityHash: 'secure_hash_placeholder',
+      requestId: trackingId,
       documentType,
       generatedDate: new Date().toISOString(),
       caseId: clientData.caseId || ''
@@ -116,7 +120,6 @@ export class DocumentService {
 
     const document: GeneratedDocument = {
       id: `doc_${Date.now()}_${Math.random().toString(36).substring(2)}`,
-      templateId: documentType,
       type: documentType,
       clientId: clientData.id,
       providerId: providerData?.id,
