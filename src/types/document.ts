@@ -142,8 +142,8 @@ export interface ExtractedMedicalData {
   };
   serviceDetails: {
     dateOfService?: string;
-    diagnosisCodes?: string[]; // ICD-10 codes
-    procedureCodes?: string[]; // CPT codes
+    diagnosisCodes?: string[];
+    procedureCodes?: string[];
     medications?: string[];
     treatmentPlan?: string;
   };
@@ -178,6 +178,220 @@ export interface FollowUpAction {
   response?: string;
   createdAt: string;
 }
+
+// Enhanced interfaces to fix build errors
+export interface GeneratedDocument {
+  id: string;
+  templateType: DocumentType;
+  type: DocumentType;
+  content: string;
+  variables: Record<string, string>;
+  createdAt: string;
+  createdBy: string;
+  firmBranding: FirmBranding;
+  trackingId: string;
+  status: 'draft' | 'generated' | 'sent' | 'delivered';
+  signatureRequired: boolean;
+}
+
+export interface FirmBranding {
+  logoUrl?: string;
+  primaryColor: string;
+  secondaryColor: string;
+  letterheadTemplate?: string;
+  firmName: string;
+  firmAddress: string;
+  firmPhone: string;
+  firmEmail: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+}
+
+export interface FollowUpRequest {
+  id: string;
+  requestId: string;
+  type: 'reminder' | 'escalation' | 'final_demand';
+  scheduledDate: string;
+  sent: boolean;
+  sentAt?: string;
+  response?: string;
+  nextFollowUpDate?: string;
+  originalDocumentId?: string;
+  clientId?: string;
+  providerId?: string;
+  deadlineDate?: string;
+  currentStatus?: 'pending' | 'overdue' | 'completed' | 'cancelled';
+  createdAt?: string;
+  updatedAt?: string;
+  remindersSent?: number;
+}
+
+export interface ProviderType {
+  id: string;
+  name: string;
+  specialty: string;
+  standardDeadlineDays: number;
+  reminderSchedule: number[];
+  escalationRules: EscalationRule[];
+}
+
+export interface EscalationRule {
+  daysTrigger: number;
+  actionType: 'email' | 'phone' | 'letter' | 'legal';
+  template: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  date: string;
+  type: 'deadline' | 'follow_up' | 'appointment';
+  requestId?: string;
+  providerId?: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  completed: boolean;
+  description?: string;
+}
+
+export interface ReminderSent {
+  id: string;
+  requestId: string;
+  reminderType: 'initial' | 'follow_up' | 'final';
+  sentAt: string;
+  method: 'email' | 'fax' | 'mail' | 'phone';
+  response?: string;
+  responseDate?: string;
+  followUpRequestId?: string;
+}
+
+export interface DeliveryMethod {
+  id?: string;
+  type: 'certified_mail' | 'fax' | 'email' | 'portal';
+  name?: string;
+  address?: string;
+  trackingEnabled: boolean;
+  confirmationRequired: boolean;
+  estimatedDeliveryDays: number;
+  estimatedDeliveryTime?: number;
+  cost?: number;
+  enabled?: boolean;
+  reliabilityScore?: number;
+  hipaaCompliant?: boolean;
+}
+
+export interface DeliveryAttempt {
+  id: string;
+  requestId: string;
+  documentId?: string;
+  attemptNumber: number;
+  method: DeliveryMethod;
+  methodId?: string;
+  attemptedAt: string;
+  sentAt?: string;
+  status: 'pending' | 'delivered' | 'failed' | 'returned' | 'sending';
+  trackingNumber?: string;
+  failureReason?: string;
+  nextAttemptDate?: string;
+  retryCount?: number;
+}
+
+export interface DeliveryTracking {
+  id: string;
+  requestId: string;
+  trackingNumber: string;
+  carrier: string;
+  status: 'in_transit' | 'delivered' | 'failed' | 'returned';
+  updates: TrackingUpdate[];
+  deliveredAt?: string;
+  signedBy?: string;
+}
+
+export interface TrackingUpdate {
+  timestamp: string;
+  location: string;
+  status: string;
+  description: string;
+}
+
+export interface DocumentTemplate {
+  id: string;
+  name: string;
+  type: DocumentType;
+  content: string;
+  variables: string[];
+  firmSpecific: boolean;
+  lastModified: string;
+}
+
+export interface QRCodeData {
+  requestId: string;
+  clientId: string;
+  providerId: string;
+  trackingUrl: string;
+  expiresAt: string;
+  securityHash: string;
+}
+
+export interface ProviderDeadlineRule {
+  providerType: string;
+  standardDays: number;
+  standardDeadlineDays?: number;
+  urgentDays: number;
+  reminderDays: number[];
+  reminderSchedule?: number[];
+  escalationDays: number[];
+}
+
+export const PROVIDER_DEADLINE_RULES: Record<string, ProviderDeadlineRule> = {
+  hospital: {
+    providerType: 'hospital',
+    standardDays: 30,
+    standardDeadlineDays: 30,
+    urgentDays: 15,
+    reminderDays: [7, 14, 21],
+    reminderSchedule: [7, 14, 21],
+    escalationDays: [28, 35, 42]
+  },
+  physician: {
+    providerType: 'physician',
+    standardDays: 21,
+    standardDeadlineDays: 21,
+    urgentDays: 10,
+    reminderDays: [7, 14],
+    reminderSchedule: [7, 14],
+    escalationDays: [19, 26, 33]
+  },
+  specialist: {
+    providerType: 'specialist',
+    standardDays: 21,
+    standardDeadlineDays: 21,
+    urgentDays: 10,
+    reminderDays: [7, 14],
+    reminderSchedule: [7, 14],
+    escalationDays: [19, 26, 33]
+  },
+  therapy: {
+    providerType: 'therapy',
+    standardDays: 14,
+    standardDeadlineDays: 14,
+    urgentDays: 7,
+    reminderDays: [5, 10],
+    reminderSchedule: [5, 10],
+    escalationDays: [12, 19, 26]
+  },
+  imaging: {
+    providerType: 'imaging',
+    standardDays: 14,
+    standardDeadlineDays: 14,
+    urgentDays: 7,
+    reminderDays: [5, 10],
+    reminderSchedule: [5, 10],
+    escalationDays: [12, 19, 26]
+  }
+};
 
 export interface CaseSummary {
   clientId: string;
@@ -438,179 +652,6 @@ export interface ProviderFormData {
     estimatedRecordsCost: number;
   };
 }
-
-// Missing interfaces that other components expect
-export interface GeneratedDocument {
-  id: string;
-  templateType: DocumentType;
-  content: string;
-  variables: Record<string, string>;
-  createdAt: string;
-  createdBy: string;
-  firmBranding: FirmBranding;
-}
-
-export interface FirmBranding {
-  logoUrl?: string;
-  primaryColor: string;
-  secondaryColor: string;
-  letterheadTemplate?: string;
-  firmName: string;
-  firmAddress: string;
-  firmPhone: string;
-  firmEmail: string;
-}
-
-export interface FollowUpRequest {
-  id: string;
-  requestId: string;
-  type: 'reminder' | 'escalation' | 'final_demand';
-  scheduledDate: string;
-  sent: boolean;
-  sentAt?: string;
-  response?: string;
-  nextFollowUpDate?: string;
-}
-
-export interface ProviderType {
-  id: string;
-  name: string;
-  specialty: string;
-  standardDeadlineDays: number;
-  reminderSchedule: number[];
-  escalationRules: EscalationRule[];
-}
-
-export interface EscalationRule {
-  daysTrigger: number;
-  actionType: 'email' | 'phone' | 'letter' | 'legal';
-  template: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-}
-
-export interface CalendarEvent {
-  id: string;
-  title: string;
-  date: string;
-  type: 'deadline' | 'follow_up' | 'appointment';
-  requestId?: string;
-  providerId?: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  completed: boolean;
-}
-
-export interface ReminderSent {
-  id: string;
-  requestId: string;
-  reminderType: 'initial' | 'follow_up' | 'final';
-  sentAt: string;
-  method: 'email' | 'fax' | 'mail' | 'phone';
-  response?: string;
-  responseDate?: string;
-}
-
-export interface DeliveryMethod {
-  type: 'certified_mail' | 'fax' | 'email' | 'portal';
-  address?: string;
-  trackingEnabled: boolean;
-  confirmationRequired: boolean;
-  estimatedDeliveryDays: number;
-}
-
-export interface DeliveryAttempt {
-  id: string;
-  requestId: string;
-  attemptNumber: number;
-  method: DeliveryMethod;
-  attemptedAt: string;
-  status: 'pending' | 'delivered' | 'failed' | 'returned';
-  trackingNumber?: string;
-  failureReason?: string;
-  nextAttemptDate?: string;
-}
-
-export interface DeliveryTracking {
-  id: string;
-  requestId: string;
-  trackingNumber: string;
-  carrier: string;
-  status: 'in_transit' | 'delivered' | 'failed' | 'returned';
-  updates: TrackingUpdate[];
-  deliveredAt?: string;
-  signedBy?: string;
-}
-
-export interface TrackingUpdate {
-  timestamp: string;
-  location: string;
-  status: string;
-  description: string;
-}
-
-export interface DocumentTemplate {
-  id: string;
-  name: string;
-  type: DocumentType;
-  content: string;
-  variables: string[];
-  firmSpecific: boolean;
-  lastModified: string;
-}
-
-export interface QRCodeData {
-  requestId: string;
-  clientId: string;
-  providerId: string;
-  trackingUrl: string;
-  expiresAt: string;
-  securityHash: string;
-}
-
-export interface ProviderDeadlineRule {
-  providerType: string;
-  standardDays: number;
-  urgentDays: number;
-  reminderDays: number[];
-  escalationDays: number[];
-}
-
-export const PROVIDER_DEADLINE_RULES: Record<string, ProviderDeadlineRule> = {
-  hospital: {
-    providerType: 'hospital',
-    standardDays: 30,
-    urgentDays: 15,
-    reminderDays: [7, 14, 21],
-    escalationDays: [28, 35, 42]
-  },
-  physician: {
-    providerType: 'physician',
-    standardDays: 21,
-    urgentDays: 10,
-    reminderDays: [7, 14],
-    escalationDays: [19, 26, 33]
-  },
-  specialist: {
-    providerType: 'specialist',
-    standardDays: 21,
-    urgentDays: 10,
-    reminderDays: [7, 14],
-    escalationDays: [19, 26, 33]
-  },
-  therapy: {
-    providerType: 'therapy',
-    standardDays: 14,
-    urgentDays: 7,
-    reminderDays: [5, 10],
-    escalationDays: [12, 19, 26]
-  },
-  imaging: {
-    providerType: 'imaging',
-    standardDays: 14,
-    urgentDays: 7,
-    reminderDays: [5, 10],
-    escalationDays: [12, 19, 26]
-  }
-};
 
 const feeAmount = "{{feeAmount}}";
 
