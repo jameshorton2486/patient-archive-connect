@@ -45,7 +45,7 @@
     --neutral-900: 27 38 49; /* #1B2631 */
 
     /* Design System Semantic Mapping */
-    --background: var(--light-canvas); /* Changed from pure-white to light-canvas */
+    --background: var(--light-canvas);
     --foreground: var(--medical-charcoal);
     --card: var(--pure-white);
     --card-foreground: var(--neutral-700);
@@ -92,22 +92,46 @@
 }
 
 @layer base {
+  /* EMERGENCY YELLOW BACKGROUND ELIMINATION */
   * {
     @apply border-border;
   }
+  
+  /* Force healthcare design system backgrounds */
+  html, body {
+    background-color: hsl(var(--light-canvas)) !important;
+    background: hsl(var(--light-canvas)) !important;
+    color: hsl(var(--medical-charcoal)) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+  }
+  
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   }
   
-  /* Emergency override for any remaining yellow backgrounds */
+  /* Eliminate any remaining yellow backgrounds globally */
   *, *::before, *::after {
     background-color: inherit;
   }
   
-  /* Root background force override */
-  html {
+  /* Root container overrides */
+  #root {
     background-color: hsl(var(--light-canvas)) !important;
+    min-height: 100vh;
+  }
+  
+  /* Main application containers */
+  .min-h-screen {
+    background-color: hsl(var(--light-canvas)) !important;
+  }
+  
+  /* Remove any yellow/warning backgrounds */
+  *[style*="yellow"],
+  *[style*="#FFFF00"],
+  *[style*="rgb(255, 255, 0)"] {
+    background-color: hsl(var(--light-canvas)) !important;
+    background: hsl(var(--light-canvas)) !important;
   }
   
   /* Typography Scale Implementation */

@@ -8,10 +8,13 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+        default: "border-transparent bg-healthcare-blue text-pure-white hover:bg-healthcare-blue/90",
+        secondary: "border-transparent bg-neutral-100 text-medical-charcoal hover:bg-neutral-200",
+        destructive: "border-transparent bg-error text-pure-white hover:bg-error-hover",
+        outline: "text-medical-charcoal border-neutral-300",
+        success: "border-transparent bg-success text-pure-white hover:bg-success-hover",
+        warning: "border-transparent bg-warning text-medical-charcoal hover:bg-warning-hover",
+        info: "border-transparent bg-info text-pure-white hover:bg-info-hover",
       },
     },
     defaultVariants: {
