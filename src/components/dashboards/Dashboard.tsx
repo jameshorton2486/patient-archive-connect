@@ -1,11 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { FileText, Users, Calendar, AlertCircle, TrendingUp, Clock, Plus, Eye, RefreshCw } from 'lucide-react';
 import { MetricCard, ActivityItem, StatusBadge } from '@/components/ui/status-components';
 
 export function Dashboard() {
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+
   const metrics = [
     {
       title: "Active Cases",
@@ -94,18 +97,28 @@ export function Dashboard() {
   ];
 
   const quickActions = [
-    { icon: Users, label: "Add Client", action: () => console.log('Add client') },
-    { icon: FileText, label: "Request Records", action: () => console.log('Request records') },
-    { icon: Calendar, label: "Schedule Meeting", action: () => console.log('Schedule meeting') },
-    { icon: TrendingUp, label: "View Reports", action: () => console.log('View reports') }
+    { icon: Users, label: "Add Client", description: "Create new client record", action: () => console.log('Add client') },
+    { icon: FileText, label: "Request Records", description: "Send provider request", action: () => console.log('Request records') },
+    { icon: Calendar, label: "Schedule Meeting", description: "Book appointment", action: () => console.log('Schedule meeting') },
+    { icon: TrendingUp, label: "View Reports", description: "Analytics dashboard", action: () => console.log('View reports') }
   ];
 
+  const filteredActivity = statusFilter 
+    ? recentActivity.filter(item => item.status === statusFilter)
+    : recentActivity;
+
+  const handleStatusClick = (status: string) => {
+    setStatusFilter(statusFilter === status ? null : status);
+  };
+
+  const clearFilter = () => setStatusFilter(null);
+
   return (
-    <div className="container-app space-y-8">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 py-6 lg:py-8">
       {/* Header Section */}
       <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground">💼 Legal Dashboard</h1>
           <p className="text-muted-foreground mt-1">
             Welcome back! Here's what's happening with your cases today.
           </p>
@@ -126,9 +139,9 @@ export function Dashboard() {
         </div>
       </section>
 
-      {/* Metrics Grid */}
+      {/* Metrics Grid - Responsive */}
       <section>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {metrics.map((metric) => (
             <MetricCard
               key={metric.title}
@@ -144,14 +157,16 @@ export function Dashboard() {
         </div>
       </section>
 
-      {/* Main Content Grid */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Activity */}
-        <Card className="card-enhanced">
-          <CardHeader className="pb-4">
+      {/* Main Content Grid - Responsive Layout */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Activity with Status Filtering */}
+        <Card className="card-enhanced border border-border">
+          <CardHeader className="pb-4 border-b border-border">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
               <div>
-                <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
+                <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                  💬 Recent Case Actions
+                </CardTitle>
                 <CardDescription>Latest case updates and actions</CardDescription>
               </div>
               <Button variant="ghost" size="sm" className="w-full sm:w-auto">
@@ -159,28 +174,48 @@ export function Dashboard() {
                 View All
               </Button>
             </div>
+            {statusFilter && (
+              <div className="flex items-center gap-2 pt-2">
+                <span className="text-sm text-muted-foreground">Filtered by:</span>
+                <Badge variant="outline" className="cursor-pointer" onClick={clearFilter}>
+                  {statusFilter} ✕
+                </Badge>
+              </div>
+            )}
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-4">
             <div className="space-y-1">
-              {recentActivity.map((activity, index) => (
-                <ActivityItem
-                  key={index}
-                  title={activity.title}
-                  subtitle={activity.subtitle}
-                  status={activity.status}
-                  timestamp={activity.timestamp}
-                />
+              {filteredActivity.map((activity, index) => (
+                <div key={index} className="group">
+                  <ActivityItem
+                    title={activity.title}
+                    subtitle={activity.subtitle}
+                    status={activity.status}
+                    timestamp={activity.timestamp}
+                  />
+                  <div className="flex gap-1 mt-1 ml-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => handleStatusClick(activity.status)}
+                      className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded hover:bg-accent"
+                      aria-label={`Filter by ${activity.status} status`}
+                    >
+                      Filter by {activity.status}
+                    </button>
+                  </div>
+                </div>
               ))}
             </div>
           </CardContent>
         </Card>
 
         {/* Upcoming Deadlines */}
-        <Card className="card-enhanced">
-          <CardHeader className="pb-4">
+        <Card className="card-enhanced border border-border">
+          <CardHeader className="pb-4 border-b border-border">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
               <div>
-                <CardTitle className="text-lg font-semibold">Upcoming Deadlines</CardTitle>
+                <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                  📅 Upcoming Legal Deadlines
+                </CardTitle>
                 <CardDescription>Important dates and milestones</CardDescription>
               </div>
               <Button variant="ghost" size="sm" className="w-full sm:w-auto">
@@ -189,7 +224,7 @@ export function Dashboard() {
               </Button>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-4">
             <div className="space-y-1">
               {upcomingDeadlines.map((deadline, index) => (
                 <ActivityItem
@@ -206,14 +241,14 @@ export function Dashboard() {
         </Card>
       </section>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Enhanced Card Structure */}
       <section>
-        <Card className="card-enhanced">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
-            <CardDescription>Common tasks and shortcuts</CardDescription>
+        <Card className="card-enhanced border border-border">
+          <CardHeader className="border-b border-border">
+            <CardTitle className="text-lg font-semibold">⚡ Quick Actions</CardTitle>
+            <CardDescription>Common tasks and shortcuts to streamline your workflow</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {quickActions.map((action, index) => {
                 const Icon = action.icon;
@@ -222,10 +257,16 @@ export function Dashboard() {
                     key={index}
                     variant="outline"
                     onClick={action.action}
-                    className="h-auto flex-col py-6 space-y-2 min-h-[100px] hover:bg-accent/50 transition-colors duration-200"
+                    className="h-auto flex-col py-6 px-4 space-y-3 min-h-[120px] hover:bg-accent/50 hover:shadow-lg transition-all duration-200 border border-border"
+                    aria-label={action.description}
                   >
-                    <Icon className="h-6 w-6" />
-                    <span className="font-medium">{action.label}</span>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="text-center">
+                      <span className="font-medium text-sm">{action.label}</span>
+                      <p className="text-xs text-muted-foreground mt-1">{action.description}</p>
+                    </div>
                   </Button>
                 );
               })}
