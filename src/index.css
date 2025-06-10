@@ -352,3 +352,12 @@
     font-size: 1.25rem;
   }
 }
+
+/* OVERRIDE: Force remove any yellow backgrounds */
+* {
+  background-color: inherit !important;
+}
+
+body, html, #root {
+  background-color: hsl(var(--light-canvas)) !important;
+}
