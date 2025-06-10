@@ -1,256 +1,238 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { FileText, Users, Calendar, AlertCircle, TrendingUp, Clock, CheckCircle, Plus } from 'lucide-react';
+import { FileText, Users, Calendar, AlertCircle, TrendingUp, Clock, Plus, Eye, RefreshCw } from 'lucide-react';
+import { MetricCard, ActivityItem, StatusBadge } from '@/components/ui/status-components';
 
 export function Dashboard() {
   const metrics = [
     {
       title: "Active Cases",
       value: "24",
-      change: "+12%",
-      trend: "up",
+      trendValue: "+12%",
+      trend: "up" as const,
+      description: "2 new this week",
       icon: FileText,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50"
+      color: "blue" as const
     },
     {
       title: "Total Clients", 
       value: "156",
-      change: "+8%",
-      trend: "up",
+      trendValue: "+8%",
+      trend: "up" as const,
+      description: "5 new this month",
       icon: Users,
-      color: "text-green-600",
-      bgColor: "bg-green-50"
+      color: "green" as const
     },
     {
       title: "Pending Requests",
       value: "12",
-      change: "-3%",
-      trend: "down",
+      trendValue: "-3%",
+      trend: "down" as const,
+      description: "3 due today",
       icon: Calendar,
-      color: "text-amber-600",
-      bgColor: "bg-amber-50"
+      color: "amber" as const
     },
     {
       title: "Overdue Items",
       value: "3",
-      change: "+1",
-      trend: "up",
+      trendValue: "+1",
+      trend: "up" as const,
+      description: "Requires attention",
       icon: AlertCircle,
-      color: "text-red-600",
-      bgColor: "bg-red-50"
+      color: "red" as const
     }
   ];
 
   const recentActivity = [
     {
       title: "Medical records received",
-      subtitle: "Case #2024-001",
-      status: "Completed",
-      statusColor: "bg-green-100 text-green-800",
-      time: "2 hours ago"
+      subtitle: "Case #2024-001 - John Smith",
+      status: "success" as const,
+      timestamp: "2 hours ago"
     },
     {
-      title: "New client intake",
-      subtitle: "John Doe",
-      status: "Processing",
-      statusColor: "bg-blue-100 text-blue-800",
-      time: "4 hours ago"
+      title: "New client intake completed",
+      subtitle: "Jane Doe - Initial consultation",
+      status: "info" as const,
+      timestamp: "4 hours ago"
     },
     {
-      title: "Provider follow-up sent",
-      subtitle: "Dr. Smith's Office",
-      status: "Sent",
-      statusColor: "bg-gray-100 text-gray-800",
-      time: "6 hours ago"
+      title: "Provider follow-up required",
+      subtitle: "Dr. Smith's Office - Missing records",
+      status: "warning" as const,
+      timestamp: "6 hours ago"
+    },
+    {
+      title: "Document generation failed",
+      subtitle: "HIPAA Authorization - Template error",
+      status: "error" as const,
+      timestamp: "8 hours ago"
     }
   ];
 
   const upcomingDeadlines = [
     {
       title: "Medical records deadline",
-      subtitle: "Due in 3 days",
-      status: "Urgent",
-      statusColor: "bg-red-100 text-red-800",
-      date: "Mar 15"
+      subtitle: "Springfield Hospital - Case #2024-003",
+      status: "error" as const,
+      timestamp: "Due in 1 day"
     },
     {
       title: "Client appointment",
-      subtitle: "Tomorrow 2:00 PM",
-      status: "Scheduled",
-      statusColor: "bg-blue-100 text-blue-800",
-      date: "Mar 12"
+      subtitle: "Sarah Wilson - Follow-up consultation",
+      status: "info" as const,
+      timestamp: "Tomorrow 2:00 PM"
     },
     {
       title: "Case review meeting",
-      subtitle: "Friday 10:00 AM",
-      status: "Meeting",
-      statusColor: "bg-purple-100 text-purple-800",
-      date: "Mar 14"
+      subtitle: "Team review - Case #2024-001",
+      status: "pending" as const,
+      timestamp: "Friday 10:00 AM"
     }
   ];
 
+  const quickActions = [
+    { icon: Users, label: "Add Client", action: () => console.log('Add client') },
+    { icon: FileText, label: "Request Records", action: () => console.log('Request records') },
+    { icon: Calendar, label: "Schedule Meeting", action: () => console.log('Schedule meeting') },
+    { icon: TrendingUp, label: "View Reports", action: () => console.log('View reports') }
+  ];
+
   return (
-    <div className="space-y-6 lg:space-y-8">
-      {/* Header */}
-      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+    <div className="container-app space-y-8">
+      {/* Header Section */}
+      <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">
             Welcome back! Here's what's happening with your cases today.
           </p>
         </div>
-        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
+          <Button variant="outline" size="sm" className="min-h-[44px] w-full sm:w-auto">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
           <Button variant="outline" size="sm" className="min-h-[44px] w-full sm:w-auto">
             <Calendar className="h-4 w-4 mr-2" />
             View Calendar
           </Button>
-          <Button size="sm" className="min-h-[44px] w-full sm:w-auto">
+          <Button size="sm" className="btn-primary min-h-[44px] w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             New Case
           </Button>
         </div>
-      </div>
+      </section>
 
-      {/* Metrics Grid - Responsive */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        {metrics.map((metric) => {
-          const Icon = metric.icon;
-          return (
-            <Card key={metric.title} className="hover:shadow-md transition-shadow duration-200">
-              <CardContent className="p-4 lg:p-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-600">{metric.title}</p>
-                    <div className="flex items-baseline space-x-2">
-                      <p className="text-2xl lg:text-3xl font-bold text-gray-900">{metric.value}</p>
-                      <span className={`text-xs font-medium ${
-                        metric.trend === 'up' ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {metric.change}
-                      </span>
-                    </div>
-                  </div>
-                  <div className={`flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-lg ${metric.bgColor}`}>
-                    <Icon className={`h-5 w-5 lg:h-6 lg:w-6 ${metric.color}`} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      {/* Metrics Grid */}
+      <section>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {metrics.map((metric) => (
+            <MetricCard
+              key={metric.title}
+              title={metric.title}
+              value={metric.value}
+              trendValue={metric.trendValue}
+              trend={metric.trend}
+              description={metric.description}
+              icon={metric.icon}
+              color={metric.color}
+            />
+          ))}
+        </div>
+      </section>
 
-      {/* Main Content Grid - Responsive */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+      {/* Main Content Grid */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Activity */}
-        <Card>
+        <Card className="card-enhanced">
           <CardHeader className="pb-4">
-            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
               <div>
                 <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
                 <CardDescription>Latest case updates and actions</CardDescription>
               </div>
-              <Button variant="ghost" size="sm" className="min-h-[44px] w-full sm:w-auto">
+              <Button variant="ghost" size="sm" className="w-full sm:w-auto">
+                <Eye className="h-4 w-4 mr-2" />
                 View All
               </Button>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-1">
               {recentActivity.map((activity, index) => (
-                <div key={index} className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 py-3 border-b border-gray-100 last:border-0">
-                  <div className="flex items-center space-x-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 flex-shrink-0">
-                      <CheckCircle className="h-4 w-4 text-gray-600" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
-                      <p className="text-xs text-gray-500 truncate">{activity.subtitle}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between sm:justify-end space-x-2 ml-11 sm:ml-0">
-                    <Badge className={activity.statusColor} variant="secondary">
-                      {activity.status}
-                    </Badge>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">{activity.time}</span>
-                  </div>
-                </div>
+                <ActivityItem
+                  key={index}
+                  title={activity.title}
+                  subtitle={activity.subtitle}
+                  status={activity.status}
+                  timestamp={activity.timestamp}
+                />
               ))}
             </div>
           </CardContent>
         </Card>
 
         {/* Upcoming Deadlines */}
-        <Card>
+        <Card className="card-enhanced">
           <CardHeader className="pb-4">
-            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
               <div>
                 <CardTitle className="text-lg font-semibold">Upcoming Deadlines</CardTitle>
                 <CardDescription>Important dates and milestones</CardDescription>
               </div>
-              <Button variant="ghost" size="sm" className="min-h-[44px] w-full sm:w-auto">
+              <Button variant="ghost" size="sm" className="w-full sm:w-auto">
                 <Clock className="h-4 w-4 mr-2" />
                 Manage
               </Button>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-1">
               {upcomingDeadlines.map((deadline, index) => (
-                <div key={index} className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 py-3 border-b border-gray-100 last:border-0">
-                  <div className="flex items-center space-x-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 flex-shrink-0">
-                      <Calendar className="h-4 w-4 text-blue-600" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{deadline.title}</p>
-                      <p className="text-xs text-gray-500 truncate">{deadline.subtitle}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between sm:justify-end space-x-2 ml-11 sm:ml-0">
-                    <Badge className={deadline.statusColor} variant="secondary">
-                      {deadline.status}
-                    </Badge>
-                    <span className="text-xs font-medium text-gray-900 whitespace-nowrap">{deadline.date}</span>
-                  </div>
-                </div>
+                <ActivityItem
+                  key={index}
+                  title={deadline.title}
+                  subtitle={deadline.subtitle}
+                  status={deadline.status}
+                  timestamp={deadline.timestamp}
+                  icon={Calendar}
+                />
               ))}
             </div>
           </CardContent>
         </Card>
-      </div>
+      </section>
 
-      {/* Quick Actions - Responsive */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
-          <CardDescription>Common tasks and shortcuts</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
-              <Users className="h-6 w-6" />
-              <span>Add Client</span>
-            </Button>
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
-              <FileText className="h-6 w-6" />
-              <span>Request Records</span>
-            </Button>
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
-              <Calendar className="h-6 w-6" />
-              <span>Schedule Meeting</span>
-            </Button>
-            <Button variant="outline" className="h-auto flex-col py-6 space-y-2 min-h-[80px]">
-              <TrendingUp className="h-6 w-6" />
-              <span>View Reports</span>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Quick Actions */}
+      <section>
+        <Card className="card-enhanced">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
+            <CardDescription>Common tasks and shortcuts</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {quickActions.map((action, index) => {
+                const Icon = action.icon;
+                return (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    onClick={action.action}
+                    className="h-auto flex-col py-6 space-y-2 min-h-[100px] hover:bg-accent/50 transition-colors duration-200"
+                  >
+                    <Icon className="h-6 w-6" />
+                    <span className="font-medium">{action.label}</span>
+                  </Button>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }

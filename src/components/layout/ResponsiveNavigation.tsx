@@ -20,8 +20,7 @@ import {
   AlertTriangle,
   Zap,
   LayoutDashboard,
-  Shield,
-  X
+  Shield
 } from "lucide-react";
 
 interface ResponsiveNavigationProps {
@@ -83,19 +82,32 @@ export function ResponsiveNavigation({ activeView, onViewChange, user, onLogout 
     setIsOpen(false);
   };
 
+  const getBadgeVariant = (badge: string | null) => {
+    if (!badge) return null;
+    
+    const badgeConfig = {
+      'AI': { variant: 'default', className: 'bg-green-100 text-green-800 border-green-200' },
+      'NEW': { variant: 'default', className: 'bg-blue-100 text-blue-800 border-blue-200' },
+      'PRO': { variant: 'default', className: 'bg-amber-100 text-amber-800 border-amber-200' }
+    }[badge];
+
+    return badgeConfig || { variant: 'secondary', className: '' };
+  };
+
   return (
     <>
       {/* Desktop Navigation Bar */}
-      <nav className="hidden lg:block bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="hidden lg:block bg-white border-b border-border shadow-sm sticky top-0 z-50">
+        <div className="container-app">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-                <FileText className="h-5 w-5 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <FileText className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-gray-900">Legal Records</h1>
+                <h1 className="text-xl font-bold text-foreground">Legal Records</h1>
+                <p className="text-xs text-muted-foreground">Management System</p>
               </div>
             </div>
 
@@ -106,30 +118,26 @@ export function ResponsiveNavigation({ activeView, onViewChange, user, onLogout 
                   {section.items.map((item) => {
                     const Icon = item.icon;
                     const isActive = activeView === item.id;
+                    const badgeConfig = getBadgeVariant(item.badge);
+                    
                     return (
                       <Button
                         key={item.id}
                         variant={isActive ? "default" : "ghost"}
                         size="sm"
                         className={cn(
-                          "h-10 px-3 text-sm font-medium min-w-[44px]",
+                          "h-10 px-3 text-sm font-medium min-w-[44px] relative",
                           isActive ? 
-                            "bg-blue-600 text-white shadow-sm hover:bg-blue-700" : 
-                            "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                            "btn-primary shadow-sm" : 
+                            "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                         )}
                         onClick={() => handleMenuClick(item.id)}
                       >
                         <Icon className="h-4 w-4 mr-2" />
                         <span className="hidden xl:inline">{item.label}</span>
-                        {item.badge && (
+                        {item.badge && badgeConfig && (
                           <Badge 
-                            variant="secondary" 
-                            className={cn(
-                              "ml-2 text-xs",
-                              item.badge === 'AI' && "bg-green-100 text-green-800",
-                              item.badge === 'NEW' && "bg-blue-100 text-blue-800",
-                              item.badge === 'PRO' && "bg-amber-100 text-amber-800"
-                            )}
+                            className={cn("ml-2 text-xs h-5", badgeConfig.className)}
                           >
                             {item.badge}
                           </Badge>
@@ -143,17 +151,20 @@ export function ResponsiveNavigation({ activeView, onViewChange, user, onLogout 
 
             {/* User Info and Logout */}
             <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
-                  <UserCheck className="h-4 w-4 text-blue-600" />
+              <div className="hidden sm:flex items-center space-x-3 px-3 py-2 rounded-lg bg-accent/30">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+                  <UserCheck className="h-4 w-4 text-primary-foreground" />
                 </div>
-                <span className="text-sm font-medium text-gray-900">{user}</span>
+                <div>
+                  <span className="text-sm font-semibold text-foreground">{user}</span>
+                  <p className="text-xs text-muted-foreground">Legal Professional</p>
+                </div>
               </div>
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={onLogout}
-                className="text-gray-700 hover:bg-red-50 hover:text-red-700 min-h-[44px] min-w-[44px]"
+                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 min-h-[44px] min-w-[44px]"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">Sign Out</span>
@@ -164,26 +175,26 @@ export function ResponsiveNavigation({ activeView, onViewChange, user, onLogout 
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="lg:hidden bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6">
+      <nav className="lg:hidden bg-white border-b border-border shadow-sm sticky top-0 z-50">
+        <div className="container-app">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-                <FileText className="h-5 w-5 text-white" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <FileText className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-gray-900">Legal Records</h1>
+                <h1 className="text-lg font-bold text-foreground">Legal Records</h1>
               </div>
             </div>
 
-            {/* User Info */}
+            {/* User Info and Mobile Menu */}
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-2 mr-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100">
-                  <UserCheck className="h-4 w-4 text-blue-600" />
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary">
+                  <UserCheck className="h-4 w-4 text-primary-foreground" />
                 </div>
-                <span className="text-sm font-medium text-gray-900 hidden sm:inline">{user}</span>
+                <span className="text-sm font-semibold text-foreground hidden sm:inline">{user}</span>
               </div>
 
               {/* Mobile Menu Trigger */}
@@ -194,31 +205,31 @@ export function ResponsiveNavigation({ activeView, onViewChange, user, onLogout 
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-80 p-0">
-                  <SheetHeader className="px-6 py-4 border-b border-gray-200">
-                    <div className="flex items-center justify-between">
-                      <SheetTitle className="flex items-center space-x-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
-                          <UserCheck className="h-4 w-4 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">{user}</p>
-                          <p className="text-xs text-gray-500">Legal Professional</p>
-                        </div>
-                      </SheetTitle>
-                    </div>
+                  <SheetHeader className="px-6 py-4 border-b border-border bg-accent/30">
+                    <SheetTitle className="flex items-center space-x-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                        <UserCheck className="h-5 w-5 text-primary-foreground" />
+                      </div>
+                      <div className="text-left">
+                        <p className="text-sm font-semibold text-foreground">{user}</p>
+                        <p className="text-xs text-muted-foreground">Legal Professional</p>
+                      </div>
+                    </SheetTitle>
                   </SheetHeader>
 
                   {/* Mobile Navigation Menu */}
                   <div className="flex-1 overflow-y-auto py-4">
                     {menuSections.map((section) => (
                       <div key={section.title} className="mb-6">
-                        <h3 className="mb-2 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        <h3 className="mb-2 px-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                           {section.title}
                         </h3>
                         <div className="space-y-1 px-3">
                           {section.items.map((item) => {
                             const Icon = item.icon;
                             const isActive = activeView === item.id;
+                            const badgeConfig = getBadgeVariant(item.badge);
+                            
                             return (
                               <Button
                                 key={item.id}
@@ -226,23 +237,15 @@ export function ResponsiveNavigation({ activeView, onViewChange, user, onLogout 
                                 className={cn(
                                   "w-full justify-start h-12 px-3 text-sm font-medium min-h-[44px]",
                                   isActive ? 
-                                    "bg-blue-600 text-white shadow-sm" : 
-                                    "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                    "btn-primary shadow-sm" : 
+                                    "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                                 )}
                                 onClick={() => handleMenuClick(item.id)}
                               >
                                 <Icon className="mr-3 h-5 w-5" />
                                 <span className="flex-1 text-left">{item.label}</span>
-                                {item.badge && (
-                                  <Badge 
-                                    variant="secondary" 
-                                    className={cn(
-                                      "ml-2 text-xs",
-                                      item.badge === 'AI' && "bg-green-100 text-green-800",
-                                      item.badge === 'NEW' && "bg-blue-100 text-blue-800",
-                                      item.badge === 'PRO' && "bg-amber-100 text-amber-800"
-                                    )}
-                                  >
+                                {item.badge && badgeConfig && (
+                                  <Badge className={cn("ml-2 text-xs h-5", badgeConfig.className)}>
                                     {item.badge}
                                   </Badge>
                                 )}
@@ -255,11 +258,11 @@ export function ResponsiveNavigation({ activeView, onViewChange, user, onLogout 
                   </div>
 
                   {/* Mobile Logout */}
-                  <div className="border-t border-gray-200 p-3">
+                  <div className="border-t border-border p-3">
                     <Button
                       variant="ghost"
                       onClick={onLogout}
-                      className="w-full justify-start h-12 px-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 min-h-[44px]"
+                      className="w-full justify-start h-12 px-3 text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/10 min-h-[44px]"
                     >
                       <LogOut className="mr-3 h-5 w-5" />
                       Sign Out
