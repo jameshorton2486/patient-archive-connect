@@ -14,7 +14,11 @@ export function DarkModeToggle() {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.setAttribute("data-theme", darkMode ? "dark" : "light");
+    if (darkMode) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
@@ -22,7 +26,7 @@ export function DarkModeToggle() {
     <Button
       variant="ghost"
       size="sm"
-      className="p-2 hover:bg-[var(--bg-tertiary)] transition-all duration-200 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+      className="p-2 hover:bg-accent transition-all duration-200 text-muted-foreground hover:text-foreground h-8 w-8"
       onClick={() => setDarkMode((d) => !d)}
       aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
     >

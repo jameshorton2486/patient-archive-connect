@@ -23,7 +23,7 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-[var(--bg-primary)] transition-colors duration-200" data-theme="light">
+    <div className="min-h-screen flex w-full bg-background transition-colors duration-200">
       {/* Linear Sidebar - Fixed width with responsive behavior */}
       <LinearSidebar
         activeView={activeView}
@@ -43,8 +43,8 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
         />
 
         {/* Main Content with responsive container */}
-        <main className="flex-1 bg-[var(--bg-primary)] overflow-auto">
-          <div className="container-linear padding-responsive min-h-full">
+        <main className="flex-1 bg-background overflow-auto">
+          <div className="container-linear responsive-padding min-h-full">
             <div className="animate-linear-fade-in">
               {children}
             </div>

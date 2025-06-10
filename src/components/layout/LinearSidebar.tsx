@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -45,61 +46,61 @@ export function LinearSidebar({
       title: "Overview",
       items: [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
-        { id: 'design-system', label: 'Design System', icon: Palette, badge: 'PREVIEW' }
+        { id: 'design-system-preview', label: 'Design System', icon: Palette, badge: 'PREVIEW' }
       ]
     },
     {
       title: "Client Management",
       items: [
         { id: 'client-intake', label: 'Client Intake', icon: UserPlus, badge: null },
-        { id: 'intelligent-intake', label: 'Smart Intake', icon: Brain, badge: 'AI' },
-        { id: 'secure-intake', label: 'Secure Form', icon: Shield, badge: null },
-        { id: 'patient-list', label: 'Patients', icon: Users, badge: null }
+        { id: 'smart-intake', label: 'Smart Intake', icon: Brain, badge: 'AI' },
+        { id: 'secure-form', label: 'Secure Form', icon: Shield, badge: null },
+        { id: 'patients', label: 'Patients', icon: Users, badge: null }
       ]
     },
     {
       title: "Medical Records",
       items: [
-        { id: 'provider-list', label: 'Providers', icon: Stethoscope, badge: null },
-        { id: 'medical-records', label: 'Records', icon: FileText, badge: null },
+        { id: 'providers', label: 'Providers', icon: Stethoscope, badge: null },
+        { id: 'records', label: 'Records', icon: FileText, badge: null },
         { id: 'appointments', label: 'Appointments', icon: Calendar, badge: null }
       ]
     },
     {
       title: "Automation",
       items: [
-        { id: 'document-generation', label: 'Documents', icon: FolderPlus, badge: null },
-        { id: 'automated-generator', label: 'Auto Generate', icon: Zap, badge: 'AI' },
+        { id: 'documents', label: 'Documents', icon: FolderPlus, badge: null },
+        { id: 'auto-generate', label: 'Auto Generate', icon: Zap, badge: 'AI' },
         { id: 'ai-processing', label: 'AI Processing', icon: Brain, badge: 'NEW' },
-        { id: 'document-distribution', label: 'Distribution', icon: Send, badge: null }
+        { id: 'distribution', label: 'Distribution', icon: Send, badge: null }
       ]
     },
     {
       title: "Management",
       items: [
-        { id: 'deadline-management', label: 'Deadlines', icon: Clock, badge: null },
-        { id: 'denial-management', label: 'Denials', icon: AlertTriangle, badge: null },
-        { id: 'predictive-analytics', label: 'Analytics', icon: Brain, badge: 'PRO' },
-        { id: 'integration-ecosystem', label: 'Integrations', icon: Zap, badge: null }
+        { id: 'deadlines', label: 'Deadlines', icon: Clock, badge: null },
+        { id: 'denials', label: 'Denials', icon: AlertTriangle, badge: null },
+        { id: 'analytics', label: 'Analytics', icon: Brain, badge: 'PRO' },
+        { id: 'integrations', label: 'Integrations', icon: Zap, badge: null }
       ]
     }
   ];
 
   return (
     <div className={cn(
-      "flex flex-col bg-[var(--bg-secondary)] border-r border-[var(--border-primary)] shadow-sm transition-all duration-300 sticky top-0 h-screen",
+      "flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-300 sticky top-0 h-screen",
       collapsed ? "w-16" : "w-64"
     )}>
       {/* Logo/Header - Linear Style */}
-      <div className="flex h-14 items-center justify-between px-4 border-b border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+      <div className="flex h-14 items-center justify-between px-4 border-b border-sidebar-border">
         {!collapsed && (
           <div className="flex items-center space-x-3 animate-fade-in">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-medical)] transition-transform duration-200 hover:scale-110">
-              <FileText className="h-5 w-5 text-white" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-sidebar-primary transition-transform duration-200 hover:scale-110">
+              <FileText className="h-4 w-4 text-sidebar-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-base font-semibold text-[var(--text-primary)]">Legal Records</h1>
-              <p className="text-xs text-[var(--text-secondary)]">Management System</p>
+              <h1 className="text-sm font-semibold text-sidebar-foreground">Legal Records</h1>
+              <p className="text-xs text-sidebar-foreground/60">Management System</p>
             </div>
           </div>
         )}
@@ -107,7 +108,7 @@ export function LinearSidebar({
           variant="ghost"
           size="sm"
           onClick={onToggleCollapse}
-          className="text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] p-1.5 transition-all duration-200 hover:scale-105"
+          className="text-sidebar-foreground/60 hover:bg-sidebar-accent p-2 transition-all duration-200 hover:scale-105 h-8 w-8"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -116,13 +117,13 @@ export function LinearSidebar({
 
       {/* User Info - Linear Style */}
       {!collapsed && (
-        <div className="flex items-center px-4 py-4 border-b border-[var(--border-primary)] bg-[var(--bg-tertiary)] animate-slide-up">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent-medical)]/20 transition-transform duration-200 hover:scale-110">
-            <UserCheck className="h-4 w-4 text-[var(--accent-medical)]" />
+        <div className="flex items-center px-4 py-3 border-b border-sidebar-border animate-linear-fade-in">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sidebar-primary/20 transition-transform duration-200 hover:scale-110">
+            <UserCheck className="h-4 w-4 text-sidebar-primary" />
           </div>
           <div className="ml-3 flex-1 min-w-0">
-            <p className="text-sm font-medium text-[var(--text-primary)] truncate">{user}</p>
-            <p className="text-xs text-[var(--text-secondary)]">Legal Professional</p>
+            <p className="text-sm font-medium text-sidebar-foreground truncate">{user}</p>
+            <p className="text-xs text-sidebar-foreground/60">Legal Professional</p>
           </div>
         </div>
       )}
@@ -132,7 +133,7 @@ export function LinearSidebar({
         {menuSections.map((section, sectionIndex) => (
           <div key={section.title} className="mb-6">
             {!collapsed && (
-              <h3 className="mb-2 px-4 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
+              <h3 className="mb-2 px-4 text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider">
                 {section.title}
               </h3>
             )}
@@ -145,11 +146,11 @@ export function LinearSidebar({
                     key={item.id}
                     variant="ghost"
                     className={cn(
-                      "w-full justify-start text-sm font-medium transition-all duration-200 animate-fade-in",
-                      collapsed ? "px-2 py-2" : "px-4 py-2",
+                      "w-full justify-start text-sm font-medium transition-all duration-200 animate-fade-in h-10",
+                      collapsed ? "px-2" : "px-3",
                       isActive
-                        ? "bg-[var(--accent-medical)]/10 text-[var(--accent-medical)] rounded-md"
-                        : "text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)]"
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground rounded-xl shadow-sm"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-xl"
                     )}
                     onClick={() => onViewChange(item.id)}
                     title={collapsed ? item.label : undefined}
@@ -164,11 +165,11 @@ export function LinearSidebar({
                           <Badge 
                             variant="secondary" 
                             className={cn(
-                              "ml-2 text-xs h-5 px-1.5 transition-all duration-200",
-                              item.badge === 'AI' && "bg-green-100 text-green-800 border-green-200",
-                              item.badge === 'NEW' && "bg-blue-100 text-blue-800 border-blue-200",
-                              item.badge === 'PRO' && "bg-amber-100 text-amber-800 border-amber-200",
-                              item.badge === 'PREVIEW' && "bg-purple-100 text-purple-800 border-purple-200"
+                              "ml-2 text-xs h-5 px-1.5 transition-all duration-200 border-0",
+                              item.badge === 'AI' && "bg-green-500/20 text-green-400",
+                              item.badge === 'NEW' && "bg-blue-500/20 text-blue-400",
+                              item.badge === 'PRO' && "bg-amber-500/20 text-amber-400",
+                              item.badge === 'PREVIEW' && "bg-purple-500/20 text-purple-400"
                             )}
                           >
                             {item.badge}
@@ -185,13 +186,13 @@ export function LinearSidebar({
       </nav>
 
       {/* Logout Button */}
-      <div className="border-t border-[var(--border-primary)] p-2">
+      <div className="border-t border-sidebar-border p-2">
         <Button
           variant="ghost"
           onClick={onLogout}
           className={cn(
-            "w-full justify-start text-sm font-medium text-[var(--text-secondary)] hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 hover:scale-105",
-            collapsed ? "px-2 py-2" : "px-4 py-2"
+            "w-full justify-start text-sm font-medium text-sidebar-foreground/60 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 hover:scale-105 rounded-xl h-10",
+            collapsed ? "px-2" : "px-3"
           )}
           title={collapsed ? "Sign Out" : undefined}
           aria-label="Sign out of application"

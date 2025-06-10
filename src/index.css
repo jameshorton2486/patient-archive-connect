@@ -12,108 +12,103 @@
     --font-mono: 'JetBrains Mono', monospace;
 
     /* Light Mode Colors - Linear Style */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #f1f5f9;
+    --bg-primary: #F8F9FB;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #F1F5F9;
     
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
     
-    --border-primary: #e2e8f0;
-    --border-secondary: #cbd5e1;
+    --border-primary: #E2E8F0;
+    --border-secondary: #CBD5E1;
     
-    --accent-medical: #0ea5e9;
-    --accent-secondary: #8b5cf6;
-    --success: #22c55e;
-    --warning: #f59e0b;
-    --error: #ef4444;
+    --accent-primary: #6366F1;
+    --accent-secondary: #22D3EE;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --error: #EF4444;
 
-    /* Linear Light Theme Colors - Updated to match Linear exactly */
-    --background: 255 255 255;
-    --foreground: 30 41 59;
+    /* Linear Light Theme Colors */
+    --background: 248 249 251;
+    --foreground: 17 24 39;
 
     --card: 255 255 255;
-    --card-foreground: 30 41 59;
+    --card-foreground: 17 24 39;
 
     --popover: 255 255 255;
-    --popover-foreground: 30 41 59;
+    --popover-foreground: 17 24 39;
 
-    /* Linear's exact neutral palette */
-    --primary: 255 255 255;
-    --primary-foreground: 30 41 59;
+    --primary: 99 102 241;
+    --primary-foreground: 255 255 255;
 
-    /* Linear's signature purple accent */
-    --accent: 248 249 255;
-    --accent-foreground: 14 165 233;
+    --accent: 248 250 252;
+    --accent-foreground: 99 102 241;
 
-    /* Linear's subtle gray backgrounds */
-    --secondary: 249 250 251;
-    --secondary-foreground: 107 114 128;
+    --secondary: 241 245 249;
+    --secondary-foreground: 75 85 99;
 
-    /* Muted backgrounds - Linear's subtle grays */
-    --muted: 249 250 251;
+    --muted: 241 245 249;
     --muted-foreground: 107 114 128;
 
-    /* Linear's minimal borders */
     --border: 226 232 240;
     --input: 226 232 240;
-    --ring: 14 165 233;
+    --ring: 99 102 241;
 
     /* Linear Sidebar - darker theme matching Linear's sidebar */
     --sidebar-background: 23 23 23;
     --sidebar-foreground: 245 245 245;
-    --sidebar-primary: 14 165 233;
+    --sidebar-primary: 99 102 241;
     --sidebar-primary-foreground: 255 255 255;
     --sidebar-accent: 38 38 38;
     --sidebar-accent-foreground: 245 245 245;
     --sidebar-border: 38 38 38;
-    --sidebar-ring: 14 165 233;
+    --sidebar-ring: 99 102 241;
   }
 
   /* Dark Mode Override */
-  :root[data-theme='dark'] {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-tertiary: #334155;
+  .dark {
+    --bg-primary: #1A1D23;
+    --bg-secondary: #1F2937;
+    --bg-tertiary: #374151;
     
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
+    --text-primary: #F8FAFC;
+    --text-secondary: #E5E7EB;
+    --text-muted: #9CA3AF;
     
-    --border-primary: #334155;
-    --border-secondary: #475569;
+    --border-primary: #2D2F35;
+    --border-secondary: #4B5563;
     
-    --accent-medical: #38bdf8;
-    --accent-secondary: #c084fc;
-    --success: #4ade80;
-    --warning: #fbbf24;
-    --error: #f87171;
+    --accent-primary: #818CF8;
+    --accent-secondary: #67E8F9;
+    --success: #34D399;
+    --warning: #FBBF24;
+    --error: #F87171;
 
-    --background: 15 23 42;
+    --background: 26 29 35;
     --foreground: 248 250 252;
 
-    --card: 30 41 59;
+    --card: 31 41 55;
     --card-foreground: 248 250 252;
 
-    --popover: 30 41 59;
+    --popover: 31 41 55;
     --popover-foreground: 248 250 252;
 
-    --primary: 30 41 59;
-    --primary-foreground: 248 250 252;
+    --primary: 129 140 248;
+    --primary-foreground: 26 29 35;
 
-    --secondary: 51 65 85;
-    --secondary-foreground: 161 161 170;
+    --secondary: 55 65 81;
+    --secondary-foreground: 229 231 235;
 
-    --muted: 51 65 85;
-    --muted-foreground: 161 161 170;
+    --muted: 55 65 81;
+    --muted-foreground: 156 163 175;
 
-    --accent: 30 41 59;
-    --accent-foreground: 56 189 248;
+    --accent: 31 41 55;
+    --accent-foreground: 129 140 248;
 
-    --border: 51 65 85;
-    --input: 51 65 85;
-    --ring: 56 189 248;
+    --border: 45 47 53;
+    --input: 45 47 53;
+    --ring: 129 140 248;
   }
 }
 
@@ -125,8 +120,8 @@
   /* Typography Base */
   body {
     font-family: var(--font-sans);
-    color: var(--text-primary);
-    background: var(--bg-primary);
+    color: hsl(var(--text-primary));
+    background: hsl(var(--background));
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-variation-settings: normal;
     text-rendering: optimizeLegibility;
@@ -137,33 +132,27 @@
 
   /* Linear Typography Hierarchy */
   h1 {
-    @apply text-2xl font-semibold tracking-tight;
-    color: var(--text-primary);
+    @apply text-3xl font-semibold tracking-tight text-foreground;
   }
 
   h2 {
-    @apply text-xl font-semibold tracking-tight;
-    color: var(--text-primary);
+    @apply text-2xl font-semibold tracking-tight text-foreground;
   }
 
   h3 {
-    @apply text-lg font-semibold;
-    color: var(--text-primary);
+    @apply text-xl font-semibold text-foreground;
   }
 
   h4 {
-    @apply text-base font-semibold;
-    color: var(--text-primary);
+    @apply text-lg font-semibold text-foreground;
   }
 
   h5, h6 {
-    @apply text-sm font-semibold;
-    color: var(--text-primary);
+    @apply text-base font-semibold text-foreground;
   }
 
   p {
-    @apply text-sm leading-relaxed;
-    color: var(--text-secondary);
+    @apply text-sm leading-relaxed text-muted-foreground;
   }
 }
 
@@ -171,62 +160,49 @@
   /* Linear Card Styles */
   .card-linear {
     @apply rounded-xl shadow-sm transition-all duration-200 hover:shadow-md;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-primary);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--card-foreground));
   }
 
   /* Linear Button Styles */
   .btn-linear {
-    @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98];
   }
 
   .btn-linear-primary {
-    background-color: var(--accent-medical);
-    @apply btn-linear text-white hover:opacity-90 shadow-sm hover:shadow-md active:scale-95;
+    @apply btn-linear bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md;
   }
 
   .btn-linear-secondary {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-primary);
-    color: var(--text-primary);
-    @apply btn-linear hover:bg-muted active:scale-95;
+    @apply btn-linear bg-secondary text-secondary-foreground border border-border hover:bg-secondary/80;
   }
 
   .btn-linear-ghost {
-    @apply btn-linear bg-transparent hover:bg-muted active:scale-95;
-    color: var(--text-secondary);
+    @apply btn-linear bg-transparent hover:bg-accent hover:text-accent-foreground;
   }
 
   /* Linear Input Styles */
   .input-linear {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-primary);
-    color: var(--text-primary);
-    @apply flex h-9 w-full rounded-md px-3 py-1 text-sm shadow-sm transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50;
-  }
-
-  .input-linear:focus-visible {
-    ring-color: var(--accent-medical);
-    border-color: var(--accent-medical);
+    @apply flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200;
   }
 
   /* Linear Navigation Item */
   .nav-item-linear {
-    @apply flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-95;
+    @apply flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-[0.98];
   }
 
   .nav-item-linear.active {
-    @apply bg-accent text-accent-foreground;
+    @apply bg-primary text-primary-foreground shadow-sm;
   }
 
   /* Linear Form Field */
   .form-field-linear {
-    @apply space-y-1.5;
+    @apply space-y-2;
   }
 
   .form-label-linear {
-    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
-    color: var(--text-primary);
+    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground;
   }
 
   /* Linear Table Styles */
@@ -235,11 +211,11 @@
   }
 
   .table-linear th {
-    @apply border-b border-border px-4 py-3 text-left text-sm font-medium text-muted-foreground;
+    @apply border-b border-border px-4 py-3 text-left text-sm font-semibold text-foreground;
   }
 
   .table-linear td {
-    @apply border-b border-border px-4 py-3 text-sm;
+    @apply border-b border-border px-4 py-3 text-sm text-foreground;
   }
 
   .table-linear tr:hover {
@@ -250,13 +226,34 @@
   .container-linear {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
+
+  /* Mobile Responsive */
+  .mobile-stack {
+    @apply flex-col space-y-3 space-x-0;
+  }
+  
+  .mobile-full-width {
+    @apply w-full;
+  }
+
+  .responsive-grid {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .responsive-text {
+    @apply text-sm sm:text-base;
+  }
+  
+  .responsive-padding {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
 }
 
 /* Linear-specific animations and transitions */
 @keyframes linear-fade-in {
   from {
     opacity: 0;
-    transform: translateY(2px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -309,45 +306,15 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-primary);
+  background: hsl(var(--border));
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+  background: hsl(var(--muted-foreground));
 }
 
 /* Linear focus styles */
 .focus-linear {
-  @apply focus:outline-none focus:ring-1 focus:ring-offset-1;
-}
-
-.focus-linear:focus {
-  ring-color: var(--accent-medical);
-}
-
-/* Enhanced responsive utilities */
-@responsive {
-  .text-responsive {
-    @apply text-sm sm:text-base;
-  }
-  
-  .padding-responsive {
-    @apply p-4 sm:p-6 lg:p-8;
-  }
-  
-  .grid-responsive {
-    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
-  }
-}
-
-/* Mobile-first responsive improvements */
-@media (max-width: 640px) {
-  .mobile-stack {
-    @apply flex-col space-y-2 space-x-0;
-  }
-  
-  .mobile-full-width {
-    @apply w-full;
-  }
+  @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
 }
