@@ -439,6 +439,179 @@ export interface ProviderFormData {
   };
 }
 
+// Missing interfaces that other components expect
+export interface GeneratedDocument {
+  id: string;
+  templateType: DocumentType;
+  content: string;
+  variables: Record<string, string>;
+  createdAt: string;
+  createdBy: string;
+  firmBranding: FirmBranding;
+}
+
+export interface FirmBranding {
+  logoUrl?: string;
+  primaryColor: string;
+  secondaryColor: string;
+  letterheadTemplate?: string;
+  firmName: string;
+  firmAddress: string;
+  firmPhone: string;
+  firmEmail: string;
+}
+
+export interface FollowUpRequest {
+  id: string;
+  requestId: string;
+  type: 'reminder' | 'escalation' | 'final_demand';
+  scheduledDate: string;
+  sent: boolean;
+  sentAt?: string;
+  response?: string;
+  nextFollowUpDate?: string;
+}
+
+export interface ProviderType {
+  id: string;
+  name: string;
+  specialty: string;
+  standardDeadlineDays: number;
+  reminderSchedule: number[];
+  escalationRules: EscalationRule[];
+}
+
+export interface EscalationRule {
+  daysTrigger: number;
+  actionType: 'email' | 'phone' | 'letter' | 'legal';
+  template: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  date: string;
+  type: 'deadline' | 'follow_up' | 'appointment';
+  requestId?: string;
+  providerId?: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  completed: boolean;
+}
+
+export interface ReminderSent {
+  id: string;
+  requestId: string;
+  reminderType: 'initial' | 'follow_up' | 'final';
+  sentAt: string;
+  method: 'email' | 'fax' | 'mail' | 'phone';
+  response?: string;
+  responseDate?: string;
+}
+
+export interface DeliveryMethod {
+  type: 'certified_mail' | 'fax' | 'email' | 'portal';
+  address?: string;
+  trackingEnabled: boolean;
+  confirmationRequired: boolean;
+  estimatedDeliveryDays: number;
+}
+
+export interface DeliveryAttempt {
+  id: string;
+  requestId: string;
+  attemptNumber: number;
+  method: DeliveryMethod;
+  attemptedAt: string;
+  status: 'pending' | 'delivered' | 'failed' | 'returned';
+  trackingNumber?: string;
+  failureReason?: string;
+  nextAttemptDate?: string;
+}
+
+export interface DeliveryTracking {
+  id: string;
+  requestId: string;
+  trackingNumber: string;
+  carrier: string;
+  status: 'in_transit' | 'delivered' | 'failed' | 'returned';
+  updates: TrackingUpdate[];
+  deliveredAt?: string;
+  signedBy?: string;
+}
+
+export interface TrackingUpdate {
+  timestamp: string;
+  location: string;
+  status: string;
+  description: string;
+}
+
+export interface DocumentTemplate {
+  id: string;
+  name: string;
+  type: DocumentType;
+  content: string;
+  variables: string[];
+  firmSpecific: boolean;
+  lastModified: string;
+}
+
+export interface QRCodeData {
+  requestId: string;
+  clientId: string;
+  providerId: string;
+  trackingUrl: string;
+  expiresAt: string;
+  securityHash: string;
+}
+
+export interface ProviderDeadlineRule {
+  providerType: string;
+  standardDays: number;
+  urgentDays: number;
+  reminderDays: number[];
+  escalationDays: number[];
+}
+
+export const PROVIDER_DEADLINE_RULES: Record<string, ProviderDeadlineRule> = {
+  hospital: {
+    providerType: 'hospital',
+    standardDays: 30,
+    urgentDays: 15,
+    reminderDays: [7, 14, 21],
+    escalationDays: [28, 35, 42]
+  },
+  physician: {
+    providerType: 'physician',
+    standardDays: 21,
+    urgentDays: 10,
+    reminderDays: [7, 14],
+    escalationDays: [19, 26, 33]
+  },
+  specialist: {
+    providerType: 'specialist',
+    standardDays: 21,
+    urgentDays: 10,
+    reminderDays: [7, 14],
+    escalationDays: [19, 26, 33]
+  },
+  therapy: {
+    providerType: 'therapy',
+    standardDays: 14,
+    urgentDays: 7,
+    reminderDays: [5, 10],
+    escalationDays: [12, 19, 26]
+  },
+  imaging: {
+    providerType: 'imaging',
+    standardDays: 14,
+    urgentDays: 7,
+    reminderDays: [5, 10],
+    escalationDays: [12, 19, 26]
+  }
+};
+
 const feeAmount = "{{feeAmount}}";
 
 export const DOCUMENT_TEMPLATES: Record<DocumentType, string> = {
@@ -604,13 +777,172 @@ This is our final request before pursuing other legal remedies.
 {{firmName}}
 {{attorneyName}}, Attorney
   `,
-  'emergency_record': '',
-  'specialist_notes': '',
-  'lab_results': '',
-  'imaging_report': '',
-  'therapy_notes': '',
-  'billing_statement': '',
-  'insurance_correspondence': '',
-  'prescription_record': '',
-  'other': ''
+  'emergency_record': `
+EMERGENCY MEDICAL RECORDS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+URGENT: Medical Records Required for {{clientName}} (DOB: {{clientDOB}})
+
+This is an urgent request for emergency medical records related to treatment on {{incidentDate}}.
+
+Please provide these records within 7 business days.
+
+Tracking ID: {{trackingId}}
+
+Thank you,
+{{firmName}}
+  `,
+  'specialist_notes': `
+SPECIALIST CONSULTATION RECORDS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Specialist Records for {{clientName}} (DOB: {{clientDOB}})
+
+We request all specialist consultation notes and treatment records for the above patient.
+
+Please include:
+- Initial consultation notes
+- Treatment plans
+- Progress notes
+- Discharge summaries
+
+Tracking ID: {{trackingId}}
+
+Sincerely,
+{{firmName}}
+  `,
+  'lab_results': `
+LABORATORY RESULTS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Laboratory Results for {{clientName}} (DOB: {{clientDOB}})
+
+Please provide all laboratory test results and reports for the referenced patient.
+
+Date Range: {{startDate}} to {{endDate}}
+
+Tracking ID: {{trackingId}}
+
+Thank you,
+{{firmName}}
+  `,
+  'imaging_report': `
+IMAGING REPORTS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Imaging Reports for {{clientName}} (DOB: {{clientDOB}})
+
+Please provide all imaging reports including:
+- X-rays
+- MRI scans
+- CT scans
+- Ultrasounds
+
+Date Range: {{startDate}} to {{endDate}}
+
+Tracking ID: {{trackingId}}
+
+Sincerely,
+{{firmName}}
+  `,
+  'therapy_notes': `
+THERAPY RECORDS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Therapy Records for {{clientName}} (DOB: {{clientDOB}})
+
+Please provide all therapy records including:
+- Initial evaluations
+- Treatment notes
+- Progress reports
+- Discharge summaries
+
+Tracking ID: {{trackingId}}
+
+Thank you,
+{{firmName}}
+  `,
+  'billing_statement': `
+BILLING RECORDS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Billing Statements for {{clientName}} (DOB: {{clientDOB}})
+
+Please provide all billing statements and financial records for the referenced patient.
+
+Date Range: {{startDate}} to {{endDate}}
+
+Tracking ID: {{trackingId}}
+
+Sincerely,
+{{firmName}}
+  `,
+  'insurance_correspondence': `
+INSURANCE CORRESPONDENCE REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Insurance Communications for {{clientName}} (DOB: {{clientDOB}})
+
+Please provide all correspondence with insurance companies regarding the referenced patient.
+
+Tracking ID: {{trackingId}}
+
+Thank you,
+{{firmName}}
+  `,
+  'prescription_record': `
+PRESCRIPTION RECORDS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Prescription History for {{clientName}} (DOB: {{clientDOB}})
+
+Please provide all prescription records and medication history for the referenced patient.
+
+Date Range: {{startDate}} to {{endDate}}
+
+Tracking ID: {{trackingId}}
+
+Sincerely,
+{{firmName}}
+  `,
+  'other': `
+MEDICAL RECORDS REQUEST
+
+Date: {{date}}
+From: {{firmName}}
+To: {{providerName}}
+
+Re: Medical Records for {{clientName}} (DOB: {{clientDOB}})
+
+Please provide the requested medical records for the referenced patient.
+
+Tracking ID: {{trackingId}}
+
+Thank you,
+{{firmName}}
+  `
 };
