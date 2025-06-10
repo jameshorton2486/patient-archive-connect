@@ -5,87 +5,89 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-
-    /* Healthcare Design System Colors */
-    --medical-charcoal: 210 24% 16%;
-    --pure-white: 0 0% 100%;
-    --healthcare-blue: 210 83% 53%;
-    --medical-sage: 164 42% 54%;
-    --clinical-gray: 210 9% 31%;
-    --light-canvas: 210 20% 98%;
-
+    /* Healthcare Design System - Professional Medical Palette */
+    
+    /* Core Brand Colors */
+    --medical-charcoal: 44 62 80; /* #2C3E50 */
+    --pure-white: 255 255 255; /* #FFFFFF */
+    --healthcare-blue: 52 152 219; /* #3498DB */
+    --medical-sage: 39 174 96; /* #27AE60 */
+    --clinical-gray: 149 165 166; /* #95A5A6 */
+    --light-canvas: 248 249 250; /* #F8F9FA */
+    
     /* Semantic Colors */
-    --success-primary: 142 69% 58%;
-    --success-hover: 142 69% 48%;
-    --success-background: 142 69% 96%;
-    --warning-primary: 38 92% 50%;
-    --warning-hover: 38 92% 40%;
-    --warning-background: 38 92% 96%;
-    --error-primary: 0 84% 60%;
-    --error-hover: 0 84% 50%;
-    --error-background: 0 84% 96%;
-    --info-primary: 199 89% 48%;
-    --info-hover: 199 89% 38%;
-    --info-background: 199 89% 96%;
-
+    --success-primary: 39 174 96; /* #27AE60 */
+    --success-hover: 46 204 113; /* #2ECC71 */
+    --success-background: 232 248 245; /* #E8F8F5 */
+    
+    --warning-primary: 243 156 18; /* #F39C12 */
+    --warning-hover: 230 126 34; /* #E67E22 */
+    --warning-background: 254 249 231; /* #FEF9E7 */
+    
+    --error-primary: 231 76 60; /* #E74C3C */
+    --error-hover: 192 57 43; /* #C0392B */
+    --error-background: 253 237 236; /* #FDEDEC */
+    
+    --info-primary: 93 173 226; /* #5DADE2 */
+    --info-hover: 52 152 219; /* #3498DB */
+    --info-background: 235 245 251; /* #EBF5FB */
+    
     /* Neutral Gradient System */
-    --neutral-50: 210 20% 98%;
-    --neutral-100: 210 20% 95%;
-    --neutral-200: 210 16% 88%;
-    --neutral-300: 210 14% 78%;
-    --neutral-400: 210 14% 58%;
-    --neutral-500: 210 11% 42%;
-    --neutral-600: 210 12% 32%;
-    --neutral-700: 210 15% 25%;
-    --neutral-800: 210 24% 16%;
-    --neutral-900: 210 24% 10%;
+    --neutral-50: 250 251 252; /* #FAFBFC */
+    --neutral-100: 244 246 248; /* #F4F6F8 */
+    --neutral-200: 225 232 237; /* #E1E8ED */
+    --neutral-300: 199 210 215; /* #C7D2D7 */
+    --neutral-400: 160 173 184; /* #A0ADB8 */
+    --neutral-500: 127 140 141; /* #7F8C8D */
+    --neutral-600: 93 109 126; /* #5D6D7E */
+    --neutral-700: 52 73 94; /* #34495E */
+    --neutral-800: 44 62 80; /* #2C3E50 */
+    --neutral-900: 27 38 49; /* #1B2631 */
+
+    /* Design System Semantic Mapping */
+    --background: var(--light-canvas);
+    --foreground: var(--medical-charcoal);
+    --card: var(--pure-white);
+    --card-foreground: var(--neutral-700);
+    --popover: var(--pure-white);
+    --popover-foreground: var(--medical-charcoal);
+    --primary: var(--healthcare-blue);
+    --primary-foreground: var(--pure-white);
+    --secondary: var(--neutral-100);
+    --secondary-foreground: var(--medical-charcoal);
+    --muted: var(--neutral-100);
+    --muted-foreground: var(--neutral-500);
+    --accent: var(--light-canvas);
+    --accent-foreground: var(--medical-charcoal);
+    --destructive: var(--error-primary);
+    --destructive-foreground: var(--pure-white);
+    --border: var(--neutral-200);
+    --input: var(--neutral-200);
+    --ring: var(--healthcare-blue);
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* Dark Theme Healthcare Colors */
+    --background: var(--neutral-900);
+    --foreground: var(--neutral-100);
+    --card: var(--neutral-800);
+    --card-foreground: var(--neutral-100);
+    --popover: var(--neutral-800);
+    --popover-foreground: var(--neutral-100);
+    --primary: var(--healthcare-blue);
+    --primary-foreground: var(--pure-white);
+    --secondary: var(--neutral-700);
+    --secondary-foreground: var(--neutral-100);
+    --muted: var(--neutral-700);
+    --muted-foreground: var(--neutral-400);
+    --accent: var(--neutral-700);
+    --accent-foreground: var(--neutral-100);
+    --destructive: var(--error-primary);
+    --destructive-foreground: var(--pure-white);
+    --border: var(--neutral-600);
+    --input: var(--neutral-600);
+    --ring: var(--healthcare-blue);
   }
 }
 
@@ -93,7 +95,260 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Ensure consistent root styling */
+  #root, #__next {
+    @apply min-h-screen bg-background;
+  }
+}
+
+@layer components {
+  /* Healthcare Typography System */
+  .text-display-xl {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-display-l {
+    font-size: 3.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-display-m {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-h1 {
+    font-size: 2.625rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-h2 {
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-h3 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-h4 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-h5 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-h6 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-body-xl {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-body-large {
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-body-default {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: hsl(var(--medical-charcoal));
+  }
+  
+  .text-body-small {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: hsl(var(--neutral-500));
+  }
+  
+  .text-body-xs {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: hsl(var(--neutral-500));
+  }
+  
+  .text-lead {
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: hsl(var(--neutral-600));
+  }
+  
+  .text-caption {
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    color: hsl(var(--neutral-500));
+    text-transform: uppercase;
+  }
+  
+  .text-overline {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    color: hsl(var(--neutral-500));
+    text-transform: uppercase;
+  }
+  
+  /* Healthcare UI Components */
+  .card-healthcare {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border-radius: 0.5rem;
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  }
+  
+  .button-healthcare-primary {
+    background-color: hsl(var(--healthcare-blue));
+    color: hsl(var(--pure-white));
+    transition: all 0.2s;
+  }
+  
+  .button-healthcare-primary:hover {
+    background-color: hsl(var(--healthcare-blue) / 0.9);
+  }
+  
+  .button-healthcare-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--healthcare-blue)), 0 0 0 4px hsl(var(--healthcare-blue) / 0.2);
+  }
+  
+  .button-healthcare-secondary {
+    background-color: hsl(var(--neutral-100));
+    color: hsl(var(--medical-charcoal));
+    transition: all 0.2s;
+  }
+  
+  .button-healthcare-secondary:hover {
+    background-color: hsl(var(--neutral-200));
+  }
+  
+  .button-healthcare-secondary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--neutral-300)), 0 0 0 4px hsl(var(--neutral-300) / 0.2);
+  }
+  
+  .input-healthcare {
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    transition: all 0.2s;
+  }
+  
+  .input-healthcare::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .input-healthcare:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--ring)), 0 0 0 4px hsl(var(--ring) / 0.2);
+  }
+  
+  /* Status Indicators */
+  .status-success {
+    background-color: hsl(var(--success-background));
+    color: hsl(var(--success-primary));
+    border: 1px solid hsl(var(--success-primary) / 0.2);
+  }
+  
+  .status-warning {
+    background-color: hsl(var(--warning-background));
+    color: hsl(var(--warning-primary));
+    border: 1px solid hsl(var(--warning-primary) / 0.2);
+  }
+  
+  .status-error {
+    background-color: hsl(var(--error-background));
+    color: hsl(var(--error-primary));
+    border: 1px solid hsl(var(--error-primary) / 0.2);
+  }
+  
+  .status-info {
+    background-color: hsl(var(--info-background));
+    color: hsl(var(--info-primary));
+    border: 1px solid hsl(var(--info-primary) / 0.2);
+  }
+}
+
+/* Responsive Typography Adjustments */
+@media (max-width: 768px) {
+  .text-display-xl {
+    font-size: 3rem;
+  }
+  
+  .text-display-l {
+    font-size: 2.5rem;
+  }
+  
+  .text-display-m {
+    font-size: 2rem;
+  }
+  
+  .text-h1 {
+    font-size: 2rem;
+  }
+  
+  .text-h2 {
+    font-size: 1.75rem;
+  }
+  
+  .text-h3 {
+    font-size: 1.5rem;
+  }
+  
+  .text-h4 {
+    font-size: 1.25rem;
   }
 }
