@@ -39,7 +39,7 @@ export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps)
           variant="ghost"
           size="sm"
           onClick={onToggleSidebar}
-          className="lg:hidden p-2 hover:bg-accent transition-colors duration-200"
+          className="lg:hidden p-2 hover:bg-[var(--bg-tertiary)] transition-colors duration-200 text-[var(--text-secondary)]"
           aria-label="Toggle menu"
         >
           <Menu className="h-5 w-5" />
@@ -62,7 +62,7 @@ export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps)
         <Button 
           variant="ghost" 
           size="sm" 
-          className="relative p-2 hover:bg-accent transition-all duration-200" 
+          className="relative p-2 hover:bg-[var(--bg-tertiary)] transition-all duration-200 text-[var(--text-secondary)] hover:text-[var(--text-primary)]" 
           aria-label="Search"
         >
           <Search className="h-4 w-4" />
@@ -71,13 +71,13 @@ export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps)
         <Button 
           variant="ghost" 
           size="sm" 
-          className="relative p-2 hover:bg-accent transition-all duration-200" 
+          className="relative p-2 hover:bg-[var(--bg-tertiary)] transition-all duration-200 text-[var(--text-secondary)] hover:text-[var(--text-primary)]" 
           aria-label="Notifications"
         >
           <Bell className="h-4 w-4" />
           <Badge 
             variant="secondary" 
-            className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500 text-white border-none"
+            className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-[var(--accent-medical)] text-white border-none"
           >
             3
           </Badge>
@@ -86,7 +86,7 @@ export function LinearHeader({ activeView, onToggleSidebar }: LinearHeaderProps)
         <Button 
           variant="ghost" 
           size="sm" 
-          className="p-2 hover:bg-accent transition-all duration-200" 
+          className="p-2 hover:bg-[var(--bg-tertiary)] transition-all duration-200 text-[var(--text-secondary)] hover:text-[var(--text-primary)]" 
           aria-label="Settings"
         >
           <Settings className="h-4 w-4" />
