@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ApplicationShell } from "@/components/layout/ApplicationShell";
 import { DenialManagement } from "@/components/DenialManagement";
@@ -9,6 +8,7 @@ import { MedicalRecords } from "@/components/MedicalRecords";
 import { PredictiveAnalytics } from "@/components/PredictiveAnalytics";
 import { SecureIntakeForm } from "@/components/SecureIntakeForm";
 import { LinearDashboard } from "@/components/LinearDashboard";
+import { LinearClientForm } from "@/components/LinearClientForm";
 
 console.log('Index.tsx: Starting Index component initialization');
 
@@ -30,6 +30,8 @@ export default function Index() {
       switch (activeView) {
         case 'dashboard':
           return <LinearDashboard />;
+        case 'client-intake':
+          return <LinearClientForm onBack={() => setActiveView('dashboard')} />;
         case 'denial-management':
           return <DenialManagement onBack={() => setActiveView('dashboard')} />;
         case 'patient-list':
