@@ -141,8 +141,13 @@ export function EnhancedTextarea({ className, error, ...props }: React.Component
   );
 }
 
-// Enhanced Select with built-in styling
-export function EnhancedSelect({ className, children, ...props }: React.ComponentProps<typeof Select> & { children: React.ReactNode }) {
+// Enhanced Select with built-in styling - Fixed TypeScript issue
+interface EnhancedSelectProps extends React.ComponentProps<typeof Select> {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function EnhancedSelect({ className, children, ...props }: EnhancedSelectProps) {
   return (
     <Select {...props}>
       <SelectTrigger className={cn('form-input h-11', className)}>

@@ -1,159 +1,63 @@
 
 import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { 
-  CheckCircle, 
-  Clock, 
-  AlertCircle, 
-  XCircle, 
-  AlertTriangle,
-  Info,
-  TrendingUp,
-  TrendingDown
-} from 'lucide-react';
-
-interface StatusBadgeProps {
-  status: 'success' | 'warning' | 'error' | 'info' | 'pending' | 'neutral';
-  children: React.ReactNode;
-  className?: string;
-}
-
-export function StatusBadge({ status, children, className }: StatusBadgeProps) {
-  const getStatusClasses = (status: string) => {
-    switch (status) {
-      case 'success':
-        return 'badge-success';
-      case 'warning':
-        return 'badge-warning';
-      case 'error':
-        return 'badge-error';
-      case 'info':
-        return 'badge-info';
-      case 'pending':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'badge-neutral';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'success':
-        return <CheckCircle className="h-3 w-3" />;
-      case 'warning':
-        return <AlertTriangle className="h-3 w-3" />;
-      case 'error':
-        return <XCircle className="h-3 w-3" />;
-      case 'info':
-        return <Info className="h-3 w-3" />;
-      case 'pending':
-        return <Clock className="h-3 w-3" />;
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <Badge className={cn(getStatusClasses(status), 'flex items-center gap-1 font-medium', className)}>
-      {getStatusIcon(status)}
-      {children}
-    </Badge>
-  );
-}
+import { TrendingUp, TrendingDown, LucideIcon } from 'lucide-react';
 
 interface MetricCardProps {
   title: string;
   value: string;
-  description?: string;
-  trend?: 'up' | 'down' | 'neutral';
-  trendValue?: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color?: 'blue' | 'green' | 'amber' | 'red' | 'purple';
-  className?: string;
+  trendValue: string;
+  trend: 'up' | 'down';
+  description: string;
+  icon: LucideIcon;
+  color: 'blue' | 'green' | 'amber' | 'red';
 }
 
 export function MetricCard({ 
   title, 
   value, 
-  description, 
+  trendValue, 
   trend, 
-  trendValue,
+  description, 
   icon: Icon, 
-  color = 'blue',
-  className 
+  color 
 }: MetricCardProps) {
-  const getColorClasses = (color: string) => {
-    switch (color) {
-      case 'green':
-        return {
-          iconBg: 'bg-green-50',
-          iconColor: 'text-green-600',
-          accent: 'border-green-200'
-        };
-      case 'amber':
-        return {
-          iconBg: 'bg-amber-50',
-          iconColor: 'text-amber-600',
-          accent: 'border-amber-200'
-        };
-      case 'red':
-        return {
-          iconBg: 'bg-red-50',
-          iconColor: 'text-red-600',
-          accent: 'border-red-200'
-        };
-      case 'purple':
-        return {
-          iconBg: 'bg-purple-50',
-          iconColor: 'text-purple-600',
-          accent: 'border-purple-200'
-        };
-      default:
-        return {
-          iconBg: 'bg-blue-50',
-          iconColor: 'text-blue-600',
-          accent: 'border-blue-200'
-        };
-    }
-  };
-
-  const colorClasses = getColorClasses(color);
-
-  const getTrendIcon = () => {
-    if (trend === 'up') return <TrendingUp className="h-3 w-3" />;
-    if (trend === 'down') return <TrendingDown className="h-3 w-3" />;
-    return null;
-  };
-
-  const getTrendColor = () => {
-    if (trend === 'up') return 'text-green-600';
-    if (trend === 'down') return 'text-red-600';
-    return 'text-muted-foreground';
+  const colorClasses = {
+    blue: 'text-blue-600 bg-blue-50 border-blue-200',
+    green: 'text-green-600 bg-green-50 border-green-200',
+    amber: 'text-amber-600 bg-amber-50 border-amber-200',
+    red: 'text-red-600 bg-red-50 border-red-200'
   };
 
   return (
-    <Card className={cn('card-enhanced hover:shadow-lg transition-all duration-200', colorClasses.accent, className)}>
+    <Card className="card-enhanced hover:shadow-lg transition-shadow duration-200">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
-          <div className="space-y-2 flex-1">
+          <div className="flex-1">
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <div className="flex items-baseline gap-2">
-              <p className="text-3xl font-bold text-foreground">{value}</p>
-              {trendValue && (
-                <span className={cn('text-sm font-medium flex items-center gap-1', getTrendColor())}>
-                  {getTrendIcon()}
-                  {trendValue}
-                </span>
+            <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
+            <div className="flex items-center gap-1 mt-2">
+              {trend === 'up' ? (
+                <TrendingUp className="h-3 w-3 text-green-600" />
+              ) : (
+                <TrendingDown className="h-3 w-3 text-red-600" />
               )}
+              <span className={cn(
+                "text-xs font-medium",
+                trend === 'up' ? 'text-green-600' : 'text-red-600'
+              )}>
+                {trendValue}
+              </span>
+              <span className="text-xs text-muted-foreground ml-1">{description}</span>
             </div>
-            {description && (
-              <p className="text-xs text-muted-foreground">{description}</p>
-            )}
           </div>
-          <div className={cn('flex h-12 w-12 items-center justify-center rounded-lg', colorClasses.iconBg)}>
-            <Icon className={cn('h-6 w-6', colorClasses.iconColor)} />
+          <div className={cn(
+            'flex h-12 w-12 items-center justify-center rounded-lg border',
+            colorClasses[color]
+          )}>
+            <Icon className="h-6 w-6" />
           </div>
         </div>
       </CardContent>
@@ -163,41 +67,53 @@ export function MetricCard({
 
 interface ActivityItemProps {
   title: string;
-  subtitle?: string;
+  subtitle: string;
+  status: 'success' | 'info' | 'warning' | 'error' | 'pending';
   timestamp: string;
-  status: 'success' | 'warning' | 'error' | 'info' | 'pending';
-  icon?: React.ComponentType<{ className?: string }>;
-  className?: string;
+  icon?: LucideIcon;
 }
 
 export function ActivityItem({ 
   title, 
   subtitle, 
-  timestamp, 
   status, 
-  icon: Icon = CheckCircle,
-  className 
+  timestamp, 
+  icon: Icon 
 }: ActivityItemProps) {
   return (
-    <div className={cn('flex items-center gap-3 py-3 border-b border-border last:border-0', className)}>
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted flex-shrink-0">
-        <Icon className="h-4 w-4 text-muted-foreground" />
-      </div>
+    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-200">
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-foreground truncate">{title}</p>
-        {subtitle && (
-          <p className="text-xs text-muted-foreground truncate">{subtitle}</p>
-        )}
+        <p className="text-xs text-muted-foreground truncate">{subtitle}</p>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
-        <StatusBadge status={status} className="text-xs">
-          {status === 'success' ? 'Completed' : 
-           status === 'pending' ? 'Pending' : 
-           status === 'error' ? 'Failed' : 
-           status === 'warning' ? 'Warning' : 'Info'}
-        </StatusBadge>
-        <span className="text-xs text-muted-foreground whitespace-nowrap">{timestamp}</span>
+        <StatusBadge status={status} />
+        <span className="text-xs text-muted-foreground">{timestamp}</span>
+        {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
       </div>
     </div>
+  );
+}
+
+interface StatusBadgeProps {
+  status: 'success' | 'info' | 'warning' | 'error' | 'pending';
+  children?: React.ReactNode;
+}
+
+export function StatusBadge({ status, children }: StatusBadgeProps) {
+  const statusConfig = {
+    success: { variant: 'default' as const, className: 'bg-green-100 text-green-800 border-green-200' },
+    info: { variant: 'default' as const, className: 'bg-blue-100 text-blue-800 border-blue-200' },
+    warning: { variant: 'default' as const, className: 'bg-amber-100 text-amber-800 border-amber-200' },
+    error: { variant: 'destructive' as const, className: '' },
+    pending: { variant: 'secondary' as const, className: '' }
+  };
+
+  const config = statusConfig[status];
+
+  return (
+    <Badge variant={config.variant} className={config.className}>
+      {children || status}
+    </Badge>
   );
 }
