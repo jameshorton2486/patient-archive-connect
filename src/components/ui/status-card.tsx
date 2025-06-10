@@ -20,17 +20,17 @@ interface StatusOverviewProps {
 export function StatusOverview({ title, items, className, style }: StatusOverviewProps) {
   const getStatusStyles = (status: string) => {
     const statusConfig = {
-      completed: { dot: 'bg-success-500', text: 'text-success-700' },
-      pending: { dot: 'bg-warning-500', text: 'text-warning-700' },
-      failed: { dot: 'bg-error-500', text: 'text-error-700' }
+      completed: { dot: 'bg-[var(--success)]', text: 'text-[var(--success)]' },
+      pending: { dot: 'bg-[var(--warning)]', text: 'text-[var(--warning)]' },
+      failed: { dot: 'bg-[var(--error)]', text: 'text-[var(--error)]' }
     };
     return statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
   };
 
   return (
-    <Card className={cn('bg-primary border-primary-200', className)} style={style}>
+    <Card className={cn('bg-[var(--bg-primary)] border-[var(--border-primary)]', className)} style={style}>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-primary-900">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold text-[var(--text-primary)]">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -39,14 +39,14 @@ export function StatusOverview({ title, items, className, style }: StatusOvervie
             return (
               <div 
                 key={index} 
-                className="flex items-center justify-between p-3 rounded-lg bg-primary-50 border border-primary-100"
+                className="flex items-center justify-between p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-primary)]"
               >
                 <div className="flex items-center gap-3">
                   <div className={cn('w-3 h-3 rounded-full', styles.dot)} aria-hidden="true" />
-                  <span className="text-sm font-medium text-primary-700">{item.label}</span>
+                  <span className="text-sm font-medium text-[var(--text-primary)]">{item.label}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-primary-900">{item.count}</span>
+                  <span className="text-sm font-bold text-[var(--text-primary)]">{item.count}</span>
                   <span className={cn('text-xs font-medium', styles.text)}>
                     {item.percentage}%
                   </span>
