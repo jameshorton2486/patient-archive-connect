@@ -1002,3 +1002,11 @@ Thank you,
 {{firmName}}
   `
 };
+
+export interface DeliveryStats {
+  totalSent: number;
+  delivered: number;
+  failed: number;
+  pending: number;
+  deliveryRate: number;
+}

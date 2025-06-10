@@ -1,151 +1,139 @@
 
-import { DeliveryMethod, DeliveryAttempt, DeliveryTracking, TrackingUpdate } from '@/types/document';
+import { DeliveryMethod, DeliveryAttempt, DeliveryStats } from '@/types/document';
 
-class DeliveryService {
-  private deliveryMethods: DeliveryMethod[] = [
-    {
-      id: 'certified_mail',
-      type: 'certified_mail',
-      name: 'USPS Certified Mail',
-      trackingEnabled: true,
-      confirmationRequired: true,
-      estimatedDeliveryDays: 3,
-      estimatedDeliveryTime: 72,
-      cost: 8.50,
-      enabled: true,
-      reliabilityScore: 95,
-      hipaaCompliant: true
-    },
-    {
-      id: 'fax',
-      type: 'fax',
-      name: 'HIPAA-Compliant Fax',
-      trackingEnabled: true,
-      confirmationRequired: true,
-      estimatedDeliveryDays: 1,
-      estimatedDeliveryTime: 1,
-      cost: 2.00,
-      enabled: true,
-      reliabilityScore: 85,
-      hipaaCompliant: true
-    },
-    {
-      id: 'email',
-      type: 'email',
-      name: 'Encrypted Email',
-      trackingEnabled: true,
-      confirmationRequired: false,
-      estimatedDeliveryDays: 1,
-      estimatedDeliveryTime: 1,
-      cost: 0.50,
-      enabled: true,
-      reliabilityScore: 90,
-      hipaaCompliant: true
+export class DeliveryService {
+  private static instance: DeliveryService;
+  
+  static getInstance(): DeliveryService {
+    if (!DeliveryService.instance) {
+      DeliveryService.instance = new DeliveryService();
     }
-  ];
-
-  async getAvailableDeliveryMethods(): Promise<DeliveryMethod[]> {
-    return this.deliveryMethods.filter(method => method.enabled);
+    return DeliveryService.instance;
   }
 
-  async createDeliveryAttempt(requestId: string, documentId: string, methodId: string): Promise<DeliveryAttempt> {
-    const method = this.deliveryMethods.find(m => m.id === methodId);
-    
-    if (!method) {
-      throw new Error('Invalid delivery method');
-    }
-
-    return {
-      id: `attempt_${Date.now()}`,
-      requestId,
-      documentId,
-      attemptNumber: 1,
-      method,
-      methodId,
-      attemptedAt: new Date().toISOString(),
-      status: 'pending',
-      retryCount: 0
-    };
-  }
-
-  async updateDeliveryStatus(attemptId: string, status: 'pending' | 'delivered' | 'failed' | 'returned' | 'sending', trackingNumber?: string): Promise<void> {
-    console.log(`Updating delivery attempt ${attemptId} to status: ${status}`);
-    if (trackingNumber) {
-      console.log(`Tracking number: ${trackingNumber}`);
-    }
-  }
-
-  async trackDelivery(trackingNumber: string): Promise<DeliveryTracking> {
-    // Mock tracking data
-    const updates: TrackingUpdate[] = [
-      {
-        timestamp: new Date(Date.now() - 86400000).toISOString(),
-        location: 'Processing Facility',
-        status: 'In Transit',
-        description: 'Package accepted at processing facility'
-      },
-      {
-        timestamp: new Date().toISOString(),
-        location: 'Destination Facility',
-        status: 'Out for Delivery',
-        description: 'Package out for delivery'
-      }
-    ];
-
-    return {
-      id: `tracking_${trackingNumber}`,
-      requestId: 'req_001',
-      trackingNumber,
-      carrier: 'USPS',
-      status: 'in_transit',
-      updates
-    };
-  }
-
-  async getDeliveryHistory(requestId: string): Promise<DeliveryAttempt[]> {
-    // Mock delivery history
+  getAvailableMethods(): DeliveryMethod[] {
     return [
       {
-        id: 'attempt_001',
-        requestId,
-        attemptNumber: 1,
-        method: this.deliveryMethods[0],
-        attemptedAt: new Date(Date.now() - 86400000).toISOString(),
+        id: 'email',
+        name: 'Email',
+        cost: 0.50,
+        estimatedDeliveryTime: 'Instant',
+        reliabilityScore: 95,
+        hipaaCompliant: true,
+        enabled: true
+      },
+      {
+        id: 'fax',
+        name: 'Secure Fax',
+        cost: 2.00,
+        estimatedDeliveryTime: '5-10 minutes',
+        reliabilityScore: 90,
+        hipaaCompliant: true,
+        enabled: true
+      },
+      {
+        id: 'certified-mail',
+        name: 'Certified Mail',
+        cost: 8.50,
+        estimatedDeliveryTime: '3-5 business days',
+        reliabilityScore: 99,
+        hipaaCompliant: true,
+        enabled: true
+      },
+      {
+        id: 'fedex',
+        name: 'FedEx Overnight',
+        cost: 25.00,
+        estimatedDeliveryTime: '1 business day',
+        reliabilityScore: 98,
+        hipaaCompliant: true,
+        enabled: true
+      }
+    ];
+  }
+
+  getActiveDeliveries(): DeliveryAttempt[] {
+    // Mock data - in production, this would fetch from database
+    return [
+      {
+        id: 'delivery_001',
+        documentId: 'doc_001',
+        methodId: 'email',
         status: 'delivered',
-        trackingNumber: 'USPS123456789',
-        deliveredAt: new Date().toISOString(),
+        sentAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+        deliveredAt: new Date(Date.now() - 86395000).toISOString(),
+        retryCount: 0
+      },
+      {
+        id: 'delivery_002',
+        documentId: 'doc_002',
+        methodId: 'fax',
+        status: 'failed',
+        sentAt: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+        retryCount: 2,
+        failureReason: 'Busy signal'
+      },
+      {
+        id: 'delivery_003',
+        documentId: 'doc_003',
+        methodId: 'certified-mail',
+        status: 'sending',
+        sentAt: new Date().toISOString(),
         retryCount: 0
       }
     ];
   }
 
-  async scheduleRetry(attemptId: string, retryDate: string): Promise<void> {
-    console.log(`Scheduling retry for attempt ${attemptId} on ${retryDate}`);
+  getDeliveryStatistics(): DeliveryStats {
+    return {
+      totalSent: 1247,
+      delivered: 1186,
+      failed: 41,
+      pending: 20,
+      deliveryRate: 95.1
+    };
   }
 
-  async estimateDeliveryTime(methodId: string, urgent: boolean = false): Promise<number> {
-    const method = this.deliveryMethods.find(m => m.id === methodId);
-    if (!method) {
-      throw new Error('Invalid delivery method');
-    }
+  async initiateDelivery(documentId: string, methodId: string, providerId: string): Promise<DeliveryAttempt> {
+    console.log(`Initiating delivery for document ${documentId} via ${methodId} to provider ${providerId}`);
+    
+    // Mock delivery initiation
+    const delivery: DeliveryAttempt = {
+      id: `delivery_${Date.now()}`,
+      documentId,
+      methodId,
+      status: 'sending',
+      sentAt: new Date().toISOString(),
+      retryCount: 0
+    };
 
-    const baseTime = method.estimatedDeliveryTime || 24;
-    return urgent ? Math.ceil(baseTime * 0.5) : baseTime;
+    // Simulate async delivery process
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return delivery;
   }
 
-  async calculateDeliveryCost(methodId: string, pageCount: number = 1): Promise<number> {
-    const method = this.deliveryMethods.find(m => m.id === methodId);
-    if (!method || !method.cost) {
-      return 0;
-    }
+  async retryDelivery(deliveryId: string): Promise<void> {
+    console.log(`Retrying delivery ${deliveryId}`);
+    
+    // Mock retry logic
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // In production, this would update the delivery status and increment retry count
+  }
 
-    const baseCost = method.cost;
-    if (method.type === 'fax') {
-      return baseCost + (pageCount - 1) * 0.10; // Additional pages
-    }
+  async trackDelivery(deliveryId: string): Promise<DeliveryAttempt | null> {
+    console.log(`Tracking delivery ${deliveryId}`);
+    
+    // Mock tracking - in production, this would query the database
+    const deliveries = this.getActiveDeliveries();
+    return deliveries.find(d => d.id === deliveryId) || null;
+  }
 
-    return baseCost;
+  async updateDeliveryStatus(deliveryId: string, status: string, deliveredAt?: string, failureReason?: string): Promise<void> {
+    console.log(`Updating delivery ${deliveryId} status to ${status}`);
+    // Implementation would update database
   }
 }
 
-export const deliveryService = new DeliveryService();
+export const deliveryService = DeliveryService.getInstance();
