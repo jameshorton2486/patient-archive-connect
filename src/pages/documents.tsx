@@ -1,6 +1,19 @@
 
 import { DocumentGeneration } from '@/components/DocumentGeneration';
+import { PageHeader } from '@/components/ui/page-header';
+import { ROUTE_META, ROUTES } from '@/routes';
 
 export default function DocumentsPage() {
-  return <DocumentGeneration />;
+  const meta = ROUTE_META[ROUTES.documents];
+
+  return (
+    <>
+      <PageHeader 
+        title={meta.title}
+        description={meta.description}
+        breadcrumb={meta.breadcrumb}
+      />
+      <DocumentGeneration />
+    </>
+  );
 }

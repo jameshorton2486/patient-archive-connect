@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, UserPlus, Eye, Edit } from "lucide-react";
@@ -75,25 +75,20 @@ export function PatientList({ onAddPatient }: PatientListProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-3xl font-bold text-foreground">Patients</h2>
-          <p className="text-muted-foreground">Manage your patient database</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[var(--text-secondary)] h-4 w-4" />
+          <Input
+            placeholder="Search patients by name, email, or condition..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
         </div>
         <Button onClick={onAddPatient} className="flex items-center gap-2">
           <UserPlus className="h-4 w-4" />
           Add Patient
         </Button>
-      </div>
-
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-        <Input
-          placeholder="Search patients by name, email, or condition..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
-        />
       </div>
 
       <div className="grid gap-4">
@@ -103,21 +98,21 @@ export function PatientList({ onAddPatient }: PatientListProps) {
               <div className="flex justify-between items-start">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1">
                   <div>
-                    <h3 className="font-semibold text-lg">{patient.name}</h3>
-                    <p className="text-sm text-muted-foreground">{patient.age} years old, {patient.gender}</p>
+                    <h3 className="font-semibold text-lg text-[var(--text-primary)]">{patient.name}</h3>
+                    <p className="text-sm text-[var(--text-secondary)]">{patient.age} years old, {patient.gender}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Contact</p>
-                    <p className="text-sm text-muted-foreground">{patient.phone}</p>
-                    <p className="text-sm text-muted-foreground">{patient.email}</p>
+                    <p className="text-sm font-medium text-[var(--text-primary)]">Contact</p>
+                    <p className="text-sm text-[var(--text-secondary)]">{patient.phone}</p>
+                    <p className="text-sm text-[var(--text-secondary)]">{patient.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Last Visit</p>
-                    <p className="text-sm text-muted-foreground">{patient.lastVisit}</p>
+                    <p className="text-sm font-medium text-[var(--text-primary)]">Last Visit</p>
+                    <p className="text-sm text-[var(--text-secondary)]">{patient.lastVisit}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Condition</p>
-                    <p className="text-sm text-muted-foreground">{patient.condition}</p>
+                    <p className="text-sm font-medium text-[var(--text-primary)]">Condition</p>
+                    <p className="text-sm text-[var(--text-secondary)]">{patient.condition}</p>
                   </div>
                 </div>
                 <div className="flex gap-2 ml-4">
@@ -137,7 +132,7 @@ export function PatientList({ onAddPatient }: PatientListProps) {
       {filteredPatients.length === 0 && (
         <Card>
           <CardContent className="p-12 text-center">
-            <p className="text-muted-foreground">No patients found matching your search criteria.</p>
+            <p className="text-[var(--text-secondary)]">No patients found matching your search criteria.</p>
           </CardContent>
         </Card>
       )}
