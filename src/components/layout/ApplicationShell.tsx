@@ -23,8 +23,8 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-[var(--bg-primary)]" data-theme="light">
-      {/* Linear Sidebar - Fixed 256px width */}
+    <div className="min-h-screen flex w-full bg-[var(--bg-primary)] transition-colors duration-200" data-theme="light">
+      {/* Linear Sidebar - Fixed width with responsive behavior */}
       <LinearSidebar
         activeView={activeView}
         onViewChange={handleViewChange}
@@ -34,18 +34,18 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
-      {/* Main Content Area - Inverted L Layout */}
-      <div className="flex flex-col flex-1 min-h-screen">
-        {/* Linear Header - Fixed 56px height */}
+      {/* Main Content Area - Responsive layout */}
+      <div className="flex flex-col flex-1 min-h-screen overflow-hidden">
+        {/* Linear Header - Fixed height with responsive padding */}
         <LinearHeader
           activeView={activeView}
           onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
         />
 
-        {/* Main Content with Linear constraints */}
+        {/* Main Content with responsive container */}
         <main className="flex-1 bg-[var(--bg-primary)] overflow-auto">
-          <div className="max-w-7xl mx-auto p-6 lg:p-8">
-            <div className="animate-fade-in">
+          <div className="container-linear padding-responsive min-h-full">
+            <div className="animate-linear-fade-in">
               {children}
             </div>
           </div>

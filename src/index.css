@@ -93,22 +93,22 @@
     --background: 15 23 42;
     --foreground: 248 250 252;
 
-    --card: 23 23 23;
+    --card: 30 41 59;
     --card-foreground: 248 250 252;
 
-    --popover: 23 23 23;
+    --popover: 30 41 59;
     --popover-foreground: 248 250 252;
 
-    --primary: 23 23 23;
+    --primary: 30 41 59;
     --primary-foreground: 248 250 252;
 
-    --secondary: 38 38 38;
+    --secondary: 51 65 85;
     --secondary-foreground: 161 161 170;
 
-    --muted: 38 38 38;
+    --muted: 51 65 85;
     --muted-foreground: 161 161 170;
 
-    --accent: 23 23 23;
+    --accent: 30 41 59;
     --accent-foreground: 56 189 248;
 
     --border: 51 65 85;
@@ -132,6 +132,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   /* Linear Typography Hierarchy */
@@ -169,30 +170,30 @@
 @layer components {
   /* Linear Card Styles */
   .card-linear {
-    @apply rounded-xl shadow-sm;
+    @apply rounded-xl shadow-sm transition-all duration-200 hover:shadow-md;
     background: var(--bg-primary);
     border: 1px solid var(--border-primary);
   }
 
   /* Linear Button Styles */
   .btn-linear {
-    @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-50;
   }
 
   .btn-linear-primary {
     background-color: var(--accent-medical);
-    @apply btn-linear text-white hover:opacity-90 shadow-sm hover:shadow-md;
+    @apply btn-linear text-white hover:opacity-90 shadow-sm hover:shadow-md active:scale-95;
   }
 
   .btn-linear-secondary {
     background-color: var(--bg-primary);
     border: 1px solid var(--border-primary);
     color: var(--text-primary);
-    @apply btn-linear hover:bg-muted;
+    @apply btn-linear hover:bg-muted active:scale-95;
   }
 
   .btn-linear-ghost {
-    @apply btn-linear bg-transparent hover:bg-muted;
+    @apply btn-linear bg-transparent hover:bg-muted active:scale-95;
     color: var(--text-secondary);
   }
 
@@ -201,7 +202,7 @@
     background-color: var(--bg-primary);
     border: 1px solid var(--border-primary);
     color: var(--text-primary);
-    @apply flex h-9 w-full rounded-md px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply flex h-9 w-full rounded-md px-3 py-1 text-sm shadow-sm transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .input-linear:focus-visible {
@@ -211,7 +212,7 @@
 
   /* Linear Navigation Item */
   .nav-item-linear {
-    @apply flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground;
+    @apply flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-95;
   }
 
   .nav-item-linear.active {
@@ -226,6 +227,28 @@
   .form-label-linear {
     @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
     color: var(--text-primary);
+  }
+
+  /* Linear Table Styles */
+  .table-linear {
+    @apply w-full border-collapse;
+  }
+
+  .table-linear th {
+    @apply border-b border-border px-4 py-3 text-left text-sm font-medium text-muted-foreground;
+  }
+
+  .table-linear td {
+    @apply border-b border-border px-4 py-3 text-sm;
+  }
+
+  .table-linear tr:hover {
+    @apply bg-muted/50 transition-colors duration-200;
+  }
+
+  /* Responsive Container */
+  .container-linear {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 }
 
@@ -252,12 +275,27 @@
   }
 }
 
+@keyframes linear-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-linear-fade-in {
   animation: linear-fade-in 0.2s ease-out;
 }
 
 .animate-linear-scale-in {
   animation: linear-scale-in 0.15s ease-out;
+}
+
+.animate-linear-slide-up {
+  animation: linear-slide-up 0.3s ease-out;
 }
 
 /* Linear scrollbar styling */
@@ -286,4 +324,30 @@
 
 .focus-linear:focus {
   ring-color: var(--accent-medical);
+}
+
+/* Enhanced responsive utilities */
+@responsive {
+  .text-responsive {
+    @apply text-sm sm:text-base;
+  }
+  
+  .padding-responsive {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  
+  .grid-responsive {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+}
+
+/* Mobile-first responsive improvements */
+@media (max-width: 640px) {
+  .mobile-stack {
+    @apply flex-col space-y-2 space-x-0;
+  }
+  
+  .mobile-full-width {
+    @apply w-full;
+  }
 }

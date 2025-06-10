@@ -1,279 +1,234 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Users, Calendar, AlertCircle, TrendingUp, Clock, Plus, Eye, RefreshCw } from 'lucide-react';
-import { MetricCard, ActivityItem, StatusBadge } from '@/components/ui/status-components';
+import { 
+  Users, 
+  FileText, 
+  Calendar, 
+  Clock,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle,
+  Activity
+} from 'lucide-react';
 
 export function Dashboard() {
-  const [statusFilter, setStatusFilter] = useState<string | null>(null);
-
-  const metrics = [
+  const stats = [
     {
-      title: "Active Cases",
-      value: "24",
-      trendValue: "+12%",
-      trend: "up" as const,
-      description: "2 new this week",
-      icon: FileText,
-      color: "blue" as const
-    },
-    {
-      title: "Total Clients", 
-      value: "156",
-      trendValue: "+8%",
-      trend: "up" as const,
-      description: "5 new this month",
+      title: 'Total Patients',
+      value: '2,847',
+      change: '+12%',
+      trend: 'up',
       icon: Users,
-      color: "green" as const
+      color: 'blue'
     },
     {
-      title: "Pending Requests",
-      value: "12",
-      trendValue: "-3%",
-      trend: "down" as const,
-      description: "3 due today",
+      title: 'Active Documents',
+      value: '1,234',
+      change: '+8%',
+      trend: 'up',
+      icon: FileText,
+      color: 'green'
+    },
+    {
+      title: 'Pending Appointments',
+      value: '89',
+      change: '-4%',
+      trend: 'down',
       icon: Calendar,
-      color: "amber" as const
+      color: 'amber'
     },
     {
-      title: "Overdue Items",
-      value: "3",
-      trendValue: "+1",
-      trend: "up" as const,
-      description: "Requires attention",
-      icon: AlertCircle,
-      color: "red" as const
+      title: 'Overdue Items',
+      value: '23',
+      change: '+2%',
+      trend: 'up',
+      icon: Clock,
+      color: 'red'
     }
   ];
 
   const recentActivity = [
     {
-      title: "Medical records received",
-      subtitle: "Case #2024-001 - John Smith",
-      status: "success" as const,
-      timestamp: "2 hours ago"
+      id: '1',
+      title: 'New patient record added',
+      subtitle: 'John Doe - ID: #12847',
+      time: '2 min ago',
+      status: 'success',
+      icon: CheckCircle
     },
     {
-      title: "New client intake completed",
-      subtitle: "Jane Doe - Initial consultation",
-      status: "info" as const,
-      timestamp: "4 hours ago"
+      id: '2',
+      title: 'Document deadline approaching',
+      subtitle: 'Medical records for Case #4892',
+      time: '15 min ago',
+      status: 'warning',
+      icon: AlertTriangle
     },
     {
-      title: "Provider follow-up required",
-      subtitle: "Dr. Smith's Office - Missing records",
-      status: "warning" as const,
-      timestamp: "6 hours ago"
-    },
-    {
-      title: "Document generation failed",
-      subtitle: "HIPAA Authorization - Template error",
-      status: "error" as const,
-      timestamp: "8 hours ago"
+      id: '3',
+      title: 'Provider information updated',
+      subtitle: 'Dr. Sarah Johnson - Springfield Hospital',
+      time: '1 hour ago',
+      status: 'info',
+      icon: Activity
     }
   ];
-
-  const upcomingDeadlines = [
-    {
-      title: "Medical records deadline",
-      subtitle: "Springfield Hospital - Case #2024-003",
-      status: "error" as const,
-      timestamp: "Due in 1 day"
-    },
-    {
-      title: "Client appointment",
-      subtitle: "Sarah Wilson - Follow-up consultation",
-      status: "info" as const,
-      timestamp: "Tomorrow 2:00 PM"
-    },
-    {
-      title: "Case review meeting",
-      subtitle: "Team review - Case #2024-001",
-      status: "pending" as const,
-      timestamp: "Friday 10:00 AM"
-    }
-  ];
-
-  const quickActions = [
-    { icon: Users, label: "Add Client", description: "Create new client record", action: () => console.log('Add client') },
-    { icon: FileText, label: "Request Records", description: "Send provider request", action: () => console.log('Request records') },
-    { icon: Calendar, label: "Schedule Meeting", description: "Book appointment", action: () => console.log('Schedule meeting') },
-    { icon: TrendingUp, label: "View Reports", description: "Analytics dashboard", action: () => console.log('View reports') }
-  ];
-
-  const filteredActivity = statusFilter 
-    ? recentActivity.filter(item => item.status === statusFilter)
-    : recentActivity;
-
-  const handleStatusClick = (status: string) => {
-    setStatusFilter(statusFilter === status ? null : status);
-  };
-
-  const clearFilter = () => setStatusFilter(null);
 
   return (
-    <div className="space-y-8">
-      {/* Header Section */}
-      <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-[var(--text-primary)]">💼 Legal Dashboard</h1>
-          <p className="text-[var(--text-secondary)] mt-1">
-            Welcome back! Here's what's happening with your cases today.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
-          <Button variant="outline" size="sm" className="min-h-[44px] w-full sm:w-auto">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
-          <Button variant="outline" size="sm" className="min-h-[44px] w-full sm:w-auto">
-            <Calendar className="h-4 w-4 mr-2" />
-            View Calendar
-          </Button>
-          <Button size="sm" className="btn-linear-primary min-h-[44px] w-full sm:w-auto">
-            <Plus className="h-4 w-4 mr-2" />
-            New Case
-          </Button>
-        </div>
-      </section>
-
-      {/* Metrics Grid - Responsive */}
-      <section>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {metrics.map((metric) => (
-            <MetricCard
-              key={metric.title}
-              title={metric.title}
-              value={metric.value}
-              trendValue={metric.trendValue}
-              trend={metric.trend}
-              description={metric.description}
-              icon={metric.icon}
-              color={metric.color}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Main Content Grid - Responsive Layout */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Activity with Status Filtering */}
-        <Card className="rounded-xl shadow-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]">
-          <CardHeader className="pb-4 border-b border-[var(--border-primary)]">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
-              <div>
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  💬 Recent Case Actions
-                </CardTitle>
-                <CardDescription>Latest case updates and actions</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm" className="w-full sm:w-auto">
-                <Eye className="h-4 w-4 mr-2" />
-                View All
-              </Button>
-            </div>
-            {statusFilter && (
-              <div className="flex items-center gap-2 pt-2">
-                <span className="text-sm text-[var(--text-secondary)]">Filtered by:</span>
-                <Badge variant="outline" className="cursor-pointer" onClick={clearFilter}>
-                  {statusFilter} ✕
-                </Badge>
-              </div>
-            )}
-          </CardHeader>
-          <CardContent className="pt-4">
-            <div className="space-y-1">
-              {filteredActivity.map((activity, index) => (
-                <div key={index} className="group">
-                  <ActivityItem
-                    title={activity.title}
-                    subtitle={activity.subtitle}
-                    status={activity.status}
-                    timestamp={activity.timestamp}
-                  />
-                  <div className="flex gap-1 mt-1 ml-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button
-                      onClick={() => handleStatusClick(activity.status)}
-                      className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-2 py-1 rounded hover:bg-accent"
-                      aria-label={`Filter by ${activity.status} status`}
-                    >
-                      Filter by {activity.status}
-                    </button>
+    <div className="space-y-6">
+      {/* Stats Grid - Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={stat.title} className="card-linear animate-linear-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-[var(--text-secondary)] mb-1">{stat.title}</p>
+                    <p className="text-2xl font-bold text-[var(--text-primary)] mb-2">{stat.value}</p>
+                    <div className="flex items-center gap-1">
+                      <TrendingUp className={`h-3 w-3 ${stat.trend === 'up' ? 'text-[var(--success)]' : 'text-[var(--error)]'}`} />
+                      <span className={`text-xs font-medium ${stat.trend === 'up' ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
+                        {stat.change}
+                      </span>
+                      <span className="text-xs text-[var(--text-muted)]">from last month</span>
+                    </div>
+                  </div>
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-lg border transition-all duration-200 ${
+                    stat.color === 'blue' ? 'text-[var(--accent-medical)] bg-[var(--bg-secondary)] border-[var(--border-primary)]' :
+                    stat.color === 'green' ? 'text-[var(--success)] bg-[var(--bg-secondary)] border-[var(--border-primary)]' :
+                    stat.color === 'amber' ? 'text-[var(--warning)] bg-[var(--bg-secondary)] border-[var(--border-primary)]' :
+                    'text-[var(--error)] bg-[var(--bg-secondary)] border-[var(--border-primary)]'
+                  }`}>
+                    <Icon className="h-6 w-6" />
                   </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
 
-        {/* Upcoming Deadlines */}
-        <Card className="rounded-xl shadow-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]">
-          <CardHeader className="pb-4 border-b border-[var(--border-primary)]">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
-              <div>
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  📅 Upcoming Legal Deadlines
-                </CardTitle>
-                <CardDescription>Important dates and milestones</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm" className="w-full sm:w-auto">
-                <Clock className="h-4 w-4 mr-2" />
-                Manage
+      {/* Main Content Grid - Responsive */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Quick Actions */}
+        <Card className="card-linear">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-[var(--text-primary)]">Quick Actions</CardTitle>
+            <CardDescription className="text-[var(--text-secondary)]">
+              Frequently used features and shortcuts
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 justify-start transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <Users className="h-5 w-5 mr-3 text-[var(--accent-medical)]" />
+                <div className="text-left">
+                  <div className="font-medium">Add Patient</div>
+                  <div className="text-xs text-[var(--text-muted)]">Create new record</div>
+                </div>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 justify-start transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <FileText className="h-5 w-5 mr-3 text-[var(--success)]" />
+                <div className="text-left">
+                  <div className="font-medium">Generate Document</div>
+                  <div className="text-xs text-[var(--text-muted)]">Create new document</div>
+                </div>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 justify-start transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <Calendar className="h-5 w-5 mr-3 text-[var(--warning)]" />
+                <div className="text-left">
+                  <div className="font-medium">Schedule</div>
+                  <div className="text-xs text-[var(--text-muted)]">Manage appointments</div>
+                </div>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 justify-start transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <Clock className="h-5 w-5 mr-3 text-[var(--error)]" />
+                <div className="text-left">
+                  <div className="font-medium">View Deadlines</div>
+                  <div className="text-xs text-[var(--text-muted)]">Check urgent items</div>
+                </div>
               </Button>
             </div>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <div className="space-y-1">
-              {upcomingDeadlines.map((deadline, index) => (
-                <ActivityItem
-                  key={index}
-                  title={deadline.title}
-                  subtitle={deadline.subtitle}
-                  status={deadline.status}
-                  timestamp={deadline.timestamp}
-                  icon={Calendar}
-                />
-              ))}
-            </div>
           </CardContent>
         </Card>
-      </section>
 
-      {/* Quick Actions - Enhanced Card Structure */}
-      <section>
-        <Card className="rounded-xl shadow-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]">
-          <CardHeader className="border-b border-[var(--border-primary)]">
-            <CardTitle className="text-lg font-semibold">⚡ Quick Actions</CardTitle>
-            <CardDescription>Common tasks and shortcuts to streamline your workflow</CardDescription>
+        {/* Recent Activity */}
+        <Card className="card-linear">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-[var(--text-primary)]">Recent Activity</CardTitle>
+            <CardDescription className="text-[var(--text-secondary)]">
+              Latest updates and notifications
+            </CardDescription>
           </CardHeader>
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {quickActions.map((action, index) => {
-                const Icon = action.icon;
+          <CardContent>
+            <div className="space-y-4">
+              {recentActivity.map((activity, index) => {
+                const Icon = activity.icon;
                 return (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    onClick={action.action}
-                    className="h-auto flex-col py-6 px-4 space-y-3 min-h-[120px] hover:bg-accent/50 hover:shadow-lg transition-all duration-200 border border-[var(--border-primary)]"
-                    aria-label={action.description}
+                  <div 
+                    key={activity.id} 
+                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-[var(--bg-secondary)] transition-all duration-200 animate-linear-slide-up"
+                    style={{ animationDelay: `${index * 150}ms` }}
                   >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                      <Icon className="h-5 w-5 text-primary" />
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                      activity.status === 'success' ? 'bg-[var(--success)]/10 text-[var(--success)]' :
+                      activity.status === 'warning' ? 'bg-[var(--warning)]/10 text-[var(--warning)]' :
+                      'bg-[var(--accent-medical)]/10 text-[var(--accent-medical)]'
+                    }`}>
+                      <Icon className="h-4 w-4" />
                     </div>
-                    <div className="text-center">
-                      <span className="font-medium text-sm">{action.label}</span>
-                      <p className="text-xs text-[var(--text-secondary)] mt-1">{action.description}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-[var(--text-primary)] mb-1">{activity.title}</p>
+                      <p className="text-xs text-[var(--text-secondary)] mb-1">{activity.subtitle}</p>
+                      <p className="text-xs text-[var(--text-muted)]">{activity.time}</p>
                     </div>
-                  </Button>
+                    <Badge 
+                      variant={activity.status === 'success' ? 'default' : activity.status === 'warning' ? 'secondary' : 'outline'}
+                      className="text-xs"
+                    >
+                      {activity.status}
+                    </Badge>
+                  </div>
                 );
               })}
             </div>
           </CardContent>
         </Card>
-      </section>
+      </div>
+
+      {/* System Status Bar */}
+      <Card className="card-linear">
+        <CardContent className="p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-[var(--success)] rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium text-[var(--text-primary)]">System Status: All services operational</span>
+            </div>
+            <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)]">
+              <span>Last backup: 2 hours ago</span>
+              <span>•</span>
+              <span>Uptime: 99.9%</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
