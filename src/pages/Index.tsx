@@ -1,12 +1,6 @@
 
-import { LinearDashboard } from "@/components/LinearDashboard";
-
-console.log('Index.tsx: Starting Index component initialization');
+import { Navigate } from 'react-router-dom';
 
 export default function Index() {
-  console.log('Index.tsx: Rendering Index component - redirecting to LinearDashboard');
-  
-  return <LinearDashboard />;
+  return <Navigate to="/dashboard" replace />;
 }
-
-console.log('Index.tsx: Index component defined successfully');

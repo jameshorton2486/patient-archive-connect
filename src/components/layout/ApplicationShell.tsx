@@ -1,31 +1,33 @@
 
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LinearSidebar } from './LinearSidebar';
 import { LinearHeader } from './LinearHeader';
 
 interface ApplicationShellProps {
   children: React.ReactNode;
-  activeView: string;
-  onViewChange: (view: string) => void;
   user: string;
   onLogout: () => void;
 }
 
-export function ApplicationShell({ 
-  children, 
-  activeView, 
-  onViewChange, 
-  user, 
-  onLogout 
-}: ApplicationShellProps) {
+export function ApplicationShell({ children, user, onLogout }: ApplicationShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Extract the active view from the current route
+  const activeView = location.pathname.replace('/', '') || 'dashboard';
+
+  const handleViewChange = (view: string) => {
+    navigate(`/${view}`);
+  };
 
   return (
     <div className="min-h-screen flex w-full bg-[var(--bg-primary)]" data-theme="light">
       {/* Linear Sidebar - Fixed 256px width */}
       <LinearSidebar
         activeView={activeView}
-        onViewChange={onViewChange}
+        onViewChange={handleViewChange}
         user={user}
         onLogout={onLogout}
         collapsed={sidebarCollapsed}
