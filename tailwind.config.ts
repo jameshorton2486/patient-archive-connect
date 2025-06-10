@@ -1,4 +1,3 @@
-
 module.exports = {
   darkMode: ["class", '[data-theme="dark"]'],
   content: [
@@ -137,8 +136,10 @@ module.exports = {
         '24': '6rem',
         '28': '7rem',
         '32': '8rem',
-        'sidebar': '240px',
-        'header': '48px',
+        // Linear-specific dimensions
+        'sidebar': '256px',  // Linear's exact sidebar width
+        'header': '56px',    // Linear's exact header height
+        '64': '256px',       // Alternative for sidebar
       },
       borderRadius: {
         lg: '8px',

@@ -21,8 +21,8 @@ export function ApplicationShell({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen flex w-full bg-tertiary" data-theme="light">
-      {/* Left Sidebar */}
+    <div className="min-h-screen flex w-full bg-background" data-theme="light">
+      {/* Linear Sidebar - Fixed 256px width */}
       <LinearSidebar
         activeView={activeView}
         onViewChange={onViewChange}
@@ -32,18 +32,18 @@ export function ApplicationShell({
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
-      {/* Main Content Area */}
+      {/* Main Content Area - Inverted L Layout */}
       <div className="flex flex-col flex-1 min-h-screen">
-        {/* Top Header Bar */}
+        {/* Linear Header - Fixed 56px height */}
         <LinearHeader
           activeView={activeView}
           onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
         />
 
-        {/* Main Content */}
-        <main className="flex-1 p-6 bg-tertiary overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            <div className="fade-in">
+        {/* Main Content with Linear constraints */}
+        <main className="flex-1 bg-background overflow-auto">
+          <div className="max-w-7xl mx-auto p-6 lg:p-8">
+            <div className="animate-fade-in">
               {children}
             </div>
           </div>

@@ -86,11 +86,11 @@ export function LinearSidebar({
 
   return (
     <div className={cn(
-      "flex flex-col bg-sidebar border-r border-sidebar-border shadow-lg transition-all duration-300 animate-fade-in",
-      collapsed ? "w-16" : "w-sidebar"
+      "flex flex-col bg-sidebar border-r border-sidebar-border shadow-linear transition-all duration-300 sticky top-0 h-screen",
+      collapsed ? "w-16" : "w-64"
     )}>
-      {/* Logo/Header */}
-      <div className="flex h-header items-center justify-between px-4 border-b border-sidebar-border">
+      {/* Logo/Header - Linear Style */}
+      <div className="flex h-14 items-center justify-between px-4 border-b border-sidebar-border bg-sidebar">
         {!collapsed && (
           <div className="flex items-center space-x-3 animate-fade-in">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary transition-transform duration-200 hover:scale-110">
@@ -113,9 +113,9 @@ export function LinearSidebar({
         </Button>
       </div>
 
-      {/* User Info */}
+      {/* User Info - Linear Style */}
       {!collapsed && (
-        <div className="flex items-center px-4 py-4 border-b border-sidebar-border bg-sidebar-accent/50 animate-slide-up">
+        <div className="flex items-center px-4 py-4 border-b border-sidebar-border bg-sidebar-accent/30 animate-slide-up">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sidebar-primary/20 transition-transform duration-200 hover:scale-110">
             <UserCheck className="h-4 w-4 text-sidebar-primary" />
           </div>
@@ -126,7 +126,7 @@ export function LinearSidebar({
         </div>
       )}
       
-      {/* Navigation */}
+      {/* Navigation - Scrollable */}
       <nav className="flex-1 overflow-y-auto py-4" role="navigation" aria-label="Main navigation">
         {menuSections.map((section, sectionIndex) => (
           <div key={section.title} className="mb-6">
@@ -147,7 +147,7 @@ export function LinearSidebar({
                       "w-full justify-start h-10 text-sm font-medium transition-all duration-200 animate-fade-in",
                       collapsed ? "px-2" : "px-3",
                       isActive
-                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm hover:bg-sidebar-primary/90 scale-in"
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-linear hover:bg-sidebar-primary/90"
                         : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:scale-105"
                     )}
                     onClick={() => onViewChange(item.id)}
@@ -164,9 +164,9 @@ export function LinearSidebar({
                             variant="secondary" 
                             className={cn(
                               "ml-2 text-xs h-5 px-1.5 transition-all duration-200",
-                              item.badge === 'AI' && "bg-success-100 text-success-800 border-success-200",
-                              item.badge === 'NEW' && "bg-info-100 text-info-800 border-info-200",
-                              item.badge === 'PRO' && "bg-warning-100 text-warning-800 border-warning-200"
+                              item.badge === 'AI' && "bg-green-100 text-green-800 border-green-200",
+                              item.badge === 'NEW' && "bg-blue-100 text-blue-800 border-blue-200",
+                              item.badge === 'PRO' && "bg-amber-100 text-amber-800 border-amber-200"
                             )}
                           >
                             {item.badge}
