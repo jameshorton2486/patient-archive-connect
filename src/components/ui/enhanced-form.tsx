@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -138,27 +137,33 @@ export function FormCard({
   );
 }
 
-// Enhanced Input with built-in styling
+// Enhanced Input with Linear styling
 export function EnhancedInput({ className, error, ...props }: React.ComponentProps<typeof Input> & { error?: boolean }) {
   return (
     <Input 
-      className={cn('h-11', className)}
+      className={cn(
+        'px-3 py-2 rounded-md border-primary-200 bg-primary text-foreground',
+        'focus:ring-2 focus:ring-accent-medical/40 focus:border-accent-medical',
+        'transition-all duration-200 placeholder-primary-400',
+        error && 'border-error-500 focus:border-error-500 focus:ring-error-500/40',
+        className
+      )}
       error={error}
       {...props}
     />
   );
 }
 
-// Enhanced Textarea with built-in styling
+// Enhanced Textarea with Linear styling
 export function EnhancedTextarea({ className, error, ...props }: React.ComponentProps<typeof Textarea> & { error?: boolean }) {
   return (
     <Textarea 
       className={cn(
-        'min-h-[100px] w-full px-3 py-2 bg-primary border border-primary-200 rounded-md text-sm',
-        'focus:ring-2 focus:ring-accent-medical/20 focus:border-accent-medical',
+        'min-h-[100px] px-3 py-2 rounded-md border-primary-200 bg-primary text-foreground',
+        'focus:ring-2 focus:ring-accent-medical/40 focus:border-accent-medical',
         'transition-all duration-200 placeholder-primary-400',
         'disabled:cursor-not-allowed disabled:opacity-50',
-        error && 'border-error-500 focus:border-error-500 focus:ring-error-500/20',
+        error && 'border-error-500 focus:border-error-500 focus:ring-error-500/40',
         className
       )}
       aria-invalid={error ? 'true' : 'false'}
