@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    /* Linear Light Theme Colors */
+    /* Linear Light Theme Colors - Updated to match Linear exactly */
     --background: 255 255 255;
     --foreground: 23 23 23;
 
@@ -17,31 +17,31 @@
     --popover: 255 255 255;
     --popover-foreground: 23 23 23;
 
-    /* Linear's signature neutral palette */
+    /* Linear's exact neutral palette */
     --primary: 255 255 255;
     --primary-foreground: 23 23 23;
 
-    /* Linear's accent purple */
+    /* Linear's signature purple accent */
     --accent: 248 249 255;
     --accent-foreground: 94 106 210;
 
     /* Linear's subtle gray backgrounds */
-    --secondary: 250 250 250;
-    --secondary-foreground: 115 115 115;
+    --secondary: 249 250 251;
+    --secondary-foreground: 107 114 128;
 
     /* Muted backgrounds - Linear's subtle grays */
-    --muted: 247 247 247;
-    --muted-foreground: 115 115 115;
+    --muted: 249 250 251;
+    --muted-foreground: 107 114 128;
 
     /* Linear's clean background */
-    --tertiary: 252 252 252;
+    --tertiary: 249 250 251;
 
     /* Linear's minimal borders */
-    --border: 229 229 229;
-    --input: 229 229 229;
+    --border: 229 231 235;
+    --input: 229 231 235;
     --ring: 94 106 210;
 
-    /* Linear Sidebar - darker theme */
+    /* Linear Sidebar - darker theme matching Linear's sidebar */
     --sidebar-background: 23 23 23;
     --sidebar-foreground: 245 245 245;
     --sidebar-primary: 94 106 210;
