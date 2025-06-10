@@ -64,10 +64,10 @@ export function LinearDashboard() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-medical-charcoal tracking-tight mb-2">
+              <h1 className="text-h1 text-medical-charcoal tracking-tight mb-2">
                 Patient Archive Connect
               </h1>
-              <p className="text-lg text-neutral-600 font-medium">
+              <p className="text-body-large text-neutral-600 font-medium">
                 Welcome back! Here's what's happening with your practice.
               </p>
             </div>
@@ -144,8 +144,8 @@ export function LinearDashboard() {
                 <CardHeader className="border-b border-neutral-200 pb-4">
                   <div className="flex flex-row items-center justify-between">
                     <div>
-                      <CardTitle className="text-xl font-semibold text-medical-charcoal">Recent Activity</CardTitle>
-                      <p className="text-sm text-neutral-500 mt-1">Latest updates and actions</p>
+                      <CardTitle className="text-h4 text-medical-charcoal">Recent Activity</CardTitle>
+                      <p className="text-body-small text-neutral-500 mt-1">Latest updates and actions</p>
                     </div>
                     <Button variant="ghost" size="sm" className="text-neutral-500 hover:text-medical-charcoal hover:bg-neutral-100">
                       <Search className="h-4 w-4" />
@@ -180,7 +180,7 @@ export function LinearDashboard() {
                                 {activity.status}
                               </Badge>
                             </EnhancedTableCell>
-                            <EnhancedTableCell className="text-neutral-500 text-sm">
+                            <EnhancedTableCell className="text-neutral-500 text-body-small">
                               {activity.time}
                             </EnhancedTableCell>
                             <EnhancedTableCell className="pr-6">
@@ -203,8 +203,8 @@ export function LinearDashboard() {
             <CardHeader className="border-b border-neutral-200 pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-xl font-semibold text-medical-charcoal">Upcoming Deadlines</CardTitle>
-                  <p className="text-sm text-neutral-500 mt-1">Important dates and milestones</p>
+                  <CardTitle className="text-h4 text-medical-charcoal">Upcoming Deadlines</CardTitle>
+                  <p className="text-body-small text-neutral-500 mt-1">Important dates and milestones</p>
                 </div>
                 <Button variant="ghost" size="sm" className="text-neutral-500 hover:text-medical-charcoal hover:bg-neutral-100">
                   <Clock className="h-4 w-4 mr-2" />
@@ -225,14 +225,14 @@ export function LinearDashboard() {
                         <Calendar className="h-5 w-5 text-healthcare-blue" />
                         <div>
                           <p className="font-medium text-medical-charcoal">{deadline.task}</p>
-                          <p className="text-sm text-neutral-600">{deadline.client}</p>
+                          <p className="text-body-small text-neutral-600">{deadline.client}</p>
                         </div>
                       </div>
                       <div className="text-right">
                         <Badge variant={statusConfig.variant} className={statusConfig.className}>
                           {deadline.status}
                         </Badge>
-                        <p className="text-sm text-neutral-500 mt-1">{deadline.time}</p>
+                        <p className="text-body-small text-neutral-500 mt-1">{deadline.time}</p>
                       </div>
                     </div>
                   );
@@ -244,8 +244,8 @@ export function LinearDashboard() {
           {/* Quick Actions */}
           <Card className="bg-pure-white border-neutral-200 shadow-sm hover:shadow-md transition-all duration-300">
             <CardHeader className="border-b border-neutral-200 pb-4">
-              <CardTitle className="text-xl font-semibold text-medical-charcoal">Quick Actions</CardTitle>
-              <p className="text-sm text-neutral-500">Common tasks and shortcuts</p>
+              <CardTitle className="text-h4 text-medical-charcoal">Quick Actions</CardTitle>
+              <p className="text-body-small text-neutral-500">Common tasks and shortcuts</p>
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -272,8 +272,8 @@ export function LinearDashboard() {
     return (
       <div className="min-h-screen bg-light-canvas flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-medical-charcoal mb-2">Error Loading Dashboard</h1>
-          <p className="text-neutral-600">Please try refreshing the page</p>
+          <h1 className="text-h3 text-medical-charcoal mb-2">Error Loading Dashboard</h1>
+          <p className="text-body-default text-neutral-600">Please try refreshing the page</p>
         </div>
       </div>
     );

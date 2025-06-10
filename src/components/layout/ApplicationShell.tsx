@@ -23,7 +23,7 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-background transition-colors duration-200">
+    <div className="min-h-screen flex w-full bg-light-canvas transition-colors duration-200">
       {/* Linear Sidebar - Fixed width with responsive behavior */}
       <LinearSidebar
         activeView={activeView}
@@ -35,7 +35,7 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
       />
 
       {/* Main Content Area - Responsive layout */}
-      <div className="flex flex-col flex-1 min-h-screen overflow-hidden">
+      <div className="flex flex-col flex-1 min-h-screen overflow-hidden bg-light-canvas">
         {/* Linear Header - Fixed height with responsive padding */}
         <LinearHeader
           activeView={activeView}
@@ -43,7 +43,7 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
         />
 
         {/* Main Content with responsive container */}
-        <main className="flex-1 bg-background overflow-auto">
+        <main className="flex-1 bg-light-canvas overflow-auto">
           <div className="container-linear responsive-padding min-h-full">
             <div className="animate-linear-fade-in">
               {children}

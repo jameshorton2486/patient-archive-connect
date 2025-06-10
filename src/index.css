@@ -45,20 +45,20 @@
     --neutral-900: 27 38 49; /* #1B2631 */
 
     /* Design System Semantic Mapping */
-    --background: var(--pure-white);
-    --foreground: var(--neutral-800);
+    --background: var(--light-canvas); /* Changed from pure-white to light-canvas */
+    --foreground: var(--medical-charcoal);
     --card: var(--pure-white);
     --card-foreground: var(--neutral-700);
     --popover: var(--pure-white);
-    --popover-foreground: var(--neutral-800);
+    --popover-foreground: var(--medical-charcoal);
     --primary: var(--healthcare-blue);
     --primary-foreground: var(--pure-white);
     --secondary: var(--neutral-100);
-    --secondary-foreground: var(--neutral-800);
+    --secondary-foreground: var(--medical-charcoal);
     --muted: var(--neutral-100);
     --muted-foreground: var(--neutral-500);
     --accent: var(--light-canvas);
-    --accent-foreground: var(--neutral-800);
+    --accent-foreground: var(--medical-charcoal);
     --destructive: var(--error-primary);
     --destructive-foreground: var(--pure-white);
     --border: var(--neutral-200);
@@ -97,5 +97,49 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  /* Emergency override for any remaining yellow backgrounds */
+  *, *::before, *::after {
+    background-color: inherit;
+  }
+  
+  /* Root background force override */
+  html {
+    background-color: hsl(var(--light-canvas)) !important;
+  }
+  
+  /* Typography Scale Implementation */
+  .text-display-xl { font-size: 4.5rem; font-weight: 700; line-height: 1.1; color: hsl(var(--medical-charcoal)); }
+  .text-display-l { font-size: 3.75rem; font-weight: 700; line-height: 1.2; color: hsl(var(--medical-charcoal)); }
+  .text-display-m { font-size: 3rem; font-weight: 700; line-height: 1.2; color: hsl(var(--medical-charcoal)); }
+  
+  .text-h1 { font-size: 2.625rem; font-weight: 700; line-height: 1.3; color: hsl(var(--medical-charcoal)); letter-spacing: -0.02em; }
+  .text-h2 { font-size: 2.25rem; font-weight: 600; line-height: 1.3; color: hsl(var(--medical-charcoal)); letter-spacing: -0.01em; }
+  .text-h3 { font-size: 1.875rem; font-weight: 600; line-height: 1.4; color: hsl(var(--medical-charcoal)); }
+  .text-h4 { font-size: 1.5rem; font-weight: 500; line-height: 1.4; color: hsl(var(--medical-charcoal)); }
+  .text-h5 { font-size: 1.25rem; font-weight: 500; line-height: 1.5; color: hsl(var(--medical-charcoal)); }
+  .text-h6 { font-size: 1.125rem; font-weight: 500; line-height: 1.5; color: hsl(var(--medical-charcoal)); }
+  
+  .text-body-xl { font-size: 1.25rem; font-weight: 400; line-height: 1.7; color: hsl(var(--medical-charcoal)); }
+  .text-body-large { font-size: 1.125rem; font-weight: 400; line-height: 1.6; color: hsl(var(--medical-charcoal)); }
+  .text-body-default { font-size: 1rem; font-weight: 400; line-height: 1.6; color: hsl(var(--medical-charcoal)); }
+  .text-body-small { font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: hsl(var(--neutral-500)); }
+  .text-body-xs { font-size: 0.75rem; font-weight: 400; line-height: 1.4; color: hsl(var(--neutral-500)); }
+  
+  .text-lead { font-size: 1.375rem; font-weight: 400; line-height: 1.8; color: hsl(var(--neutral-600)); }
+  .text-caption { font-size: 0.75rem; font-weight: 500; line-height: 1.3; color: hsl(var(--neutral-500)); letter-spacing: 0.02em; }
+  .text-overline { font-size: 0.6875rem; font-weight: 600; line-height: 1.2; color: hsl(var(--neutral-500)); letter-spacing: 0.1em; text-transform: uppercase; }
+  
+  /* Responsive Typography */
+  @media (max-width: 768px) {
+    .text-h1 { font-size: 2rem; }
+    .text-h2 { font-size: 1.75rem; }
+    .text-h3 { font-size: 1.5rem; }
+    .text-h4 { font-size: 1.25rem; }
+    .text-body-large { font-size: 1rem; }
+    .text-body-default { font-size: 0.9375rem; }
+    .text-body-small { font-size: 0.8125rem; }
   }
 }
