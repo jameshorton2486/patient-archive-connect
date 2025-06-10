@@ -5,48 +5,89 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 0%;
+    /* Healthcare Design System - Professional Medical Palette */
+    
+    /* Core Brand Colors */
+    --medical-charcoal: 44 62 80; /* #2C3E50 */
+    --pure-white: 255 255 255; /* #FFFFFF */
+    --healthcare-blue: 52 152 219; /* #3498DB */
+    --medical-sage: 39 174 96; /* #27AE60 */
+    --clinical-gray: 149 165 166; /* #95A5A6 */
+    --light-canvas: 248 249 250; /* #F8F9FA */
+    
+    /* Semantic Colors */
+    --success-primary: 39 174 96; /* #27AE60 */
+    --success-hover: 46 204 113; /* #2ECC71 */
+    --success-background: 232 248 245; /* #E8F8F5 */
+    
+    --warning-primary: 243 156 18; /* #F39C12 */
+    --warning-hover: 230 126 34; /* #E67E22 */
+    --warning-background: 254 249 231; /* #FEF9E7 */
+    
+    --error-primary: 231 76 60; /* #E74C3C */
+    --error-hover: 192 57 43; /* #C0392B */
+    --error-background: 253 237 236; /* #FDEDEC */
+    
+    --info-primary: 93 173 226; /* #5DADE2 */
+    --info-hover: 52 152 219; /* #3498DB */
+    --info-background: 235 245 251; /* #EBF5FB */
+    
+    /* Neutral Gradient System */
+    --neutral-50: 250 251 252; /* #FAFBFC */
+    --neutral-100: 244 246 248; /* #F4F6F8 */
+    --neutral-200: 225 232 237; /* #E1E8ED */
+    --neutral-300: 199 210 215; /* #C7D2D7 */
+    --neutral-400: 160 173 184; /* #A0ADB8 */
+    --neutral-500: 127 140 141; /* #7F8C8D */
+    --neutral-600: 93 109 126; /* #5D6D7E */
+    --neutral-700: 52 73 94; /* #34495E */
+    --neutral-800: 44 62 80; /* #2C3E50 */
+    --neutral-900: 27 38 49; /* #1B2631 */
+
+    /* Design System Semantic Mapping */
+    --background: var(--pure-white);
+    --foreground: var(--neutral-800);
+    --card: var(--pure-white);
+    --card-foreground: var(--neutral-700);
+    --popover: var(--pure-white);
+    --popover-foreground: var(--neutral-800);
+    --primary: var(--healthcare-blue);
+    --primary-foreground: var(--pure-white);
+    --secondary: var(--neutral-100);
+    --secondary-foreground: var(--neutral-800);
+    --muted: var(--neutral-100);
+    --muted-foreground: var(--neutral-500);
+    --accent: var(--light-canvas);
+    --accent-foreground: var(--neutral-800);
+    --destructive: var(--error-primary);
+    --destructive-foreground: var(--pure-white);
+    --border: var(--neutral-200);
+    --input: var(--neutral-200);
+    --ring: var(--healthcare-blue);
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 0%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 0%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 0 0% 10%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 0% 100%;
+    /* Dark theme healthcare colors */
+    --background: var(--neutral-900);
+    --foreground: var(--neutral-100);
+    --card: var(--neutral-800);
+    --card-foreground: var(--neutral-100);
+    --popover: var(--neutral-800);
+    --popover-foreground: var(--neutral-100);
+    --primary: var(--healthcare-blue);
+    --primary-foreground: var(--pure-white);
+    --secondary: var(--neutral-700);
+    --secondary-foreground: var(--neutral-100);
+    --muted: var(--neutral-700);
+    --muted-foreground: var(--neutral-400);
+    --accent: var(--neutral-700);
+    --accent-foreground: var(--neutral-100);
+    --destructive: var(--error-primary);
+    --destructive-foreground: var(--pure-white);
+    --border: var(--neutral-600);
+    --input: var(--neutral-600);
+    --ring: var(--healthcare-blue);
   }
 }
 
@@ -55,6 +96,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
   }
 }
