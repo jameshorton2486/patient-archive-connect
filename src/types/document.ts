@@ -270,7 +270,6 @@ export interface QRCodeData {
   caseId?: string;
 }
 
-// New types that were missing
 export interface FollowUpRequest {
   id: string;
   requestId: string;
@@ -301,6 +300,7 @@ export interface ReminderSent {
   sentAt: string;
   method: 'email' | 'fax' | 'mail' | 'phone';
   followUpRequestId?: string;
+  response?: string;
 }
 
 export interface ProviderDeadlineRule {
@@ -326,6 +326,10 @@ export interface DeliveryStats {
   failedDeliveries: number;
   averageDeliveryTime: number;
   successRate: number;
+  totalSent: number;
+  delivered: number;
+  failed: number;
+  deliveryRate: number;
 }
 
 export const PROVIDER_DEADLINE_RULES: Record<string, ProviderDeadlineRule> = {
