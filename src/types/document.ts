@@ -232,7 +232,7 @@ export interface FollowUpRequest {
   clientId?: string;
   providerId?: string;
   deadlineDate?: string;
-  currentStatus?: 'pending' | 'overdue' | 'completed' | 'cancelled';
+  currentStatus?: 'pending' | 'overdue' | 'completed' | 'cancelled' | 'responded';
   createdAt?: string;
   updatedAt?: string;
   remindersSent?: number;
@@ -306,6 +306,7 @@ export interface DeliveryAttempt {
   failureReason?: string;
   nextAttemptDate?: string;
   retryCount?: number;
+  deliveredAt?: string;
 }
 
 export interface DeliveryTracking {
