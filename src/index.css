@@ -51,8 +51,8 @@
     --neutral-800: 44 62 80; /* #2C3E50 */
     --neutral-900: 27 38 49; /* #1B2631 */
 
-    /* Design System Mapping - FIXED TO USE LIGHT CANVAS */
-    --background: 248 249 250; /* Direct Light Canvas mapping */
+    /* Design System Mapping - CRITICAL FIX */
+    --background: 248 249 250; /* Force Light Canvas */
     --foreground: var(--medical-charcoal);
     --card: var(--pure-white);
     --card-foreground: var(--neutral-700);
@@ -64,7 +64,7 @@
     --secondary-foreground: var(--medical-charcoal);
     --muted: var(--neutral-100);
     --muted-foreground: var(--neutral-500);
-    --accent: 248 249 250; /* Direct Light Canvas mapping */
+    --accent: 248 249 250; /* Force Light Canvas */
     --accent-foreground: var(--medical-charcoal);
     --destructive: var(--error-primary);
     --destructive-foreground: var(--pure-white);
@@ -104,52 +104,79 @@
   
   html {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background-color: hsl(var(--light-canvas)) !important;
+    background-color: #F8F9FA !important;
   }
   
   body {
     @apply text-foreground font-sans antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
-    background-color: hsl(var(--light-canvas)) !important;
+    background-color: #F8F9FA !important;
   }
   
   #root, #__next {
     @apply min-h-screen;
-    background-color: hsl(var(--light-canvas)) !important;
+    background-color: #F8F9FA !important;
   }
 
-  /* COMPREHENSIVE BACKGROUND FIX - FORCE ALL ELEMENTS TO USE LIGHT CANVAS */
+  /* NUCLEAR OPTION - FORCE LIGHT CANVAS EVERYWHERE */
+  *, *::before, *::after {
+    --tw-bg-opacity: 1;
+  }
+
+  /* COMPREHENSIVE BACKGROUND FIX */
   .bg-background {
-    background-color: hsl(var(--light-canvas)) !important;
+    background-color: #F8F9FA !important;
   }
 
   .bg-accent {
-    background-color: hsl(var(--light-canvas)) !important;
+    background-color: #F8F9FA !important;
   }
   
   .bg-popover {
-    background-color: hsl(var(--pure-white)) !important;
+    background-color: #FFFFFF !important;
   }
   
-  /* Fix opacity variants that might be causing yellow */
+  /* Fix opacity variants */
   .bg-background\/80 {
-    background-color: hsla(var(--light-canvas), 0.8) !important;
+    background-color: rgba(248, 249, 250, 0.8) !important;
   }
   
   .bg-background\/50 {
-    background-color: hsla(var(--light-canvas), 0.5) !important;
+    background-color: rgba(248, 249, 250, 0.5) !important;
   }
   
-  /* Prevent warning colors from being applied to backgrounds */
+  /* Override any yellow/warning backgrounds */
   .bg-warning {
-    background-color: hsl(var(--warning-background)) !important;
+    background-color: #FEF3E6 !important;
   }
   
-  /* Ensure any surface/canvas classes use correct color */
+  /* Ensure surface classes use correct color */
   .bg-canvas,
   .bg-surface,
-  .bg-theme {
-    background-color: hsl(var(--light-canvas)) !important;
+  .bg-theme,
+  .bg-light-canvas {
+    background-color: #F8F9FA !important;
+  }
+  
+  /* Target specific dashboard elements that might be yellow */
+  .min-h-screen,
+  [class*="bg-"],
+  .container,
+  .max-w-7xl,
+  main,
+  .space-y-8,
+  .space-y-6 {
+    background-color: #F8F9FA !important;
+  }
+  
+  /* Prevent any yellow from Tailwind's yellow color palette */
+  .bg-yellow-50,
+  .bg-yellow-100,
+  .bg-yellow-200,
+  .bg-yellow-300,
+  .bg-yellow-400,
+  .bg-yellow-500 {
+    background-color: #F8F9FA !important;
   }
 }
 
