@@ -18,6 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        // Linear's signature color palette
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -26,16 +27,16 @@ module.exports = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -44,7 +45,8 @@ module.exports = {
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
-          medical: '#0ea5e9',
+          // Linear's signature purple
+          medical: '#5e6ad2',
           secondary: '#8b5cf6'
         },
         muted: {
@@ -62,39 +64,23 @@ module.exports = {
         tertiary: 'hsl(var(--tertiary))',
         success: {
           50: '#f0fdf4',
-          100: 'hsl(var(--success-100))',
-          200: 'hsl(var(--success-200))',
-          300: 'hsl(var(--success-300))',
           500: '#22c55e',
           600: '#16a34a',
-          700: 'hsl(var(--success-700))',
         },
         error: {
           50: '#fef2f2',
-          100: 'hsl(var(--error-100))',
-          200: 'hsl(var(--error-200))',
-          300: 'hsl(var(--error-300))',
           500: '#ef4444',
           600: '#dc2626',
-          700: 'hsl(var(--error-700))',
         },
         warning: {
           50: '#fffbeb',
-          100: 'hsl(var(--warning-100))',
-          200: 'hsl(var(--warning-200))',
-          300: 'hsl(var(--warning-300))',
           500: '#f59e0b',
           600: '#d97706',
-          700: 'hsl(var(--warning-700))',
         },
         info: {
           50: '#eff6ff',
-          100: 'hsl(var(--info-100))',
-          200: 'hsl(var(--info-200))',
-          300: 'hsl(var(--info-300))',
           500: '#3b82f6',
           600: '#2563eb',
-          700: 'hsl(var(--info-700))',
         },
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
@@ -108,83 +94,68 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        'primary': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        // Linear uses Inter as primary font
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        mono: ['SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'monospace'],
       },
       fontSize: {
-        'xs': 'var(--text-xs)',
-        'sm': 'var(--text-sm)',
-        'base': 'var(--text-base)',
-        'lg': 'var(--text-lg)',
-        'xl': 'var(--text-xl)',
-        '2xl': 'var(--text-2xl)',
-        '3xl': 'var(--text-3xl)',
-        '4xl': 'var(--text-4xl)',
+        'xs': '0.75rem',
+        'sm': '0.875rem',
+        'base': '1rem',
+        'lg': '1.125rem',
+        'xl': '1.25rem',
+        '2xl': '1.5rem',
+        '3xl': '1.875rem',
+        '4xl': '2.25rem',
       },
       fontWeight: {
-        'normal': 'var(--font-weight-normal)',
-        'medium': 'var(--font-weight-medium)',
-        'semibold': 'var(--font-weight-semibold)',
-        'bold': 'var(--font-weight-bold)',
-      },
-      lineHeight: {
-        'tight': 'var(--leading-tight)',
-        'normal': 'var(--leading-normal)',
-        'relaxed': 'var(--leading-relaxed)',
+        'normal': '400',
+        'medium': '500',
+        'semibold': '600',
+        'bold': '700',
       },
       spacing: {
-        '0': 'var(--space-0)',
+        '0.5': '0.125rem',
         '1': '0.25rem',
+        '1.5': '0.375rem',
         '2': '0.5rem',
+        '2.5': '0.625rem',
         '3': '0.75rem',
+        '3.5': '0.875rem',
         '4': '1rem',
         '5': '1.25rem',
         '6': '1.5rem',
+        '7': '1.75rem',
         '8': '2rem',
+        '9': '2.25rem',
         '10': '2.5rem',
+        '11': '2.75rem',
         '12': '3rem',
+        '14': '3.5rem',
         '16': '4rem',
         '20': '5rem',
         '24': '6rem',
-        'sidebar': 'var(--sidebar-width)',
-        'header': 'var(--header-height)',
+        '28': '7rem',
+        '32': '8rem',
+        'sidebar': '240px',
+        'header': '48px',
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        lg: '8px',
+        md: '6px',
+        sm: '4px',
+        'linear': '6px', // Linear's standard border radius
       },
-      transitionDuration: {
-        'fast': 'var(--transition-fast)',
-        'normal': 'var(--transition-normal)',
-        'slow': 'var(--transition-slow)',
-      },
-      transitionTimingFunction: {
-        'ease-out': 'var(--ease-out)',
-        'ease-in-out': 'var(--ease-in-out)',
+      boxShadow: {
+        'linear': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        'linear-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'linear-xl': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       },
       keyframes: {
-        'accordion-down': {
-          from: {
-            height: '0'
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)'
-          }
-        },
-        'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)'
-          },
-          to: {
-            height: '0'
-          }
-        },
         'fade-in': {
           '0%': {
             opacity: '0',
-            transform: 'translateY(10px)'
+            transform: 'translateY(4px)'
           },
           '100%': {
             opacity: '1',
@@ -194,7 +165,7 @@ module.exports = {
         'slide-up': {
           '0%': {
             opacity: '0',
-            transform: 'translateY(16px)'
+            transform: 'translateY(8px)'
           },
           '100%': {
             opacity: '1',
@@ -204,7 +175,7 @@ module.exports = {
         'scale-in': {
           '0%': {
             opacity: '0',
-            transform: 'scale(0.95)'
+            transform: 'scale(0.98)'
           },
           '100%': {
             opacity: '1',
@@ -213,11 +184,9 @@ module.exports = {
         }
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        'fade-in': 'fade-in 0.3s ease-out',
+        'fade-in': 'fade-in 0.2s ease-out',
         'slide-up': 'slide-up 0.3s ease-out',
-        'scale-in': 'scale-in 0.2s ease-out',
+        'scale-in': 'scale-in 0.15s ease-out',
       }
     }
   },
