@@ -1,4 +1,3 @@
-
 export interface DocumentTemplate {
   id: string;
   name: string;
@@ -280,7 +279,7 @@ export interface BillingAmount {
   confidence: number;
 }
 
-// Add the missing DOCUMENT_TEMPLATES export
+// Add the DOCUMENT_TEMPLATES export with fixed amount variable
 export const DOCUMENT_TEMPLATES: Record<DocumentType, string> = {
   'records-request': `
 MEDICAL RECORDS REQUEST
@@ -411,7 +410,7 @@ Tracking ID: {{trackingId}}
 
 Dear Medical Records Department,
 
-Please find enclosed payment of ${{amount}} for the medical records request dated {{originalRequestDate}}.
+Please find enclosed payment of ${{feeAmount}} for the medical records request dated {{originalRequestDate}}.
 
 Please process our request promptly upon receipt of this payment.
 
