@@ -392,7 +392,7 @@ Tracking ID: {{trackingId}}
 
 Dear Medical Records Department,
 
-Please find enclosed payment of ${{feeAmount}} for the medical records request dated {{originalRequestDate}}.
+Please find enclosed payment of ${{amount}} for the medical records request dated {{originalRequestDate}}.
 
 Please process our request promptly upon receipt of this payment.
 
