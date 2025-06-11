@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -124,15 +123,15 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
   }, []);
 
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.8) return 'text-green-600';
-    if (confidence >= 0.6) return 'text-yellow-600';
-    return 'text-red-600';
+    if (confidence >= 0.8) return 'text-success';
+    if (confidence >= 0.6) return 'text-warning';
+    return 'text-destructive';
   };
 
   const getRiskColor = (risk: number) => {
-    if (risk <= 0.3) return 'text-green-600';
-    if (risk <= 0.6) return 'text-yellow-600';
-    return 'text-red-600';
+    if (risk <= 0.3) return 'text-success';
+    if (risk <= 0.6) return 'text-warning';
+    return 'text-destructive';
   };
 
   const formatCurrency = (amount: number) => {
@@ -148,7 +147,7 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
       <div className="container mx-auto p-6">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <Brain className="h-12 w-12 mx-auto mb-4 animate-pulse text-primary" />
+            <Brain className="h-12 w-12 mx-auto mb-4 animate-pulse text-accent" />
             <p className="text-lg font-medium">Analyzing data patterns...</p>
             <p className="text-sm text-muted-foreground">Training predictive models</p>
           </div>
@@ -166,7 +165,7 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
       )}
 
       <div className="flex items-center gap-2 mb-6">
-        <Brain className="h-6 w-6 text-primary" />
+        <Brain className="h-6 w-6 text-accent" />
         <h1 className="text-3xl font-bold text-foreground">Predictive Analytics Dashboard</h1>
       </div>
 
@@ -175,7 +174,7 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-green-600" />
+              <DollarSign className="h-4 w-4 text-success" />
               <div className="text-2xl font-bold">{formatCurrency(400000)}</div>
             </div>
             <p className="text-sm text-muted-foreground">Total Predicted Value</p>
@@ -184,7 +183,7 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-2">
-              <Target className="h-4 w-4 text-blue-600" />
+              <Target className="h-4 w-4 text-accent" />
               <div className="text-2xl font-bold">85.7%</div>
             </div>
             <p className="text-sm text-muted-foreground">Average Confidence</p>
@@ -193,7 +192,7 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-orange-600" />
+              <Clock className="h-4 w-4 text-warning" />
               <div className="text-2xl font-bold">14 days</div>
             </div>
             <p className="text-sm text-muted-foreground">Avg Response Time</p>
@@ -202,12 +201,12 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-purple-600" />
+              <TrendingUp className="h-4 w-4 text-accent" />
               <div className="text-2xl font-bold">84%</div>
             </div>
             <p className="text-sm text-muted-foreground">Response Rate</p>
-          </CardContent>
-        </Card>
+          </Card>
+        </div>
       </div>
 
       {/* Case Value Predictions */}
@@ -231,7 +230,7 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
                     <p className="text-sm text-muted-foreground">Case ID: {prediction.caseId}</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-success">
                       {formatCurrency(prediction.estimatedValue)}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -320,7 +319,7 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
                 <div className="mt-3">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium">Response Probability</span>
-                    <Zap className="h-3 w-3 text-yellow-500" />
+                    <Zap className="h-3 w-3 text-warning" />
                   </div>
                   <Progress value={prediction.probabilityOfResponse * 100} className="h-2" />
                 </div>

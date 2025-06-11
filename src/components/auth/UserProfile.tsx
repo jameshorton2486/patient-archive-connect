@@ -64,13 +64,13 @@ export function UserProfile({ role = 'client', onBack }: UserProfileProps) {
         )}
 
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-            <RoleIcon className="h-8 w-8 text-primary" />
+          <div className="h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center">
+            <RoleIcon className="h-8 w-8 text-accent" />
           </div>
           <div>
             <h1 className="text-2xl font-bold">{profile.firstName} {profile.lastName}</h1>
             <div className="flex items-center gap-2">
-              <Badge variant="secondary" className={`bg-${roleInfo.color}-100 text-${roleInfo.color}-800`}>
+              <Badge variant="secondary">
                 {roleInfo.label}
               </Badge>
             </div>
