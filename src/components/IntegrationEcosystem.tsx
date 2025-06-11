@@ -159,32 +159,47 @@ export function IntegrationEcosystem({ onBack }: IntegrationEcosystemProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'connected':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-success" />;
       case 'configured':
-        return <Settings className="h-4 w-4 text-blue-500" />;
+        return <Settings className="h-4 w-4 text-accent" />;
       case 'available':
-        return <Link className="h-4 w-4 text-gray-500" />;
+        return <Link className="h-4 w-4 text-muted-foreground" />;
       case 'error':
-        return <AlertCircle className="h-4 w-4 text-red-500" />;
+        return <AlertCircle className="h-4 w-4 text-destructive" />;
       default:
-        return <Clock className="h-4 w-4 text-gray-500" />;
+        return <Clock className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'case_management':
-        return <Building className="h-4 w-4" />;
+        return <Building className="h-5 w-5 text-primary" />;
       case 'communication':
-        return <MessageSquare className="h-4 w-4" />;
+        return <MessageSquare className="h-5 w-5 text-accent" />;
       case 'document':
-        return <FileText className="h-4 w-4" />;
+        return <FileText className="h-5 w-5 text-warning" />;
       case 'medical':
-        return <Stethoscope className="h-4 w-4" />;
+        return <Stethoscope className="h-5 w-5 text-success" />;
       case 'financial':
-        return <TrendingUp className="h-4 w-4" />;
+        return <TrendingUp className="h-5 w-5 text-destructive" />;
       default:
-        return <Database className="h-4 w-4" />;
+        return <Database className="h-5 w-5 text-muted-foreground" />;
+    }
+  };
+
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status) {
+      case 'connected':
+        return 'success';
+      case 'configured':
+        return 'info';
+      case 'available':
+        return 'secondary';
+      case 'error':
+        return 'destructive';
+      default:
+        return 'outline';
     }
   };
 
@@ -197,306 +212,428 @@ export function IntegrationEcosystem({ onBack }: IntegrationEcosystemProps) {
   }, {} as Record<string, ThirdPartyIntegration[]>);
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {onBack && (
-        <Button onClick={onBack} variant="outline" className="mb-4">
-          ← Back to Dashboard
-        </Button>
-      )}
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto p-8 space-y-8">
+        {onBack && (
+          <Button onClick={onBack} variant="outline" className="mb-6 hover:bg-accent hover:text-accent-foreground transition-colors">
+            ← Back to Dashboard
+          </Button>
+        )}
 
-      <div className="flex items-center gap-2 mb-6">
-        <Zap className="h-6 w-6 text-primary" />
-        <h1 className="text-3xl font-bold text-foreground">Advanced Integration Ecosystem</h1>
-      </div>
-
-      {/* Statistics Overview */}
-      {statistics && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <Settings className="h-5 w-5 text-blue-500" />
-                <div>
-                  <p className="text-2xl font-bold">{statistics.activeIntegrations}</p>
-                  <p className="text-sm text-muted-foreground">Active Integrations</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-green-500" />
-                <div>
-                  <p className="text-2xl font-bold">{statistics.documentsProcessed}</p>
-                  <p className="text-sm text-muted-foreground">Documents Processed</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-purple-500" />
-                <div>
-                  <p className="text-2xl font-bold">{statistics.timesSaved}h</p>
-                  <p className="text-sm text-muted-foreground">Time Saved</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-orange-500" />
-                <div>
-                  <p className="text-2xl font-bold">{(statistics.syncSuccessRate * 100).toFixed(1)}%</p>
-                  <p className="text-sm text-muted-foreground">Success Rate</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Header Section */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-accent/10 border border-accent/20">
+              <Zap className="h-8 w-8 text-accent" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold text-foreground tracking-tight">Integration Ecosystem</h1>
+              <p className="text-lg text-muted-foreground mt-1">Enterprise-grade legal technology integrations</p>
+            </div>
+          </div>
         </div>
-      )}
 
-      <Tabs defaultValue="legal-tech" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="legal-tech">Legal Tech</TabsTrigger>
-          <TabsTrigger value="communication">Communication</TabsTrigger>
-          <TabsTrigger value="document-services">Documents</TabsTrigger>
-          <TabsTrigger value="medical-systems">Medical</TabsTrigger>
-          <TabsTrigger value="ai-analytics">AI Analytics</TabsTrigger>
-        </TabsList>
+        {/* Enhanced Statistics Overview */}
+        {statistics && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Active Integrations</p>
+                    <p className="text-3xl font-bold text-foreground">{statistics.activeIntegrations}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-accent/10 border border-accent/20">
+                    <Settings className="h-6 w-6 text-accent" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Documents Processed</p>
+                    <p className="text-3xl font-bold text-foreground">{statistics.documentsProcessed.toLocaleString()}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-success/10 border border-success/20">
+                    <FileText className="h-6 w-6 text-success" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Time Saved</p>
+                    <p className="text-3xl font-bold text-foreground">{statistics.timesSaved}h</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-warning/10 border border-warning/20">
+                    <Clock className="h-6 w-6 text-warning" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Success Rate</p>
+                    <p className="text-3xl font-bold text-foreground">{(statistics.syncSuccessRate * 100).toFixed(1)}%</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-success/10 border border-success/20">
+                    <TrendingUp className="h-6 w-6 text-success" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
-        {/* Legal Technology Integrations */}
-        <TabsContent value="legal-tech">
-          <Card>
-            <CardHeader>
-              <CardTitle>Legal Technology Stack</CardTitle>
-              <CardDescription>Case management and legal research platforms</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
+        {/* Enhanced Professional Tabs */}
+        <Tabs defaultValue="legal-tech" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-5 bg-muted/30 p-1 h-14 rounded-xl border">
+            <TabsTrigger 
+              value="legal-tech" 
+              className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border transition-all duration-300 rounded-lg font-medium"
+            >
+              <Building className="h-4 w-4 mr-2" />
+              Legal Tech
+            </TabsTrigger>
+            <TabsTrigger 
+              value="communication"
+              className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border transition-all duration-300 rounded-lg font-medium"
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              Communication
+            </TabsTrigger>
+            <TabsTrigger 
+              value="document-services"
+              className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border transition-all duration-300 rounded-lg font-medium"
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Documents
+            </TabsTrigger>
+            <TabsTrigger 
+              value="medical-systems"
+              className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border transition-all duration-300 rounded-lg font-medium"
+            >
+              <Stethoscope className="h-4 w-4 mr-2" />
+              Medical
+            </TabsTrigger>
+            <TabsTrigger 
+              value="ai-analytics"
+              className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border transition-all duration-300 rounded-lg font-medium"
+            >
+              <Brain className="h-4 w-4 mr-2" />
+              AI Analytics
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Legal Technology Integrations */}
+          <TabsContent value="legal-tech" className="space-y-6">
+            <Card className="border-0 shadow-sm bg-gradient-to-br from-card to-card/50">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+                    <Building className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">Legal Technology Stack</CardTitle>
+                    <CardDescription className="text-base">Case management and legal research platforms</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium mb-3">Tier 1 Integrations</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <h3 className="text-lg font-semibold mb-4 text-foreground">Enterprise Integrations</h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {groupedIntegrations.case_management?.filter(i => i.tier === 'tier_1').map((integration) => (
-                      <div key={integration.id} className="border rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(integration.status)}
-                            <h4 className="font-medium">{integration.name}</h4>
-                          </div>
-                          <Badge variant={integration.status === 'connected' ? 'default' : 'secondary'}>
-                            {integration.status}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-3">{integration.description}</p>
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {integration.features.map((feature, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {feature}
+                      <Card key={integration.id} className="group hover:shadow-md transition-all duration-300 border bg-background/50">
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              {getStatusIcon(integration.status)}
+                              <div>
+                                <h4 className="font-semibold text-foreground text-lg">{integration.name}</h4>
+                                <p className="text-sm text-muted-foreground">Tier {integration.tier.split('_')[1]} Integration</p>
+                              </div>
+                            </div>
+                            <Badge variant={getStatusBadgeVariant(integration.status) as any} className="capitalize font-medium">
+                              {integration.status}
                             </Badge>
-                          ))}
-                        </div>
-                        <div className="flex items-center justify-between">
-                          {integration.lastSync && (
-                            <span className="text-xs text-muted-foreground">
-                              Last sync: {new Date(integration.lastSync).toLocaleString()}
-                            </span>
-                          )}
-                          <Button size="sm" variant={integration.status === 'connected' ? 'outline' : 'default'}>
-                            {integration.status === 'connected' ? 'Configure' : 'Connect'}
-                          </Button>
-                        </div>
-                      </div>
+                          </div>
+                          
+                          <p className="text-muted-foreground mb-4 leading-relaxed">{integration.description}</p>
+                          
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {integration.features.map((feature, index) => (
+                              <Badge key={index} variant="outline" className="text-xs font-medium px-3 py-1 bg-accent/5 text-accent border-accent/20">
+                                {feature}
+                              </Badge>
+                            ))}
+                          </div>
+                          
+                          <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                            {integration.lastSync && (
+                              <span className="text-xs text-muted-foreground">
+                                Last sync: {new Date(integration.lastSync).toLocaleString()}
+                              </span>
+                            )}
+                            <Button 
+                              size="sm" 
+                              variant={integration.status === 'connected' ? 'outline' : 'default'}
+                              className="ml-auto transition-colors"
+                            >
+                              {integration.status === 'connected' ? 'Configure' : 'Connect'}
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* Communication Platforms */}
-        <TabsContent value="communication">
-          <Card>
-            <CardHeader>
-              <CardTitle>Communication Platforms</CardTitle>
-              <CardDescription>Email, messaging, and collaboration tools</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {groupedIntegrations.communication?.map((integration) => (
-                  <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      {getCategoryIcon(integration.category)}
-                      <div>
-                        <h3 className="font-medium">{integration.name}</h3>
-                        <p className="text-sm text-muted-foreground">{integration.description}</p>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {integration.features.map((feature, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {feature}
+          {/* Communication Platforms */}
+          <TabsContent value="communication" className="space-y-6">
+            <Card className="border-0 shadow-sm bg-gradient-to-br from-card to-card/50">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-accent/10 border border-accent/20">
+                    <MessageSquare className="h-5 w-5 text-accent" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">Communication Platforms</CardTitle>
+                    <CardDescription className="text-base">Email, messaging, and collaboration tools</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {groupedIntegrations.communication?.map((integration) => (
+                    <Card key={integration.id} className="group hover:shadow-md transition-all duration-300 border bg-background/50">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-accent/10 border border-accent/20">
+                              {getCategoryIcon(integration.category)}
+                            </div>
+                            <div className="space-y-1">
+                              <h3 className="font-semibold text-foreground text-lg">{integration.name}</h3>
+                              <p className="text-muted-foreground">{integration.description}</p>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {integration.features.map((feature, index) => (
+                                  <Badge key={index} variant="outline" className="text-xs font-medium px-3 py-1 bg-accent/5 text-accent border-accent/20">
+                                    {feature}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge variant={getStatusBadgeVariant(integration.status) as any} className="capitalize font-medium">
+                              {integration.status}
                             </Badge>
-                          ))}
+                            <Switch checked={integration.status === 'connected'} className="data-[state=checked]:bg-success" />
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={integration.status === 'connected' ? 'default' : 'secondary'}>
-                        {integration.status}
-                      </Badge>
-                      <Switch checked={integration.status === 'connected'} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* Document Services */}
-        <TabsContent value="document-services">
-          <Card>
-            <CardHeader>
-              <CardTitle>Document & E-Signature Services</CardTitle>
-              <CardDescription>Digital signatures and document delivery</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {eSignatureIntegrations.map((integration) => (
-                  <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Signature className="h-5 w-5 text-blue-600" />
-                      <div>
-                        <h3 className="font-medium">{integration.name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          Environment: {integration.environment}
-                        </p>
-                        {integration.lastUsed && (
-                          <p className="text-xs text-muted-foreground">
-                            Last used: {new Date(integration.lastUsed).toLocaleString()}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={integration.status === 'active' ? 'default' : 'secondary'}>
-                        {integration.status}
-                      </Badge>
-                      <Switch checked={integration.enabled} />
-                    </div>
+          {/* Document Services */}
+          <TabsContent value="document-services" className="space-y-6">
+            <Card className="border-0 shadow-sm bg-gradient-to-br from-card to-card/50">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-warning/10 border border-warning/20">
+                    <Signature className="h-5 w-5 text-warning" />
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Medical Systems */}
-        <TabsContent value="medical-systems">
-          <Card>
-            <CardHeader>
-              <CardTitle>Healthcare & Medical Integrations</CardTitle>
-              <CardDescription>EHR systems, provider databases, and medical coding</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {groupedIntegrations.medical?.map((integration) => (
-                  <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Stethoscope className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h3 className="font-medium">{integration.name}</h3>
-                        <p className="text-sm text-muted-foreground">{integration.description}</p>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {integration.features.map((feature, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {feature}
+                  <div>
+                    <CardTitle className="text-xl">Document & E-Signature Services</CardTitle>
+                    <CardDescription className="text-base">Digital signatures and document delivery</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {eSignatureIntegrations.map((integration) => (
+                    <Card key={integration.id} className="group hover:shadow-md transition-all duration-300 border bg-background/50">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-warning/10 border border-warning/20">
+                              <Signature className="h-5 w-5 text-warning" />
+                            </div>
+                            <div className="space-y-1">
+                              <h3 className="font-semibold text-foreground text-lg">{integration.name}</h3>
+                              <p className="text-muted-foreground">Environment: {integration.environment}</p>
+                              {integration.lastUsed && (
+                                <p className="text-xs text-muted-foreground">
+                                  Last used: {new Date(integration.lastUsed).toLocaleString()}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge variant={integration.status === 'active' ? 'success' : 'secondary'} className="capitalize font-medium">
+                              {integration.status}
                             </Badge>
-                          ))}
+                            <Switch checked={integration.enabled} className="data-[state=checked]:bg-success" />
+                          </div>
                         </div>
-                        {integration.lastSync && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Last sync: {new Date(integration.lastSync).toLocaleString()}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={integration.status === 'connected' ? 'default' : 'secondary'}>
-                        {integration.status}
-                      </Badge>
-                      <Button size="sm" variant={integration.status === 'connected' ? 'outline' : 'default'}>
-                        {integration.status === 'connected' ? 'Sync' : 'Connect'}
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* AI Analytics */}
-        <TabsContent value="ai-analytics">
-          <Card>
-            <CardHeader>
-              <CardTitle>AI Analytics & Processing</CardTitle>
-              <CardDescription>Machine learning and natural language processing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {predictiveAnalytics.map((analytics) => (
-                  <div key={analytics.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Brain className="h-5 w-5 text-purple-600" />
-                      <div>
-                        <h3 className="font-medium capitalize">
-                          {analytics.type.replace('-', ' ')} Prediction
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          Accuracy: {(analytics.accuracy * 100).toFixed(1)}% | 
-                          Training Data: {analytics.trainingDataSize.toLocaleString()} records
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Last updated: {new Date(analytics.lastUpdated).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                    <Switch checked={analytics.enabled} />
+          {/* Medical Systems */}
+          <TabsContent value="medical-systems" className="space-y-6">
+            <Card className="border-0 shadow-sm bg-gradient-to-br from-card to-card/50">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-success/10 border border-success/20">
+                    <Stethoscope className="h-5 w-5 text-success" />
                   </div>
-                ))}
+                  <div>
+                    <CardTitle className="text-xl">Healthcare & Medical Integrations</CardTitle>
+                    <CardDescription className="text-base">EHR systems, provider databases, and medical coding</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {groupedIntegrations.medical?.map((integration) => (
+                    <Card key={integration.id} className="group hover:shadow-md transition-all duration-300 border bg-background/50">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-success/10 border border-success/20">
+                              <Stethoscope className="h-5 w-5 text-success" />
+                            </div>
+                            <div className="space-y-1">
+                              <h3 className="font-semibold text-foreground text-lg">{integration.name}</h3>
+                              <p className="text-muted-foreground">{integration.description}</p>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {integration.features.map((feature, index) => (
+                                  <Badge key={index} variant="outline" className="text-xs font-medium px-3 py-1 bg-success/5 text-success border-success/20">
+                                    {feature}
+                                  </Badge>
+                                ))}
+                              </div>
+                              {integration.lastSync && (
+                                <p className="text-xs text-muted-foreground mt-2">
+                                  Last sync: {new Date(integration.lastSync).toLocaleString()}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge variant={getStatusBadgeVariant(integration.status) as any} className="capitalize font-medium">
+                              {integration.status}
+                            </Badge>
+                            <Button size="sm" variant={integration.status === 'connected' ? 'outline' : 'default'}>
+                              {integration.status === 'connected' ? 'Sync' : 'Connect'}
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-                {nlpServices.map((service) => (
-                  <div key={service.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Shield className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h3 className="font-medium capitalize">
-                          {service.type.replace('-', ' ')}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          Model: {service.model} | 
-                          Processed: {service.processedDocuments} documents
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Last used: {new Date(service.lastUsed).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                    <Switch checked={service.enabled} />
+          {/* AI Analytics */}
+          <TabsContent value="ai-analytics" className="space-y-6">
+            <Card className="border-0 shadow-sm bg-gradient-to-br from-card to-card/50">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-destructive/10 border border-destructive/20">
+                    <Brain className="h-5 w-5 text-destructive" />
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                  <div>
+                    <CardTitle className="text-xl">AI Analytics & Processing</CardTitle>
+                    <CardDescription className="text-base">Machine learning and natural language processing</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {predictiveAnalytics.map((analytics) => (
+                    <Card key={analytics.id} className="group hover:shadow-md transition-all duration-300 border bg-background/50">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">
+                              <Brain className="h-5 w-5 text-destructive" />
+                            </div>
+                            <div className="space-y-1">
+                              <h3 className="font-semibold text-foreground text-lg capitalize">
+                                {analytics.type.replace('-', ' ')} Prediction
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Accuracy: {(analytics.accuracy * 100).toFixed(1)}% | 
+                                Training Data: {analytics.trainingDataSize.toLocaleString()} records
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                Last updated: {new Date(analytics.lastUpdated).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                          <Switch checked={analytics.enabled} className="data-[state=checked]:bg-success" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+
+                  {nlpServices.map((service) => (
+                    <Card key={service.id} className="group hover:shadow-md transition-all duration-300 border bg-background/50">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-xl bg-success/10 border border-success/20">
+                              <Shield className="h-5 w-5 text-success" />
+                            </div>
+                            <div className="space-y-1">
+                              <h3 className="font-semibold text-foreground text-lg capitalize">
+                                {service.type.replace('-', ' ')}
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Model: {service.model} | 
+                                Processed: {service.processedDocuments} documents
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                Last used: {new Date(service.lastUsed).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                          <Switch checked={service.enabled} className="data-[state=checked]:bg-success" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
