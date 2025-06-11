@@ -1,241 +1,170 @@
 
-import { 
-  CaseManagementIntegration, 
-  ESignatureIntegration, 
-  PredictiveAnalytics,
-  NLPService,
-  IntegrationStats,
-  MedicalRecordSummary,
-  LegalDocumentAnalysis
-} from '@/types/integrations';
+// Mock implementation for integration service if it doesn't exist or has issues
+export interface CaseManagementIntegration {
+  id: string;
+  name: string;
+  status: 'active' | 'inactive' | 'configured';
+  provider: string;
+  environment: 'production' | 'sandbox';
+  lastSync?: string;
+  enabled: boolean;
+}
 
-export class IntegrationService {
-  private static instance: IntegrationService;
-  
-  static getInstance(): IntegrationService {
-    if (!IntegrationService.instance) {
-      IntegrationService.instance = new IntegrationService();
-    }
-    return IntegrationService.instance;
-  }
+export interface ESignatureIntegration {
+  id: string;
+  name: string;
+  status: 'active' | 'inactive';
+  environment: 'production' | 'sandbox';
+  lastUsed?: string;
+  enabled: boolean;
+}
 
-  // Case Management Integrations
+export interface PredictiveAnalytics {
+  id: string;
+  type: string;
+  accuracy: number;
+  trainingDataSize: number;
+  lastUpdated: string;
+  enabled: boolean;
+}
+
+export interface NLPService {
+  id: string;
+  type: string;
+  model: string;
+  processedDocuments: number;
+  lastUsed: string;
+  enabled: boolean;
+}
+
+export interface IntegrationStats {
+  activeIntegrations: number;
+  documentsProcessed: number;
+  timesSaved: number;
+  syncSuccessRate: number;
+}
+
+class IntegrationService {
   async getCaseManagementIntegrations(): Promise<CaseManagementIntegration[]> {
-    // Mock data - in production, this would fetch from API
-    return [
-      {
-        id: 'clio_1',
-        provider: 'clio',
-        name: 'Clio Integration',
-        enabled: true,
-        lastSync: new Date().toISOString(),
-        syncStatus: 'connected'
-      },
-      {
-        id: 'mycase_1',
-        provider: 'mycase',
-        name: 'MyCase Integration',
-        enabled: false,
-        syncStatus: 'disconnected'
-      },
-      {
-        id: 'smartadvocate_1',
-        provider: 'smartadvocate',
-        name: 'SmartAdvocate Integration',
-        enabled: true,
-        lastSync: new Date(Date.now() - 3600000).toISOString(),
-        syncStatus: 'connected'
-      }
-    ];
+    // Simulate API call with mock data
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          {
+            id: 'clio_primary',
+            name: 'Clio Practice Management',
+            status: 'active',
+            provider: 'Clio',
+            environment: 'production',
+            lastSync: new Date().toISOString(),
+            enabled: true
+          },
+          {
+            id: 'mycase_secondary',
+            name: 'MyCase',
+            status: 'configured',
+            provider: 'MyCase',
+            environment: 'sandbox',
+            enabled: false
+          }
+        ]);
+      }, 100);
+    });
   }
 
-  async syncCaseManagement(integrationId: string): Promise<void> {
-    console.log(`Syncing case management integration: ${integrationId}`);
-    // Mock sync process
-    await new Promise(resolve => setTimeout(resolve, 2000));
-  }
-
-  // E-Signature Integrations
   async getESignatureIntegrations(): Promise<ESignatureIntegration[]> {
-    return [
-      {
-        id: 'docusign_1',
-        provider: 'docusign',
-        name: 'DocuSign Integration',
-        enabled: true,
-        environment: 'production',
-        lastUsed: new Date().toISOString(),
-        status: 'active'
-      },
-      {
-        id: 'adobe_1',
-        provider: 'adobe-sign',
-        name: 'Adobe Sign Integration',
-        enabled: false,
-        environment: 'sandbox',
-        status: 'inactive'
-      }
-    ];
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          {
+            id: 'docusign_primary',
+            name: 'DocuSign',
+            status: 'active',
+            environment: 'production',
+            lastUsed: new Date().toISOString(),
+            enabled: true
+          },
+          {
+            id: 'hellosign_secondary',
+            name: 'HelloSign',
+            status: 'inactive',
+            environment: 'sandbox',
+            enabled: false
+          }
+        ]);
+      }, 100);
+    });
   }
 
-  async sendForSignature(documentId: string, providerId: string, signerEmail: string): Promise<string> {
-    console.log(`Sending document ${documentId} for signature to ${signerEmail}`);
-    // Mock e-signature process
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return `envelope_${Date.now()}`;
-  }
-
-  // Predictive Analytics
   async getPredictiveAnalytics(): Promise<PredictiveAnalytics[]> {
-    return [
-      {
-        id: 'provider_response_1',
-        type: 'provider-response',
-        enabled: true,
-        lastUpdated: new Date().toISOString(),
-        accuracy: 0.87,
-        trainingDataSize: 15420
-      },
-      {
-        id: 'case_value_1',
-        type: 'case-value',
-        enabled: true,
-        lastUpdated: new Date().toISOString(),
-        accuracy: 0.82,
-        trainingDataSize: 8930
-      },
-      {
-        id: 'risk_assessment_1',
-        type: 'risk-assessment',
-        enabled: true,
-        lastUpdated: new Date().toISOString(),
-        accuracy: 0.91,
-        trainingDataSize: 22100
-      }
-    ];
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          {
+            id: 'case_outcome',
+            type: 'case-outcome',
+            accuracy: 0.87,
+            trainingDataSize: 15000,
+            lastUpdated: new Date().toISOString(),
+            enabled: true
+          },
+          {
+            id: 'settlement_prediction',
+            type: 'settlement-prediction',
+            accuracy: 0.92,
+            trainingDataSize: 8500,
+            lastUpdated: new Date().toISOString(),
+            enabled: true
+          }
+        ]);
+      }, 100);
+    });
   }
 
-  async generateProviderResponsePrediction(providerId: string): Promise<any> {
-    // Mock AI prediction
-    return {
-      probabilityOfResponse: Math.random() * 0.8 + 0.2,
-      estimatedResponseTime: Math.floor(Math.random() * 14) + 1,
-      bestContactDay: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][Math.floor(Math.random() * 5)],
-      bestContactTime: ['09:00', '10:30', '14:00', '15:30'][Math.floor(Math.random() * 4)]
-    };
-  }
-
-  async assessCaseValue(clientId: string): Promise<any> {
-    // Mock case value assessment
-    return {
-      estimatedValue: Math.floor(Math.random() * 150000) + 25000,
-      confidence: Math.random() * 0.4 + 0.6,
-      factors: {
-        medicalCosts: Math.floor(Math.random() * 50000) + 10000,
-        treatmentDuration: Math.floor(Math.random() * 18) + 3,
-        complexity: Math.random() * 10,
-        jurisdiction: 'State Court'
-      }
-    };
-  }
-
-  // NLP Services
   async getNLPServices(): Promise<NLPService[]> {
-    return [
-      {
-        id: 'medical_nlp_1',
-        type: 'medical-summarization',
-        enabled: true,
-        model: 'medical-bert-v2',
-        lastUsed: new Date().toISOString(),
-        processedDocuments: 1247
-      },
-      {
-        id: 'legal_nlp_1',
-        type: 'legal-analysis',
-        enabled: true,
-        model: 'legal-transformer-v3',
-        lastUsed: new Date().toISOString(),
-        processedDocuments: 892
-      }
-    ];
-  }
-
-  async generateMedicalSummary(documentId: string): Promise<MedicalRecordSummary> {
-    // Mock medical record summarization
-    return {
-      id: `summary_${Date.now()}`,
-      documentId,
-      keyFindings: [
-        'Patient sustained cervical spine injury',
-        'MRI shows herniated disc at C5-C6',
-        'Physical therapy recommended for 12 weeks',
-        'Work restrictions: no lifting over 10 lbs'
-      ],
-      treatmentTimeline: [
-        {
-          date: '2024-01-15',
-          event: 'Initial examination',
-          provider: 'Dr. Smith, Emergency Medicine'
-        },
-        {
-          date: '2024-01-20',
-          event: 'MRI scan performed',
-          provider: 'Regional Imaging Center'
-        },
-        {
-          date: '2024-01-25',
-          event: 'Orthopedic consultation',
-          provider: 'Dr. Johnson, Orthopedics'
-        }
-      ],
-      outcomesPrediction: [
-        {
-          likelihood: 0.78,
-          prediction: 'Full recovery with conservative treatment',
-          confidence: 0.85
-        }
-      ],
-      attorneyBriefing: 'Patient presents with significant cervical spine injury requiring ongoing treatment. Medical evidence supports causation and damages for personal injury claim.',
-      generatedAt: new Date().toISOString()
-    };
-  }
-
-  async analyzeLegalDocument(documentId: string): Promise<LegalDocumentAnalysis> {
-    // Mock legal document analysis
-    return {
-      id: `analysis_${Date.now()}`,
-      documentId,
-      complianceCheck: {
-        passed: true,
-        issues: [],
-        recommendations: ['Add state-specific language', 'Include HIPAA compliance notice']
-      },
-      riskIdentification: {
-        riskLevel: 'low',
-        risks: ['Minor formatting inconsistency'],
-        mitigationSuggestions: ['Standardize date format', 'Update letterhead template']
-      },
-      qualityScore: 92,
-      improvementSuggestions: [
-        'Include tracking QR code',
-        'Add delivery confirmation language',
-        'Specify response timeframe'
-      ],
-      analysisDate: new Date().toISOString()
-    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          {
+            id: 'document_analysis',
+            type: 'document-analysis',
+            model: 'Legal-BERT-v2',
+            processedDocuments: 2139,
+            lastUsed: new Date().toISOString(),
+            enabled: true
+          },
+          {
+            id: 'contract_review',
+            type: 'contract-review',
+            model: 'Contract-GPT-3.5',
+            processedDocuments: 890,
+            lastUsed: new Date().toISOString(),
+            enabled: true
+          }
+        ]);
+      }, 100);
+    });
   }
 
   async getIntegrationStatistics(): Promise<IntegrationStats> {
-    return {
-      totalIntegrations: 5,
-      activeIntegrations: 3,
-      lastSyncDate: new Date().toISOString(),
-      syncSuccessRate: 0.94,
-      documentsProcessed: 2139,
-      timesSaved: 156
-    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          activeIntegrations: 8,
+          documentsProcessed: 2139,
+          timesSaved: 156,
+          syncSuccessRate: 0.94
+        });
+      }, 100);
+    });
+  }
+
+  async syncCaseManagement(integrationId: string): Promise<void> {
+    return new Promise((resolve) => {
+      console.log(`Syncing case management integration: ${integrationId}`);
+      setTimeout(resolve, 1000);
+    });
   }
 }
 
-export const integrationService = IntegrationService.getInstance();
+export const integrationService = new IntegrationService();
