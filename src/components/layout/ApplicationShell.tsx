@@ -15,7 +15,6 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Extract the active view from the current route
   const activeView = location.pathname.replace('/', '') || 'dashboard';
 
   const handleViewChange = (view: string) => {
@@ -23,8 +22,7 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-light-canvas transition-colors duration-200">
-      {/* Linear Sidebar - Fixed width with responsive behavior */}
+    <div className="min-h-screen flex w-full bg-light-background transition-colors duration-200">
       <LinearSidebar
         activeView={activeView}
         onViewChange={handleViewChange}
@@ -34,18 +32,15 @@ export function ApplicationShell({ children, user, onLogout }: ApplicationShellP
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
-      {/* Main Content Area - Responsive layout */}
-      <div className="flex flex-col flex-1 min-h-screen overflow-hidden bg-light-canvas">
-        {/* Linear Header - Fixed height with responsive padding */}
+      <div className="flex flex-col flex-1 min-h-screen overflow-hidden bg-light-background">
         <LinearHeader
           activeView={activeView}
           onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
         />
 
-        {/* Main Content with responsive container */}
-        <main className="flex-1 bg-light-canvas overflow-auto">
-          <div className="container-linear responsive-padding min-h-full">
-            <div className="animate-linear-fade-in">
+        <main className="flex-1 bg-light-background overflow-auto">
+          <div className="container-healthcare responsive-padding min-h-full">
+            <div className="animate-in fade-in-0 duration-300">
               {children}
             </div>
           </div>

@@ -25,7 +25,7 @@ export function Dashboard() {
       color: 'blue'
     },
     {
-      title: 'Active Documents',
+      title: 'Active Records',
       value: '1,234',
       change: '+8%',
       trend: 'up',
@@ -33,7 +33,7 @@ export function Dashboard() {
       color: 'green'
     },
     {
-      title: 'Pending Appointments',
+      title: 'Appointments Today',
       value: '89',
       change: '-4%',
       trend: 'down',
@@ -41,7 +41,7 @@ export function Dashboard() {
       color: 'amber'
     },
     {
-      title: 'Overdue Items',
+      title: 'Pending Reviews',
       value: '23',
       change: '+2%',
       trend: 'up',
@@ -53,24 +53,24 @@ export function Dashboard() {
   const recentActivity = [
     {
       id: '1',
-      title: 'New patient record added',
-      subtitle: 'John Doe - ID: #12847',
-      time: '2 min ago',
+      title: 'New patient record created',
+      subtitle: 'John Doe - Medical ID: #PAT-12847',
+      time: '2 minutes ago',
       status: 'success',
       icon: CheckCircle
     },
     {
       id: '2',
-      title: 'Document deadline approaching',
-      subtitle: 'Medical records for Case #4892',
-      time: '15 min ago',
+      title: 'Record review required',
+      subtitle: 'Medical records for Case #MED-4892',
+      time: '15 minutes ago',
       status: 'warning',
       icon: AlertTriangle
     },
     {
       id: '3',
       title: 'Provider information updated',
-      subtitle: 'Dr. Sarah Johnson - Springfield Hospital',
+      subtitle: 'Dr. Sarah Johnson - City General Hospital',
       time: '1 hour ago',
       status: 'info',
       icon: Activity
@@ -78,25 +78,28 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+    <div className="space-y-8">
+      {/* Healthcare Metrics Grid */}
+      <div className="responsive-grid">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.title}>
-              <CardContent className="p-4 sm:p-6">
+            <Card key={stat.title} className="hover:shadow-healthcare-hover transition-all duration-200">
+              <CardContent className="responsive-padding">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-muted-foreground mb-1">{stat.title}</p>
-                    <p className="text-2xl font-bold mb-2">{stat.value}</p>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3" />
-                      <span className="text-xs font-medium">{stat.change}</span>
-                      <span className="text-xs text-muted-foreground">from last month</span>
+                    <p className="text-small-body font-medium text-text-secondary mb-2">{stat.title}</p>
+                    <p className="text-3xl font-bold text-medical-charcoal mb-3">{stat.value}</p>
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className={`h-4 w-4 ${stat.trend === 'up' ? 'text-sage-green' : 'text-error-red'}`} />
+                      <span className={`text-small-body font-medium ${stat.trend === 'up' ? 'text-sage-green' : 'text-error-red'}`}>
+                        {stat.change}
+                      </span>
+                      <span className="text-small-body text-text-secondary">from last month</span>
                     </div>
                   </div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg border">
-                    <Icon className="h-6 w-6" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-light-background border border-clinical-gray">
+                    <Icon className="h-8 w-8 text-healthcare-blue" aria-hidden="true" />
                   </div>
                 </div>
               </CardContent>
@@ -105,66 +108,80 @@ export function Dashboard() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Healthcare Quick Actions */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
-            <CardDescription>Frequently used features and shortcuts</CardDescription>
+            <CardTitle className="text-medical-charcoal">Quick Actions</CardTitle>
+            <CardDescription>Essential healthcare management tools</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Button variant="outline" className="h-auto p-4 justify-start">
-                <Users className="h-5 w-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-medium">Add Patient</div>
-                  <div className="text-xs text-muted-foreground">Create new record</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Button variant="outline" className="h-auto p-4 justify-start text-left">
+                <Users className="h-6 w-6 mr-4 text-healthcare-blue" />
+                <div>
+                  <div className="font-semibold text-medical-charcoal">Add Patient</div>
+                  <div className="text-caption text-text-secondary">Create new patient record</div>
                 </div>
               </Button>
-              <Button variant="outline" className="h-auto p-4 justify-start">
-                <FileText className="h-5 w-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-medium">Generate Document</div>
-                  <div className="text-xs text-muted-foreground">Create new document</div>
+              <Button variant="outline" className="h-auto p-4 justify-start text-left">
+                <FileText className="h-6 w-6 mr-4 text-healthcare-blue" />
+                <div>
+                  <div className="font-semibold text-medical-charcoal">Medical Records</div>
+                  <div className="text-caption text-text-secondary">Access patient files</div>
                 </div>
               </Button>
-              <Button variant="outline" className="h-auto p-4 justify-start">
-                <Calendar className="h-5 w-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-medium">Schedule</div>
-                  <div className="text-xs text-muted-foreground">Manage appointments</div>
+              <Button variant="outline" className="h-auto p-4 justify-start text-left">
+                <Calendar className="h-6 w-6 mr-4 text-healthcare-blue" />
+                <div>
+                  <div className="font-semibold text-medical-charcoal">Appointments</div>
+                  <div className="text-caption text-text-secondary">Schedule & manage</div>
                 </div>
               </Button>
-              <Button variant="outline" className="h-auto p-4 justify-start">
-                <Clock className="h-5 w-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-medium">View Deadlines</div>
-                  <div className="text-xs text-muted-foreground">Check urgent items</div>
+              <Button variant="outline" className="h-auto p-4 justify-start text-left">
+                <Clock className="h-6 w-6 mr-4 text-healthcare-blue" />
+                <div>
+                  <div className="font-semibold text-medical-charcoal">Urgent Reviews</div>
+                  <div className="text-caption text-text-secondary">Priority items</div>
                 </div>
               </Button>
             </div>
           </CardContent>
         </Card>
 
+        {/* Healthcare Activity Feed */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
-            <CardDescription>Latest updates and notifications</CardDescription>
+            <CardTitle className="text-medical-charcoal">Recent Activity</CardTitle>
+            <CardDescription>Latest system updates and notifications</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentActivity.map((activity) => {
                 const Icon = activity.icon;
                 return (
-                  <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-accent">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-secondary">
-                      <Icon className="h-4 w-4" />
+                  <div key={activity.id} className="flex items-start gap-4 p-4 rounded-lg hover:bg-light-background transition-colors">
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                      activity.status === 'success' ? 'bg-success-background' :
+                      activity.status === 'warning' ? 'bg-warning-background' :
+                      'bg-info-background'
+                    }`}>
+                      <Icon className={`h-5 w-5 ${
+                        activity.status === 'success' ? 'text-sage-green' :
+                        activity.status === 'warning' ? 'text-warning-amber' :
+                        'text-info-blue'
+                      }`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium mb-1">{activity.title}</p>
-                      <p className="text-xs text-muted-foreground mb-1">{activity.subtitle}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                      <p className="font-medium text-medical-charcoal mb-1">{activity.title}</p>
+                      <p className="text-small-body text-text-secondary mb-2">{activity.subtitle}</p>
+                      <p className="text-caption text-text-secondary">{activity.time}</p>
                     </div>
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className={`text-caption ${
+                      activity.status === 'success' ? 'border-sage-green text-sage-green' :
+                      activity.status === 'warning' ? 'border-warning-amber text-warning-amber' :
+                      'border-info-blue text-info-blue'
+                    }`}>
                       {activity.status}
                     </Badge>
                   </div>
@@ -175,17 +192,20 @@ export function Dashboard() {
         </Card>
       </div>
 
+      {/* Healthcare System Status */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent className="responsive-padding">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm font-medium">System Status: All services operational</span>
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 bg-sage-green rounded-full"></div>
+              <span className="font-medium text-medical-charcoal">System Status: All services operational</span>
             </div>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-6 text-small-body text-text-secondary">
               <span>Last backup: 2 hours ago</span>
-              <span>•</span>
+              <span className="hidden sm:inline">•</span>
               <span>Uptime: 99.9%</span>
+              <span className="hidden sm:inline">•</span>
+              <span>HIPAA Compliant</span>
             </div>
           </div>
         </CardContent>

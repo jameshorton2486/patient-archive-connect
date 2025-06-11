@@ -13,13 +13,20 @@ module.exports = {
       colors: {
         /* Healthcare Design System Colors */
         
-        /* Core Brand Colors */
+        /* Primary Healthcare Colors */
         'medical-charcoal': 'hsl(var(--medical-charcoal))',
-        'pure-white': 'hsl(var(--pure-white))',
+        'clean-white': 'hsl(var(--clean-white))',
         'healthcare-blue': 'hsl(var(--healthcare-blue))',
-        'medical-sage': 'hsl(var(--medical-sage))',
+        'sage-green': 'hsl(var(--sage-green))',
         'clinical-gray': 'hsl(var(--clinical-gray))',
-        'light-canvas': 'hsl(var(--light-canvas))',
+        'light-background': 'hsl(var(--light-background))',
+        
+        /* Support Colors */
+        'warning-amber': 'hsl(var(--warning-amber))',
+        'error-red': 'hsl(var(--error-red))',
+        'info-blue': 'hsl(var(--info-blue))',
+        'neutral-light': 'hsl(var(--neutral-light))',
+        'text-secondary': 'hsl(var(--text-secondary))',
         
         /* Semantic Colors */
         success: {
@@ -42,22 +49,8 @@ module.exports = {
           hover: 'hsl(var(--info-hover))',
           background: 'hsl(var(--info-background))',
         },
-        
-        /* Neutral Gradient System */
-        neutral: {
-          50: 'hsl(var(--neutral-50))',
-          100: 'hsl(var(--neutral-100))',
-          200: 'hsl(var(--neutral-200))',
-          300: 'hsl(var(--neutral-300))',
-          400: 'hsl(var(--neutral-400))',
-          500: 'hsl(var(--neutral-500))',
-          600: 'hsl(var(--neutral-600))',
-          700: 'hsl(var(--neutral-700))',
-          800: 'hsl(var(--neutral-800))',
-          900: 'hsl(var(--neutral-900))',
-        },
 
-        /* Existing Shadcn/UI colors mapped to healthcare system */
+        /* Shadcn/UI color mapping to healthcare system */
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -98,8 +91,23 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+      },
+      fontSize: {
+        'large-body': ['1.125rem', { lineHeight: '1.6' }],
+        'body': ['1rem', { lineHeight: '1.6' }],
+        'small-body': ['0.875rem', { lineHeight: '1.6' }],
+        'caption': ['0.75rem', { lineHeight: '1.6' }],
+      },
+      spacing: {
+        '18': '4.5rem', /* 72px for header height */
+      },
+      boxShadow: {
+        'healthcare': '0 4px 12px rgba(0, 0, 0, 0.08)',
+        'healthcare-hover': '0 6px 16px rgba(0, 0, 0, 0.12)',
+        'healthcare-primary': '0 2px 4px rgba(52, 152, 219, 0.2)',
+        'healthcare-success': '0 2px 4px rgba(39, 174, 96, 0.2)',
       },
     },
   },

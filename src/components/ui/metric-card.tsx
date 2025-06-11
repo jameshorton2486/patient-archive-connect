@@ -28,32 +28,32 @@ export function MetricCard({
   style
 }: MetricCardProps) {
   return (
-    <Card className={cn('hover:shadow-md transition-shadow duration-200', className)} style={style}>
-      <CardContent className="p-6">
+    <Card className={cn('hover:shadow-healthcare-hover transition-all duration-200', className)} style={style}>
+      <CardContent className="responsive-padding">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
-            <p className="text-3xl font-bold">{value}</p>
+            <p className="text-small-body font-medium text-text-secondary mb-2">{title}</p>
+            <p className="text-3xl font-bold text-medical-charcoal mb-2">{value}</p>
             {trendValue && (
-              <div className="flex items-center gap-1 mt-2">
-                {trend === 'up' && <TrendingUp className="h-3 w-3 text-green-600" aria-hidden="true" />}
-                {trend === 'down' && <TrendingDown className="h-3 w-3 text-red-600" aria-hidden="true" />}
+              <div className="flex items-center gap-2 mt-3">
+                {trend === 'up' && <TrendingUp className="h-4 w-4 text-sage-green" aria-hidden="true" />}
+                {trend === 'down' && <TrendingDown className="h-4 w-4 text-error-red" aria-hidden="true" />}
                 <span className={cn(
-                  "text-sm font-medium",
-                  trend === 'up' && 'text-green-600',
-                  trend === 'down' && 'text-red-600',
-                  trend === 'neutral' && 'text-muted-foreground'
+                  "text-small-body font-medium",
+                  trend === 'up' && 'text-sage-green',
+                  trend === 'down' && 'text-error-red',
+                  trend === 'neutral' && 'text-text-secondary'
                 )}>
                   {trendValue}
                 </span>
                 {description && (
-                  <span className="text-sm text-muted-foreground ml-1">{description}</span>
+                  <span className="text-small-body text-text-secondary ml-1">{description}</span>
                 )}
               </div>
             )}
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg border">
-            <Icon className="h-6 w-6" aria-hidden="true" />
+          <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-light-background border border-clinical-gray">
+            <Icon className="h-8 w-8 text-healthcare-blue" aria-hidden="true" />
           </div>
         </div>
       </CardContent>
