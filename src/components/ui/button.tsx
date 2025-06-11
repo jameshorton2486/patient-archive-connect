@@ -5,22 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "btn",
   {
     variants: {
       variant: {
-        default: "btn-healthcare-primary",
+        default: "btn-primary",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
-        outline: "btn-healthcare-secondary",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm",
-        ghost: "btn-healthcare-ghost",
+        outline: "btn-outline",
+        secondary: "btn-secondary",
+        ghost: "btn-ghost",
         link: "text-primary underline-offset-4 hover:underline",
-        success: "btn-healthcare-success",
+        success: "btn-success",
       },
       size: {
         default: "px-6 py-3",
-        sm: "px-4 py-2 text-sm rounded-md",
-        lg: "px-8 py-4 text-lg rounded-xl",
+        sm: "btn-sm",
+        lg: "btn-lg",
         icon: "h-12 w-12",
       },
     },

@@ -13,8 +13,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          "input-healthcare",
-          error && "error",
+          "form-input",
+          error && "border-destructive focus:border-destructive focus:ring-destructive/20",
           className
         )}
         ref={ref}

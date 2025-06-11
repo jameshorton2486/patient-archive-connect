@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const labelVariants = cva(
-  "label-healthcare"
+  "form-label"
 )
 
 const Label = React.forwardRef<
@@ -17,7 +17,7 @@ const Label = React.forwardRef<
     ref={ref}
     className={cn(
       labelVariants(),
-      required && "label-required",
+      required && "after:content-['*'] after:ml-1 after:text-destructive",
       className
     )}
     {...props}
