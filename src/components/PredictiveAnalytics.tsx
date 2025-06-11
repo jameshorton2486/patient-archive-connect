@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -205,8 +206,8 @@ export function PredictiveAnalytics({ onBack }: PredictiveAnalyticsProps) {
               <div className="text-2xl font-bold">84%</div>
             </div>
             <p className="text-sm text-muted-foreground">Response Rate</p>
-          </Card>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Case Value Predictions */}
