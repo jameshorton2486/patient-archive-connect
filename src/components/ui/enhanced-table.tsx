@@ -6,7 +6,7 @@ const EnhancedTable = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement> & { stickyHeader?: boolean }
 >(({ className, stickyHeader = false, ...props }, ref) => (
-  <div className="relative w-full overflow-auto rounded-lg border border-primary-200">
+  <div className="relative w-full overflow-auto rounded-lg border border-border">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -23,7 +23,7 @@ const EnhancedTableHeader = React.forwardRef<
   <thead 
     ref={ref} 
     className={cn(
-      "[&_tr]:border-b border-primary-200 bg-primary-50",
+      "[&_tr]:border-b border-border bg-muted",
       sticky && "sticky top-0 z-10",
       className
     )} 
@@ -51,7 +51,7 @@ const EnhancedTableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b border-primary-200 transition-colors hover:bg-primary-50 data-[state=selected]:bg-accent-medical/10",
+      "border-b border-border transition-colors hover:bg-muted data-[state=selected]:bg-accent/10",
       className
     )}
     {...props}
@@ -66,7 +66,7 @@ const EnhancedTableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-12 px-4 text-left align-middle font-semibold text-primary-700 [&:has([role=checkbox])]:pr-0",
+      "h-12 px-4 text-left align-middle font-semibold text-foreground [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}
@@ -80,7 +80,7 @@ const EnhancedTableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("p-4 align-middle text-primary-600 [&:has([role=checkbox])]:pr-0", className)}
+    className={cn("p-4 align-middle text-muted-foreground [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
 ))

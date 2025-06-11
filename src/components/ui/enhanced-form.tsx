@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -26,13 +27,13 @@ export function FormField({ label, required, error, success, children, className
     <div className={cn('space-y-2', className)}>
       <Label 
         htmlFor={fieldId}
-        className="text-sm font-medium text-primary-700 flex items-center gap-1"
+        className="text-sm font-medium text-foreground flex items-center gap-1"
       >
         {label}
         {required && (
-          <span className="text-error-500" aria-label="required">*</span>
+          <span className="text-destructive" aria-label="required">*</span>
         )}
-        {success && <CheckCircle className="h-4 w-4 text-success-600" aria-label="valid" />}
+        {success && <CheckCircle className="h-4 w-4 text-success" aria-label="valid" />}
       </Label>
       <div>
         {React.cloneElement(children as React.ReactElement, {
@@ -45,7 +46,7 @@ export function FormField({ label, required, error, success, children, className
       {error && (
         <div 
           id={`${fieldId}-error`}
-          className="flex items-center gap-1 text-sm text-error-600"
+          className="flex items-center gap-1 text-sm text-destructive"
           role="alert"
           aria-live="polite"
         >
@@ -67,10 +68,10 @@ interface FormSectionProps {
 export function FormSection({ title, description, children, className }: FormSectionProps) {
   return (
     <div className={cn('space-y-6', className)}>
-      <div className="border-b border-primary-200 pb-3">
-        <h3 className="text-lg font-semibold text-primary-900">{title}</h3>
+      <div className="border-b border-border pb-3">
+        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
         {description && (
-          <p className="text-sm text-primary-500 mt-1">{description}</p>
+          <p className="text-sm text-muted-foreground mt-1">{description}</p>
         )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -102,10 +103,10 @@ export function FormCard({
   className 
 }: FormCardProps) {
   return (
-    <Card className={cn('bg-primary border-primary-200', className)}>
+    <Card className={cn('bg-card border-border', className)}>
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-primary-900">{title}</CardTitle>
-        {description && <CardDescription className="text-primary-500">{description}</CardDescription>}
+        <CardTitle className="text-xl font-semibold text-foreground">{title}</CardTitle>
+        {description && <CardDescription className="text-muted-foreground">{description}</CardDescription>}
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-6" noValidate>
@@ -117,7 +118,7 @@ export function FormCard({
           )}
           {children}
           {onSubmit && (
-            <div className="flex justify-end gap-3 pt-6 border-t border-primary-200">
+            <div className="flex justify-end gap-3 pt-6 border-t border-border">
               <Button type="button" variant="secondary">
                 Cancel
               </Button>
@@ -137,15 +138,15 @@ export function FormCard({
   );
 }
 
-// Enhanced Input with Linear styling
+// Enhanced Input with professional styling
 export function EnhancedInput({ className, error, ...props }: React.ComponentProps<typeof Input> & { error?: boolean }) {
   return (
     <Input 
       className={cn(
-        'px-3 py-2 rounded-md border-primary-200 bg-primary text-foreground',
-        'focus:ring-2 focus:ring-accent-medical/40 focus:border-accent-medical',
-        'transition-all duration-200 placeholder-primary-400',
-        error && 'border-error-500 focus:border-error-500 focus:ring-error-500/40',
+        'px-3 py-2 rounded-md border-border bg-background text-foreground',
+        'focus:ring-2 focus:ring-accent/40 focus:border-accent',
+        'transition-all duration-200 placeholder-muted-foreground',
+        error && 'border-destructive focus:border-destructive focus:ring-destructive/40',
         className
       )}
       error={error}
@@ -154,16 +155,16 @@ export function EnhancedInput({ className, error, ...props }: React.ComponentPro
   );
 }
 
-// Enhanced Textarea with Linear styling
+// Enhanced Textarea with professional styling
 export function EnhancedTextarea({ className, error, ...props }: React.ComponentProps<typeof Textarea> & { error?: boolean }) {
   return (
     <Textarea 
       className={cn(
-        'min-h-[100px] px-3 py-2 rounded-md border-primary-200 bg-primary text-foreground',
-        'focus:ring-2 focus:ring-accent-medical/40 focus:border-accent-medical',
-        'transition-all duration-200 placeholder-primary-400',
+        'min-h-[100px] px-3 py-2 rounded-md border-border bg-background text-foreground',
+        'focus:ring-2 focus:ring-accent/40 focus:border-accent',
+        'transition-all duration-200 placeholder-muted-foreground',
         'disabled:cursor-not-allowed disabled:opacity-50',
-        error && 'border-error-500 focus:border-error-500 focus:ring-error-500/40',
+        error && 'border-destructive focus:border-destructive focus:ring-destructive/40',
         className
       )}
       aria-invalid={error ? 'true' : 'false'}
