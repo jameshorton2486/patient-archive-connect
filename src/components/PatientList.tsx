@@ -75,7 +75,6 @@ export function PatientList({ onAddPatient }: PatientListProps) {
 
   return (
     <div className="space-y-6">
-      {/* Search and Add Patient Header - Responsive */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -83,25 +82,23 @@ export function PatientList({ onAddPatient }: PatientListProps) {
             placeholder="Search patients by name, email, or condition..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 input-linear"
+            className="pl-10"
           />
         </div>
         <Button 
           onClick={onAddPatient} 
-          className="flex items-center gap-2 mobile-full-width sm:w-auto btn-linear-primary"
+          className="flex items-center gap-2"
         >
           <UserPlus className="h-4 w-4" />
           Add Patient
         </Button>
       </div>
 
-      {/* Patient Cards Grid - Responsive */}
       <div className="space-y-4">
         {filteredPatients.map((patient) => (
-          <Card key={patient.id} className="card-linear">
-            <CardContent className="responsive-padding">
+          <Card key={patient.id}>
+            <CardContent className="p-6">
               <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
-                {/* Patient Information Grid - Responsive */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
                   <div>
                     <h3 className="font-semibold text-lg text-foreground mb-1">{patient.name}</h3>
@@ -122,21 +119,12 @@ export function PatientList({ onAddPatient }: PatientListProps) {
                   </div>
                 </div>
                 
-                {/* Action Buttons - Responsive */}
                 <div className="flex gap-2 lg:ml-4 justify-end">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="btn-linear-secondary"
-                  >
+                  <Button variant="outline" size="sm">
                     <Eye className="h-4 w-4" />
                     <span className="sr-only">View patient</span>
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="btn-linear-secondary"
-                  >
+                  <Button variant="outline" size="sm">
                     <Edit className="h-4 w-4" />
                     <span className="sr-only">Edit patient</span>
                   </Button>
@@ -147,15 +135,12 @@ export function PatientList({ onAddPatient }: PatientListProps) {
         ))}
       </div>
 
-      {/* Empty State */}
       {filteredPatients.length === 0 && (
-        <Card className="card-linear">
+        <Card>
           <CardContent className="p-8 sm:p-12 text-center">
-            <div className="animate-linear-fade-in">
-              <p className="text-muted-foreground responsive-text">
-                No patients found matching your search criteria.
-              </p>
-            </div>
+            <p className="text-muted-foreground">
+              No patients found matching your search criteria.
+            </p>
           </CardContent>
         </Card>
       )}

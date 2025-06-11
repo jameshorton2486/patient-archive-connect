@@ -67,13 +67,13 @@ export function MedicalRecords() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-blue-100 text-blue-800";
+        return "variant='info'";
       case "completed":
-        return "bg-green-100 text-green-800";
+        return "variant='success'";
       case "follow-up":
-        return "bg-yellow-100 text-yellow-800";
+        return "variant='warning'";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "variant='secondary'";
     }
   };
 
@@ -107,26 +107,26 @@ export function MedicalRecords() {
               <div className="flex justify-between items-start">
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4 flex-1">
                   <div>
-                    <h3 className="font-semibold text-lg">{record.patientName}</h3>
+                    <h3 className="font-semibold text-lg text-foreground">{record.patientName}</h3>
                     <p className="text-sm text-muted-foreground">ID: {record.patientId}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Date</p>
+                    <p className="text-sm font-medium text-foreground">Date</p>
                     <p className="text-sm text-muted-foreground">{record.date}</p>
                     <p className="text-sm text-muted-foreground">{record.type}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Diagnosis</p>
+                    <p className="text-sm font-medium text-foreground">Diagnosis</p>
                     <p className="text-sm text-muted-foreground">{record.diagnosis}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Treatment</p>
+                    <p className="text-sm font-medium text-foreground">Treatment</p>
                     <p className="text-sm text-muted-foreground">{record.treatment}</p>
                     <p className="text-sm text-muted-foreground">by {record.doctor}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Status</p>
-                    <Badge className={getStatusColor(record.status)}>
+                    <p className="text-sm font-medium text-foreground">Status</p>
+                    <Badge variant={record.status === "active" ? "info" : record.status === "completed" ? "success" : "warning"}>
                       {record.status}
                     </Badge>
                   </div>

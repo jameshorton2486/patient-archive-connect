@@ -57,7 +57,7 @@ export function ProviderList({ onAddProvider }: ProviderListProps) {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[var(--text-secondary)] h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             placeholder="Search providers by name, facility, specialty, or NPI..."
             value={searchTerm}
@@ -79,48 +79,48 @@ export function ProviderList({ onAddProvider }: ProviderListProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <Building2 className="h-4 w-4 text-[var(--accent-medical)]" />
-                      <span className="font-mono text-sm text-[var(--text-secondary)]">NPI: {provider.npiNumber}</span>
+                      <Building2 className="h-4 w-4 text-accent" />
+                      <span className="font-mono text-sm text-muted-foreground">NPI: {provider.npiNumber}</span>
                       {provider.isVerified && (
                         <Badge variant="default" className="text-xs">Verified</Badge>
                       )}
                     </div>
-                    <h3 className="font-semibold text-lg text-[var(--text-primary)]">{provider.name}</h3>
-                    <p className="text-sm text-[var(--text-secondary)]">{provider.specialty}</p>
-                    <p className="text-sm font-medium mt-1 text-[var(--text-primary)]">{provider.facilityName}</p>
+                    <h3 className="font-semibold text-lg text-foreground">{provider.name}</h3>
+                    <p className="text-sm text-muted-foreground">{provider.specialty}</p>
+                    <p className="text-sm font-medium mt-1 text-foreground">{provider.facilityName}</p>
                     {provider.department && (
-                      <p className="text-sm text-[var(--text-secondary)]">{provider.department}</p>
+                      <p className="text-sm text-muted-foreground">{provider.department}</p>
                     )}
                   </div>
                   
                   <div>
                     <div className="flex items-center gap-1 mb-2">
-                      <Phone className="h-3 w-3 text-[var(--text-secondary)]" />
-                      <span className="text-sm font-medium text-[var(--text-primary)]">Contact</span>
+                      <Phone className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-sm font-medium text-foreground">Contact</span>
                     </div>
-                    <p className="text-sm text-[var(--text-secondary)]">{provider.phoneMain}</p>
+                    <p className="text-sm text-muted-foreground">{provider.phoneMain}</p>
                     {provider.phoneRecords && (
-                      <p className="text-sm text-[var(--text-secondary)]">Records: {provider.phoneRecords}</p>
+                      <p className="text-sm text-muted-foreground">Records: {provider.phoneRecords}</p>
                     )}
                     {provider.recordsContactPerson && (
-                      <p className="text-sm text-[var(--text-secondary)]">Contact: {provider.recordsContactPerson}</p>
+                      <p className="text-sm text-muted-foreground">Contact: {provider.recordsContactPerson}</p>
                     )}
                   </div>
                   
                   <div>
                     <div className="flex items-center gap-1 mb-2">
-                      <Calendar className="h-3 w-3 text-[var(--text-secondary)]" />
-                      <span className="text-sm font-medium text-[var(--text-primary)]">Treatment</span>
+                      <Calendar className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-sm font-medium text-foreground">Treatment</span>
                     </div>
-                    <p className="text-sm text-[var(--text-secondary)]">{provider.treatmentType}</p>
-                    <p className="text-sm text-[var(--text-secondary)]">
+                    <p className="text-sm text-muted-foreground">{provider.treatmentType}</p>
+                    <p className="text-sm text-muted-foreground">
                       {provider.firstTreatmentDate} - {provider.lastTreatmentDate}
                     </p>
-                    <p className="text-sm text-[var(--text-secondary)]">
+                    <p className="text-sm text-muted-foreground">
                       Est. visits: {provider.estimatedVisits}
                     </p>
                     {provider.outstandingBills && (
-                      <p className="text-sm font-medium text-orange-600">
+                      <p className="text-sm font-medium text-warning">
                         Outstanding: ${provider.outstandingBills.toLocaleString()}
                       </p>
                     )}
@@ -144,7 +144,7 @@ export function ProviderList({ onAddProvider }: ProviderListProps) {
       {filteredProviders.length === 0 && (
         <Card>
           <CardContent className="p-12 text-center">
-            <p className="text-[var(--text-secondary)]">No providers found matching your search criteria.</p>
+            <p className="text-muted-foreground">No providers found matching your search criteria.</p>
           </CardContent>
         </Card>
       )}
